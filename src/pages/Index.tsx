@@ -124,10 +124,6 @@ const Index = () => {
           />
         )}
 
-        <DocumentsModal 
-          isOpen={activeModal === "documents"}
-          onClose={closeModal}
-        />
       </div>
     </SidebarProvider>
   );

@@ -13,6 +13,7 @@ import UnderConstruction from "./pages/UnderConstruction";
 import OperatingStatistics from "./pages/OperatingStatistics";
 import TransactionSummary from "./pages/TransactionSummary";
 import Valuation from "./pages/Valuation";
+import Documents from "./pages/Documents";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/operating-statistics" element={<OperatingStatistics />} />
           <Route path="/transaction-summary" element={<TransactionSummary />} />
           <Route path="/valuation" element={<Valuation />} />
+          <Route path="/documents" element={<Documents />} />
           <Route path="/under-construction" element={<UnderConstruction />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

@@ -91,7 +91,8 @@ export const mainNavCategories: CategoryItem[] = [
   },
   {
     id: "documents",
-    name: "Documents"
+    name: "Documents",
+    path: "/documents"
   },
   {
     id: "summary",
