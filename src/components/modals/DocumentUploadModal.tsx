@@ -67,10 +67,10 @@ const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({ onClose, onNe
     <ModalWrapper
       title="Document Upload"
       onClose={onClose}
-      onSave={() => {}}
-      onNext={onNext}
-      showNext={true}
-      showSave={false}
+      onSave={onNext}
+      onNext={() => {}}
+      showNext={false}
+      showSave={true}
       maxWidth="max-w-4xl"
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

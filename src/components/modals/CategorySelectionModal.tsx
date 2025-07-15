@@ -213,10 +213,10 @@ const CategorySelectionModal: React.FC<CategorySelectionModalProps> = ({
     <ModalWrapper 
       title="Department & Item Selection" 
       onClose={onClose} 
-      onSave={handleSave}
-      onNext={() => {}}
-      showNext={false}
-      showSave={true}
+      onSave={() => {}}
+      onNext={handleSave}
+      showNext={true}
+      showSave={false}
       maxWidth="max-w-2xl"
     >
       <div className="space-y-4 max-h-[60vh] overflow-y-auto pr-2">
