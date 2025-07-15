@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import PropertyDetailsModal from "../components/modals/PropertyDetailsModal";
 import CategorySelectionModal from "../components/modals/CategorySelectionModal";
+import DocumentUploadModal from "../components/modals/DocumentUploadModal";
 
 const PropertyDetails = () => {
   const [activeModal, setActiveModal] = useState<string | null>(null);
   const [showPropertyModal, setShowPropertyModal] = useState(true);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+  const [showDocumentModal, setShowDocumentModal] = useState(false);
   const [categorySelections, setCategorySelections] = useState<Set<string>>(new Set());
   const navigate = useNavigate();
 
@@ -49,7 +51,20 @@ const PropertyDetails = () => {
     setCategorySelections(selectedItems);
     setShowCategoryModal(false);
     
-    // Navigate to Market Data section after saving categories
+    // Show document upload modal after category selection
+    setShowDocumentModal(true);
+  };
+
+  const handleDocumentModalClose = () => {
+    setShowDocumentModal(false);
+    // Navigate back to home when modal is closed
+    navigate('/');
+  };
+
+  const handleDocumentModalNext = () => {
+    setShowDocumentModal(false);
+    
+    // Navigate to Market Data section after document upload
     navigate('/market');
   };
 
@@ -78,6 +93,14 @@ const PropertyDetails = () => {
           onClose={handleCategoryModalClose}
           onSave={handleCategoryModalSave}
           initialSelections={categorySelections}
+        />
+      )}
+      
+      {/* DocumentUploadModal - Uses ModalWrapper, so uses conditional rendering */}
+      {showDocumentModal && (
+        <DocumentUploadModal
+          onClose={handleDocumentModalClose}
+          onNext={handleDocumentModalNext}
         />
       )}
     </div>
