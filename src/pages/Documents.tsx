@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Bell, ChevronDown, ChevronRight, Grid, LayoutGrid, Plus, Search, X, Folder, Edit2, Trash2, Upload } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "../components/AppSidebar";
+import DocumentsSidebar from "../components/DocumentsSidebar";
 
 interface NavItemProps {
   onClick: () => void;
@@ -273,35 +274,42 @@ const Documents = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar onItemClick={handleItemClick} activeSection="" />
-        <div className="flex-1">
-          <header className="flex items-center justify-between border-b px-6 py-4">
-            <div className="flex items-center gap-4">
-              <SidebarTrigger />
-              <div className="w-96">
-                <div className="relative">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                  <Input type="search" placeholder="Search files..." className="pl-9" />
+        <div className="flex-1 flex">
+          <DocumentsSidebar
+            customFolders={customFolders}
+            onEditFolder={handleEditFolder}
+            onDeleteFolder={handleDeleteFolder}
+            onCreateFolder={() => setIsCreateFolderModalOpen(true)}
+          />
+          <div className="flex-1">
+            <header className="flex items-center justify-between border-b px-6 py-4">
+              <div className="flex items-center gap-4">
+                <SidebarTrigger />
+                <div className="w-96">
+                  <div className="relative">
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                    <Input type="search" placeholder="Search files..." className="pl-9" />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <Button variant="ghost" size="icon" onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}>
-                {viewMode === "grid" ? <Grid className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Bell className="h-4 w-4" />
-              </Button>
-              <div className="h-8 w-8 overflow-hidden rounded-full">
-                <img
-                  src="/placeholder.svg"
-                  alt="Avatar"
-                  className="h-full w-full object-cover"
-                />
+              <div className="flex items-center gap-4">
+                <Button variant="ghost" size="icon" onClick={() => setViewMode(viewMode === "grid" ? "list" : "grid")}>
+                  {viewMode === "grid" ? <Grid className="h-4 w-4" /> : <LayoutGrid className="h-4 w-4" />}
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Bell className="h-4 w-4" />
+                </Button>
+                <div className="h-8 w-8 overflow-hidden rounded-full">
+                  <img
+                    src="/placeholder.svg"
+                    alt="Avatar"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
-            </div>
-          </header>
+            </header>
 
-          <div className="p-6">
+            <div className="p-6">
             <div className="mb-6 flex items-center gap-4">
               <div className="relative group">
                 <Button className="gap-2" disabled>
@@ -512,6 +520,7 @@ const Documents = () => {
                 </div>
               </div>
             )}
+            </div>
           </div>
         </div>
 
