@@ -279,7 +279,6 @@ const Documents = () => {
             customFolders={customFolders}
             onEditFolder={handleEditFolder}
             onDeleteFolder={handleDeleteFolder}
-            onCreateFolder={() => setIsCreateFolderModalOpen(true)}
           />
           <div className="flex-1">
             <header className="flex items-center justify-between border-b px-6 py-4">

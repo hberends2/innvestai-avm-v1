@@ -7,14 +7,12 @@ interface DocumentsSidebarProps {
   customFolders: Array<{ id: string; name: string }>;
   onEditFolder: (folder: { id: string; name: string }) => void;
   onDeleteFolder: (folder: { id: string; name: string }) => void;
-  onCreateFolder: () => void;
 }
 
 const DocumentsSidebar: React.FC<DocumentsSidebarProps> = ({
   customFolders,
   onEditFolder,
   onDeleteFolder,
-  onCreateFolder,
 }) => {
   const [isDocumentsExpanded, setIsDocumentsExpanded] = useState(true);
 
@@ -86,14 +84,6 @@ const DocumentsSidebar: React.FC<DocumentsSidebarProps> = ({
               </div>
             ))}
 
-            {/* Create Folder Button */}
-            <button
-              onClick={onCreateFolder}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-500 rounded-lg w-full text-left hover:bg-gray-50 hover:text-gray-700"
-            >
-              <Folder className="h-4 w-4" />
-              <span>Create folder</span>
-            </button>
           </div>
 
           {/* Collections Section */}
