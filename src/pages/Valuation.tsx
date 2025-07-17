@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRevenueData } from "@/hooks/useRevenueData";
 import { formatCurrency } from "@/utils/calculationUtils";
 
@@ -30,6 +31,130 @@ const Valuation: React.FC = () => {
   const [interestOnlyPeriod, setInterestOnlyPeriod] = useState("7");
   const [amortizationPeriod, setAmortizationPeriod] = useState("30");
   const [term, setTerm] = useState("10");
+  
+  // Closing Costs inputs
+  const [closingCostsMethod, setClosingCostsMethod] = useState("% of Loan Amount");
+  
+  // Detailed Closing Costs
+  type DetailedClosingCosts = {
+    originationFeeBasisPoints: string;
+    underwritingFee: string;
+    lenderLegal: string;
+    debtPlacementFeeBasisPoints: string;
+    interestRateCap: string;
+    outOfPocketExpenses: string;
+    creditSearches: string;
+    insuranceConsultant: string;
+    processingFee: string;
+    appraisal: string;
+    interestRateHedge: string;
+    thirdPartyReport1: { description: string; amount: string };
+    thirdPartyReport2: { description: string; amount: string };
+    thirdPartyReport3: { description: string; amount: string };
+    thirdPartyReport4: { description: string; amount: string };
+    thirdPartyReport5: { description: string; amount: string };
+    interestExpense: string;
+    taxImpound: string;
+    insuranceImpound: string;
+    insurancePremium: string;
+    ffeReserve: string;
+    adaReserve: string;
+    immediateRepairReserve: string;
+    generalLedger: string;
+    realEstateTaxes: string;
+    titleSearches: string;
+    titlePremium: string;
+    escrow: string;
+    recordingFees: string;
+    transferTax: string;
+    mortgageTax: string;
+    other: string;
+    applicationFee: string;
+    buyerCounsel: string;
+    equityPlacementFee: string;
+    acquisitionFee: string;
+    travelCharge1: { description: string; amount: string };
+    travelCharge2: { description: string; amount: string };
+    workingCapital: string;
+    excessCashCapital: string;
+    contingency: string;
+    yearOneTaxReserve: string;
+    yearOneInsuranceReserve: string;
+  };
+
+  const [detailedClosingCosts, setDetailedClosingCosts] = useState<DetailedClosingCosts>({
+    // Lender Charges
+    originationFeeBasisPoints: "60",
+    underwritingFee: "5000",
+    lenderLegal: "0",
+    debtPlacementFeeBasisPoints: "75",
+    interestRateCap: "0",
+    outOfPocketExpenses: "0",
+    creditSearches: "3500",
+    insuranceConsultant: "0",
+    processingFee: "10000",
+    appraisal: "7500",
+    interestRateHedge: "0",
+    
+    // Third Party Reports
+    thirdPartyReport1: { description: "Description", amount: "2500" },
+    thirdPartyReport2: { description: "Description", amount: "2000" },
+    thirdPartyReport3: { description: "Description", amount: "5000" },
+    thirdPartyReport4: { description: "Description", amount: "1500" },
+    thirdPartyReport5: { description: "Description", amount: "4500" },
+    
+    // Lender Reserves
+    interestExpense: "0",
+    taxImpound: "0",
+    insuranceImpound: "0",
+    insurancePremium: "0",
+    ffeReserve: "0",
+    adaReserve: "0",
+    immediateRepairReserve: "0",
+    
+    // Prorations
+    generalLedger: "0",
+    realEstateTaxes: "0",
+    
+    // Title Charges
+    titleSearches: "2500",
+    titlePremium: "20000",
+    escrow: "1000",
+    recordingFees: "1000",
+    
+    // Transfer Taxes
+    transferTax: "0",
+    mortgageTax: "0",
+    other: "0",
+    
+    // Franchise Charges
+    applicationFee: "75000",
+    
+    // Legal Charges
+    buyerCounsel: "50000",
+    
+    // Acquisition Fees
+    equityPlacementFee: "0",
+    acquisitionFee: "190000",
+    
+    // Travel and Other Charges
+    travelCharge1: { description: "Description", amount: "5000" },
+    travelCharge2: { description: "Description", amount: "5000" },
+    
+    // Working Capital
+    workingCapital: "125000",
+    excessCashCapital: "0",
+    
+    // Contingency
+    contingency: "75000",
+    
+    // Lender Reserve Estimates
+    yearOneTaxReserve: "40500",
+    yearOneInsuranceReserve: "480000"
+  });
+
+  // Sample loan amount for calculations
+  const loanAmount = 36075000;
 
   // Exit inputs
   const [exitCapRate, setExitCapRate] = useState("7.0");
@@ -58,6 +183,34 @@ const Valuation: React.FC = () => {
   const formatCurrencyDisplay = (value: string) => {
     const num = parseInt(value);
     return isNaN(num) ? "$0" : `$${num.toLocaleString()}`;
+  };
+
+  // Helper functions for detailed closing costs
+  const calculateOriginationFee = () => {
+    const basisPoints = parseFloat(detailedClosingCosts.originationFeeBasisPoints) || 0;
+    return loanAmount * (basisPoints / 10000);
+  };
+
+  const calculateDebtPlacementFee = () => {
+    const basisPoints = parseFloat(detailedClosingCosts.debtPlacementFeeBasisPoints) || 0;
+    return loanAmount * (basisPoints / 10000);
+  };
+
+  const handleDetailedCostChange = (field: string, value: string) => {
+    setDetailedClosingCosts(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleDetailedCostObjectChange = (field: string, subField: string, value: string) => {
+    setDetailedClosingCosts(prev => ({
+      ...prev,
+      [field]: {
+        ...prev[field as keyof typeof prev] as any,
+        [subField]: value
+      }
+    }));
   };
 
   return (
@@ -173,7 +326,8 @@ const Valuation: React.FC = () => {
           <TabsContent value="financing" className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-3 gap-8">
+                  {/* Left 1/3 - Existing inputs */}
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4 items-center">
                       <Label>LTV</Label>
@@ -191,14 +345,30 @@ const Valuation: React.FC = () => {
                         className="text-blue-600 font-medium"
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Loan Fees</Label>
-                      <Input
-                        value={formatPercentageDisplay(loanFees)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setLoanFees)}
-                        className="text-blue-600 font-medium"
-                      />
+                    
+                    {/* Closing Costs Section */}
+                    <div className="space-y-2">
+                      <Label>Closing Costs</Label>
+                      <Select value={closingCostsMethod} onValueChange={setClosingCostsMethod}>
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="% of Loan Amount">% of Loan Amount</SelectItem>
+                          <SelectItem value="Detail">Detail</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      
+                      {closingCostsMethod === "% of Loan Amount" && (
+                        <Input
+                          value={formatPercentageDisplay(loanFees)}
+                          onChange={(e) => handlePercentageChange(e.target.value, setLoanFees)}
+                          className="text-blue-600 font-medium"
+                          placeholder="% of Loan Amount"
+                        />
+                      )}
                     </div>
+                    
                     <div className="grid grid-cols-2 gap-4 items-center">
                       <Label>Interest Only Period (Years)</Label>
                       <Input
@@ -224,6 +394,209 @@ const Valuation: React.FC = () => {
                       />
                     </div>
                   </div>
+
+                  {/* Right 2/3 - Detailed Closing Costs */}
+                  {closingCostsMethod === "Detail" && (
+                    <div className="col-span-2">
+                      <div className="border border-red-500 p-4 rounded-lg">
+                        <h3 className="text-lg font-semibold mb-4 text-center">Detailed Closing Costs</h3>
+                        
+                        <div className="grid grid-cols-3 gap-4 mb-4 font-semibold text-sm">
+                          <div>Closing Costs</div>
+                          <div className="text-center">Amount</div>
+                          <div className="text-center">Comments</div>
+                        </div>
+
+                        {/* Lender Charges */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Lender Charges</div>
+                          
+                          {/* Origination Fee */}
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Origination Fee</div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Basis Points:</span>
+                              <Input
+                                value={detailedClosingCosts.originationFeeBasisPoints}
+                                onChange={(e) => handleDetailedCostChange("originationFeeBasisPoints", e.target.value)}
+                                className="text-blue-600 font-medium w-20"
+                                style={{ backgroundColor: "#FFF2CC" }}
+                              />
+                              <span className="font-medium">${calculateOriginationFee().toLocaleString()}</span>
+                            </div>
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          {/* Underwriting Fee */}
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Underwriting Fee</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.underwritingFee).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("underwritingFee", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          {/* Lender Legal */}
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Lender Legal</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.lenderLegal).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("lenderLegal", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          {/* Debt Placement Fee */}
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Debt Placement Fee</div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm">Basis Points:</span>
+                              <Input
+                                value={detailedClosingCosts.debtPlacementFeeBasisPoints}
+                                onChange={(e) => handleDetailedCostChange("debtPlacementFeeBasisPoints", e.target.value)}
+                                className="text-blue-600 font-medium w-20"
+                                style={{ backgroundColor: "#FFF2CC" }}
+                              />
+                              <span className="font-medium">${calculateDebtPlacementFee().toLocaleString()}</span>
+                            </div>
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          {/* Additional lender charges */}
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Interest Rate Cap</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.interestRateCap).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("interestRateCap", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Out of Pocket Expenses</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.outOfPocketExpenses).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("outOfPocketExpenses", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Credit Searches</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.creditSearches).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("creditSearches", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Insurance Consultant</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.insuranceConsultant).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("insuranceConsultant", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Processing Fee</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.processingFee).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("processingFee", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Appraisal</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.appraisal).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("appraisal", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Interest Rate Hedge</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.interestRateHedge).toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("interestRateHedge", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Third Party Reports */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Third Party Reports</div>
+                          
+                          {Array.from({ length: 5 }, (_, i) => {
+                            const reportKey = `thirdPartyReport${i + 1}` as keyof DetailedClosingCosts;
+                            const report = detailedClosingCosts[reportKey] as { description: string; amount: string };
+                            return (
+                              <div key={i} className="grid grid-cols-3 gap-4 items-center">
+                                <Input
+                                  value={report.description}
+                                  onChange={(e) => handleDetailedCostObjectChange(`thirdPartyReport${i + 1}`, "description", e.target.value)}
+                                  className="text-blue-600 font-medium"
+                                  style={{ backgroundColor: "#FFF2CC" }}
+                                  placeholder="Description"
+                                />
+                                <Input
+                                  value={`$${parseInt(report.amount).toLocaleString()}`}
+                                  onChange={(e) => handleDetailedCostObjectChange(`thirdPartyReport${i + 1}`, "amount", e.target.value.replace(/[^0-9]/g, ""))}
+                                  className="text-blue-600 font-medium"
+                                />
+                                <Input placeholder="(comments)" className="text-xs" />
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Travel and Other Charges */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Travel and Other Charges</div>
+                          
+                          {Array.from({ length: 2 }, (_, i) => {
+                            const chargeKey = `travelCharge${i + 1}` as keyof DetailedClosingCosts;
+                            const charge = detailedClosingCosts[chargeKey] as { description: string; amount: string };
+                            return (
+                              <div key={i} className="grid grid-cols-3 gap-4 items-center">
+                                <Input
+                                  value={charge.description}
+                                  onChange={(e) => handleDetailedCostObjectChange(`travelCharge${i + 1}`, "description", e.target.value)}
+                                  className="text-blue-600 font-medium"
+                                  style={{ backgroundColor: "#FFF2CC" }}
+                                  placeholder="Description"
+                                />
+                                <Input
+                                  value={`$${parseInt(charge.amount).toLocaleString()}`}
+                                  onChange={(e) => handleDetailedCostObjectChange(`travelCharge${i + 1}`, "amount", e.target.value.replace(/[^0-9]/g, ""))}
+                                  className="text-blue-600 font-medium"
+                                />
+                                <Input placeholder="(comments)" className="text-xs" />
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        <div className="text-center font-semibold mt-6">
+                          <span className="bg-black text-white px-4 py-2">TOTAL CLOSING COSTS: $1,151,500</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>
