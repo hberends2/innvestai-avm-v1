@@ -398,8 +398,8 @@ const Valuation: React.FC = () => {
                   {/* Right 2/3 - Detailed Closing Costs */}
                   {closingCostsMethod === "Detail" && (
                     <div className="col-span-2">
-                      <div className="border border-red-500 p-4 rounded-lg">
-                        <h3 className="text-lg font-semibold mb-4 text-center">Detailed Closing Costs</h3>
+                      <div className="border border-red-500 p-4 rounded-lg h-96 overflow-y-auto">
+                        <h3 className="text-lg font-semibold mb-4 text-center sticky top-0 bg-white z-10">Detailed Closing Costs</h3>
                         
                         <div className="grid grid-cols-3 gap-4 mb-4 font-semibold text-sm">
                           <div>Closing Costs</div>
