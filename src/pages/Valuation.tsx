@@ -68,15 +68,17 @@ const Valuation: React.FC = () => {
     recordingFees: string;
     transferTax: string;
     mortgageTax: string;
-    other: string;
+    transferTaxOther: string;
     applicationFee: string;
     buyerCounsel: string;
     equityPlacementFee: string;
     acquisitionFee: string;
     travelCharge1: { description: string; amount: string };
     travelCharge2: { description: string; amount: string };
+    travelCharge3: { description: string; amount: string };
     workingCapital: string;
     excessCashCapital: string;
+    excessCashMonths: string;
     contingency: string;
     yearOneTaxReserve: string;
     yearOneInsuranceReserve: string;
@@ -125,7 +127,7 @@ const Valuation: React.FC = () => {
     // Transfer Taxes
     transferTax: "0",
     mortgageTax: "0",
-    other: "0",
+    transferTaxOther: "0",
     
     // Franchise Charges
     applicationFee: "75000",
@@ -140,10 +142,12 @@ const Valuation: React.FC = () => {
     // Travel and Other Charges
     travelCharge1: { description: "Description", amount: "5000" },
     travelCharge2: { description: "Description", amount: "5000" },
+    travelCharge3: { description: "Description", amount: "0" },
     
     // Working Capital
     workingCapital: "125000",
     excessCashCapital: "0",
+    excessCashMonths: "0",
     
     // Contingency
     contingency: "75000",
@@ -564,11 +568,246 @@ const Valuation: React.FC = () => {
                           })}
                         </div>
 
+                        {/* Lender Reserves */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Lender Reserves</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Interest Expense</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.interestExpense || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("interestExpense", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Tax Impound</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.taxImpound || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("taxImpound", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Insurance Impound</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.insuranceImpound || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("insuranceImpound", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Insurance Premium</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.insurancePremium || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("insurancePremium", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">FF&E Reserve</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.ffeReserve || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("ffeReserve", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">ADA Reserve</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.adaReserve || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("adaReserve", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Immediate Repair Reserve</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.immediateRepairReserve || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("immediateRepairReserve", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Provisions */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Provisions</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">General Ledger, Advance Deps, Other</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.generalLedger || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("generalLedger", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Real Estate Taxes</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.realEstateTaxes || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("realEstateTaxes", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Title Charges */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Title Charges</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Title Searches</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.titleSearches || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("titleSearches", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Title Premium</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.titlePremium || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("titlePremium", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Escrow</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.escrow || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("escrow", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Recording Fees</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.recordingFees || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("recordingFees", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Transfer Taxes */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Transfer Taxes</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Transfer Tax</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.transferTax || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("transferTax", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Mortgage Tax</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.mortgageTax || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("mortgageTax", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Other</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.transferTaxOther || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("transferTaxOther", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Franchise Charges */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Franchise Charges</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Application Fee</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.applicationFee || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("applicationFee", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Legal Charges */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Legal Charges</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Buyer Counsel</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.buyerCounsel || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("buyerCounsel", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Acquisition Fees */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Acquisition Fees</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Equity Placement Fee</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.equityPlacementFee || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("equityPlacementFee", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Acquisition Fee</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.acquisitionFee || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("acquisitionFee", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
                         {/* Travel and Other Charges */}
                         <div className="space-y-2 mb-6">
                           <div className="font-semibold text-sm bg-gray-100 p-2">Travel and Other Charges</div>
                           
-                          {Array.from({ length: 2 }, (_, i) => {
+                          {Array.from({ length: 3 }, (_, i) => {
                             const chargeKey = `travelCharge${i + 1}` as keyof DetailedClosingCosts;
                             const charge = detailedClosingCosts[chargeKey] as { description: string; amount: string };
                             return (
@@ -589,6 +828,79 @@ const Valuation: React.FC = () => {
                               </div>
                             );
                           })}
+                        </div>
+
+                        {/* Working Capital */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Working Capital</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Working Capital</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.workingCapital || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("workingCapital", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Excess Cash Capital for Seasonal Properties</div>
+                            <div className="flex items-center gap-2">
+                              <Input
+                                value={`$${parseInt(detailedClosingCosts.excessCashCapital || "0").toLocaleString()}`}
+                                onChange={(e) => handleDetailedCostChange("excessCashCapital", e.target.value.replace(/[^0-9]/g, ""))}
+                                className="text-blue-600 font-medium"
+                              />
+                              <Input
+                                value={detailedClosingCosts.excessCashMonths || "0"}
+                                onChange={(e) => handleDetailedCostChange("excessCashMonths", e.target.value)}
+                                className="text-blue-600 font-medium w-20"
+                                placeholder="Months"
+                              />
+                            </div>
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Contingency */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Contingency</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Contingency</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.contingency || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("contingency", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+                        </div>
+
+                        {/* Lender Reserve Estimates */}
+                        <div className="space-y-2 mb-6">
+                          <div className="font-semibold text-sm bg-gray-100 p-2">Lender Reserve Estimates</div>
+                          
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Year One Tax Reserve</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.yearOneTaxReserve || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("yearOneTaxReserve", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
+
+                          <div className="grid grid-cols-3 gap-4 items-center">
+                            <div className="text-sm">Year One Insurance Reserve</div>
+                            <Input
+                              value={`$${parseInt(detailedClosingCosts.yearOneInsuranceReserve || "0").toLocaleString()}`}
+                              onChange={(e) => handleDetailedCostChange("yearOneInsuranceReserve", e.target.value.replace(/[^0-9]/g, ""))}
+                              className="text-blue-600 font-medium"
+                            />
+                            <Input placeholder="(comments)" className="text-xs" />
+                          </div>
                         </div>
 
                         <div className="text-center font-semibold mt-6">
