@@ -160,6 +160,9 @@ const Valuation: React.FC = () => {
   // Sample loan amount for calculations
   const loanAmount = 36075000;
 
+  // Purchase Price input
+  const [purchasePrice, setPurchasePrice] = useState("55500000");
+  
   // Exit inputs
   const [exitCapRate, setExitCapRate] = useState("7.0");
   const [salesExpense, setSalesExpense] = useState("3.0");
@@ -198,6 +201,14 @@ const Valuation: React.FC = () => {
   const calculateDebtPlacementFee = () => {
     const basisPoints = parseFloat(detailedClosingCosts.debtPlacementFeeBasisPoints) || 0;
     return loanAmount * (basisPoints / 10000);
+  };
+
+  // Helper function for Purchase Price calculation
+  const calculatePurchasePriceFromCapRate = () => {
+    // Sample First Year Forecast NOI - this should be connected to actual revenue data
+    const firstYearNOI = 9658088; // Sample value
+    const capRateValue = parseFloat(capRate) || 6.0;
+    return firstYearNOI / (capRateValue / 100);
   };
 
   const handleDetailedCostChange = (field: string, value: string) => {
@@ -949,8 +960,16 @@ const Valuation: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Acquisition Metrics</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
+                      <span className="mr-4">Purchase Price ({parseFloat(capRate).toFixed(1)}% cap)</span>
+                      <span className="font-medium">{formatCurrency(calculatePurchasePriceFromCapRate())}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
                       <span className="mr-4">Purchase Price</span>
-                      <span className="font-medium">$ 55,500,000</span>
+                      <Input
+                        value={formatCurrencyDisplay(purchasePrice)}
+                        onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
+                        className="text-blue-600 font-medium text-right w-32"
+                      />
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Lenders Fees</span>
