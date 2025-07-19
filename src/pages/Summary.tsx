@@ -392,7 +392,7 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6">Management</TableCell>
+                    <TableCell className="pl-6">Management Fees</TableCell>
                     {nonOperatingExpenses.management.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
