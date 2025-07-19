@@ -489,13 +489,13 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Debt Service</TableCell>
+                    <TableCell className="pl-6">Debt Service</TableCell>
                     {debt.debtService.map((value, index) => (
                       <TableCell key={index} className="text-center">{index > 0 && index < 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Loan Repayment</TableCell>
+                    <TableCell className="pl-6">Loan Repayment</TableCell>
                     {debt.loanRepayment.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
@@ -526,13 +526,13 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell>Free and Clear Return - 7.35% Ave</TableCell>
                     {returnMetrics.unleveredIrr.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Cash on Cash - 3.19% Ave</TableCell>
+                    <TableCell className="pl-6">Cash on Cash - 3.19% Ave</TableCell>
                     {returnMetrics.cashOnCash.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -544,15 +544,15 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>DSCR - 0.98x Min</TableCell>
+                    <TableCell className="pl-6">DSCR - 0.98x Min</TableCell>
                     {returnMetrics.dscr.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? `${value.toFixed(2)}x` : ""}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? `${value.toFixed(2)}x` : "")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Loan to Value - 51.55% Max</TableCell>
-                    {returnMetrics.loanToValue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatPercent(value) : ""}</TableCell>
+                    <TableCell className="pl-6">Debt Yield - 11.55% Min</TableCell>
+                    {[0.1155, 0.1387, 0.1638, 0.1752, 0.1803].map((value, index) => (
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
                 </TableBody>
