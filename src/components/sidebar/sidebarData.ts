@@ -97,7 +97,7 @@ export const mainNavCategories: CategoryItem[] = [
   {
     id: "summary",
     name: "Summary",
-    path: "/under-construction"
+    path: "/summary"
   }
   // Department & Item Setup removed from sidebar
 ];
