@@ -483,7 +483,7 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Loan Disbursement net Fees</TableCell>
+                    <TableCell className="pl-6">Loan Disbursement net Fees</TableCell>
                     {debt.loanDisbursement.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
@@ -524,7 +524,7 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell>Free and Clear Return - 7.35% Ave</TableCell>
+                    <TableCell className="pl-6">Free and Clear Return - 7.35% Ave</TableCell>
                     {returnMetrics.unleveredIrr.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
                     ))}
