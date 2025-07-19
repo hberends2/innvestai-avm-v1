@@ -219,7 +219,7 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6 italic">Total Other Revenue</TableCell>
                     {departmentalRevenues.otherIncome.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
@@ -272,7 +272,7 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6 italic">Total Other Expense</TableCell>
                     {departmentalExpenses.otherExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
