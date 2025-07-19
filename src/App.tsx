@@ -12,6 +12,7 @@ import SubjectOccupancy from "./pages/SubjectOccupancy";
 import UnderConstruction from "./pages/UnderConstruction";
 import OperatingStatistics from "./pages/OperatingStatistics";
 import TransactionSummary from "./pages/TransactionSummary";
+import Summary from "./pages/Summary";
 import Valuation from "./pages/Valuation";
 import Documents from "./pages/Documents";
 import NotFound from "./pages/NotFound";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/subject-occupancy" element={<SubjectOccupancy />} />
           <Route path="/operating-statistics" element={<OperatingStatistics />} />
           <Route path="/transaction-summary" element={<TransactionSummary />} />
+          <Route path="/summary" element={<Summary />} />
           <Route path="/valuation" element={<Valuation />} />
           <Route path="/documents" element={<Documents />} />
           <Route path="/under-construction" element={<UnderConstruction />} />
