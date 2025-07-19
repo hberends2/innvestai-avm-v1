@@ -90,6 +90,7 @@ const Summary: React.FC = () => {
 
   const nonOperatingExpenses = {
     management: getSampleData(364146, 0.04),
+    realEstateTaxes: getSampleData(0, 0),
     insurance: getSampleData(0, 0),
     totalNonOperatingExpense: getSampleData(1849708, 0.04)
   };
@@ -153,25 +154,25 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Purchase Price</TableCell>
                     {acquisitionCosts.purchasePrice.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Transfer F&F / Major Capital Improvement Reserve</TableCell>
                     {acquisitionCosts.transferFip.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Closing Costs</TableCell>
                     {acquisitionCosts.closingCosts.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Acquisition Costs</TableCell>
                     {acquisitionCosts.total.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
 
@@ -188,43 +189,43 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Rooms Revenue</TableCell>
                     {departmentalRevenues.roomsRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Revenue</TableCell>
                     {departmentalRevenues.otherRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Food & Beverage</TableCell>
                     {departmentalRevenues.foodBeverage.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Operated Departments</TableCell>
                     {departmentalRevenues.otherOperatedDepartments.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Miscellaneous</TableCell>
                     {departmentalRevenues.miscellaneous.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Income</TableCell>
                     {departmentalRevenues.otherIncome.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Revenue</TableCell>
                     {departmentalRevenues.totalRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -241,43 +242,43 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Rooms Expense</TableCell>
                     {departmentalExpenses.roomsExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Expenses</TableCell>
                     {departmentalExpenses.otherExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Food & Beverage</TableCell>
                     {departmentalExpenses.foodBeverage.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Operated Departments</TableCell>
                     {departmentalExpenses.otherOperatedDepartments.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Miscellaneous</TableCell>
                     {departmentalExpenses.miscellaneous.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Expense</TableCell>
                     {departmentalExpenses.otherExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Departmental Expenses</TableCell>
                     {departmentalExpenses.totalDepartmentalExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -294,25 +295,25 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Rooms Profit</TableCell>
                     {departmentalProfit.roomsProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Food & Beverage Profit</TableCell>
                     {departmentalProfit.foodBeverageProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Other Operated Departments Profit</TableCell>
                     {departmentalProfit.otherOperatedDepartmentsProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Departmental Profit</TableCell>
                     {departmentalProfit.totalDepartmentalProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -329,37 +330,37 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Administrative & General</TableCell>
                     {undistributedExpenses.administrative.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Information Tech Services</TableCell>
                     {undistributedExpenses.informationTech.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Sales & Marketing</TableCell>
                     {undistributedExpenses.salesMarketing.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Property Operations & Maintenance</TableCell>
                     {undistributedExpenses.propertyOperations.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Utilities</TableCell>
                     {undistributedExpenses.utilities.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Undistributed Expenses</TableCell>
                     {undistributedExpenses.totalUndistributedExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -370,7 +371,7 @@ const Summary: React.FC = () => {
                   <TableRow className="font-bold bg-green-100">
                     <TableCell>Gross Operating Profit</TableCell>
                     {grossOperatingProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -387,19 +388,25 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell className="pl-6">Management</TableCell>
                     {nonOperatingExpenses.management.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                    ))}
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="pl-6">Real Estate Taxes</TableCell>
+                    {nonOperatingExpenses.realEstateTaxes.map((value, index) => (
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
                     <TableCell className="pl-6">Insurance</TableCell>
                     {nonOperatingExpenses.insurance.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Non-Operating Expense</TableCell>
                     {nonOperatingExpenses.totalNonOperatingExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -410,7 +417,7 @@ const Summary: React.FC = () => {
                   <TableRow className="font-bold bg-green-100">
                     <TableCell>EBITDA</TableCell>
                     {ebitda.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -418,7 +425,7 @@ const Summary: React.FC = () => {
                   <TableRow>
                     <TableCell>Reserve for Replacement</TableCell>
                     {reserveForReplacement.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -426,16 +433,16 @@ const Summary: React.FC = () => {
                   <TableRow className="font-bold bg-green-100">
                     <TableCell>NOI</TableCell>
                     {noi.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
                   {/* Spacer */}
                   <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Debt Section */}
+                  {/* Exit Section */}
                   <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Debt</TableCell>
+                    <TableCell className="font-bold">Exit</TableCell>
                     {years.map((_, index) => (
                       <TableCell key={index} className="text-center"></TableCell>
                     ))}
@@ -452,10 +459,21 @@ const Summary: React.FC = () => {
                       <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
-                  <TableRow>
+                  <TableRow className="font-bold bg-gray-100">
                     <TableCell>Sales Proceeds (Unlevered)</TableCell>
                     {debt.salesProceeds.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
+                    ))}
+                  </TableRow>
+
+                  {/* Spacer */}
+                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+
+                  {/* Debt Section */}
+                  <TableRow className="bg-blue-50">
+                    <TableCell className="font-bold">Debt</TableCell>
+                    {years.map((_, index) => (
+                      <TableCell key={index} className="text-center"></TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
@@ -476,16 +494,16 @@ const Summary: React.FC = () => {
                       <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
-                  <TableRow>
+                  <TableRow className="font-bold">
                     <TableCell>Unlevered Cash Flow</TableCell>
                     {debt.unleveredCashFlow.map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow className="font-bold">
                     <TableCell>Levered Cash Flow</TableCell>
                     {debt.leveredCashFlow.map((value, index) => (
-                      <TableCell key={index} className="text-center font-bold">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center font-bold">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
 
@@ -499,10 +517,10 @@ const Summary: React.FC = () => {
                       <TableCell key={index} className="text-center"></TableCell>
                     ))}
                   </TableRow>
-                  <TableRow className="border-b-2 border-black">
-                    <TableCell className="font-semibold">Free and Clear Return - 7.35% Ave</TableCell>
+                  <TableRow>
+                    <TableCell>Free and Clear Return - 7.35% Ave</TableCell>
                     {returnMetrics.unleveredIrr.map((value, index) => (
-                      <TableCell key={index} className="text-center font-semibold border-b-2 border-black">{formatPercent(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
@@ -511,10 +529,12 @@ const Summary: React.FC = () => {
                       <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
-                  <TableRow>
-                    <TableCell>Equity Multiple</TableCell>
-                    {returnMetrics.equityMultiple.map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? `${value.toFixed(2)}x` : ""}</TableCell>
+
+                  {/* Risk Metrics Section */}
+                  <TableRow className="bg-blue-50">
+                    <TableCell className="font-bold">Risk Metrics</TableCell>
+                    {years.map((_, index) => (
+                      <TableCell key={index} className="text-center"></TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
