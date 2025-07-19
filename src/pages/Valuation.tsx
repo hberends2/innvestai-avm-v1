@@ -366,7 +366,7 @@ const Valuation: React.FC = () => {
                       <Label>Closing Costs</Label>
                       <div className="flex items-center gap-2">
                         <Select value={closingCostsMethod} onValueChange={setClosingCostsMethod}>
-                          <SelectTrigger className="w-24">
+                          <SelectTrigger className="w-40">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
