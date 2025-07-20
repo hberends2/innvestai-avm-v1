@@ -187,11 +187,13 @@ const TabbedSummaryWithExpenseCalculations: React.FC<any> = (props) => {
   const { calculateTotalExpense, calculateGrossOperatingProfit } = useExpenseCalculations();
   
   return (
-    <TabbedSummary
-      {...props}
-      calculateTotalExpense={calculateTotalExpense}
-      calculateGrossOperatingProfit={calculateGrossOperatingProfit}
-    />
+    <div className="sticky top-0 z-10 bg-gray-50 pb-0 max-h-96 overflow-hidden">
+      <TabbedSummary
+        {...props}
+        calculateTotalExpense={calculateTotalExpense}
+        calculateGrossOperatingProfit={calculateGrossOperatingProfit}
+      />
+    </div>
   );
 };
 
