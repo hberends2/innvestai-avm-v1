@@ -30,7 +30,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   console.log('Key metrics labels:', keyMetrics.map(m => m.label));
 
   return (
-    <div className="mb-6 h-[220px]">
+    <div className="mb-6 h-[250px]">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
         <TabsList className="mb-0">
           <TabsTrigger value="keyMetrics">Key Metrics</TabsTrigger>
