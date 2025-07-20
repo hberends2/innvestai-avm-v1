@@ -4,6 +4,11 @@ import { CategoryItem } from "./SidebarCategory";
 // Top-level categories for main navigation (reordered to move Summary below Reports)
 export const mainNavCategories: CategoryItem[] = [
   {
+    id: "pipeline",
+    name: "Pipeline",
+    path: "/pipeline"
+  },
+  {
     id: "propertyDetails",
     name: "Property Details",
     path: "/property-details"
