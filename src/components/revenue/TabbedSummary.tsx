@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { ScrollArea } from "../ui/scroll-area";
 import SummaryTable from "./TabbedSummary/SummaryTable";
 import { createOccupancyMetrics, createRevenueMetrics, createExpenseMetrics, createKeyMetrics, createSubcategoryMetrics, createExpenseSubcategoryMetrics, createUndistributedSubcategoryMetrics } from "./TabbedSummary/metrics";
 import { TabbedSummaryProps } from "./TabbedSummary/types";
@@ -29,8 +30,8 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   console.log('Key metrics labels:', keyMetrics.map(m => m.label));
 
   return (
-    <div className="mb-6">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+    <div className="mb-6 h-[400px]">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full">
         <TabsList className="mb-0">
           <TabsTrigger value="keyMetrics">Key Metrics</TabsTrigger>
           <TabsTrigger value="occupancy">Occupancy</TabsTrigger>
@@ -38,47 +39,53 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
           <TabsTrigger value="expense">Expense</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="keyMetrics" className="mt-0">
-          <SummaryTable
-            metrics={keyMetrics}
-            historicalYears={historicalYears}
-            forecastYears={forecastYears}
-            activeTab={activeTab}
-            isOtherOperatedExpanded={isOtherOperatedExpanded}
-            isUndistributedExpanded={isUndistributedExpanded}
-            subcategoryMetrics={subcategoryMetrics}
-            undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
-          />
+        <TabsContent value="keyMetrics" className="mt-0 h-[calc(100%-40px)]">
+          <div className="bg-white h-full border border-gray-200 rounded">
+            <SummaryTable
+              metrics={keyMetrics}
+              historicalYears={historicalYears}
+              forecastYears={forecastYears}
+              activeTab={activeTab}
+              isOtherOperatedExpanded={isOtherOperatedExpanded}
+              isUndistributedExpanded={isUndistributedExpanded}
+              subcategoryMetrics={subcategoryMetrics}
+              undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+            />
+          </div>
         </TabsContent>
         
-        <TabsContent value="occupancy" className="mt-0">
-          <SummaryTable
-            metrics={occupancyMetrics}
-            historicalYears={historicalYears}
-            forecastYears={forecastYears}
-            activeTab={activeTab}
-            isOtherOperatedExpanded={isOtherOperatedExpanded}
-            isUndistributedExpanded={isUndistributedExpanded}
-            subcategoryMetrics={subcategoryMetrics}
-            undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
-          />
+        <TabsContent value="occupancy" className="mt-0 h-[calc(100%-40px)]">
+          <div className="bg-white h-full border border-gray-200 rounded">
+            <SummaryTable
+              metrics={occupancyMetrics}
+              historicalYears={historicalYears}
+              forecastYears={forecastYears}
+              activeTab={activeTab}
+              isOtherOperatedExpanded={isOtherOperatedExpanded}
+              isUndistributedExpanded={isUndistributedExpanded}
+              subcategoryMetrics={subcategoryMetrics}
+              undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+            />
+          </div>
         </TabsContent>
         
-        <TabsContent value="revenue" className="mt-0">
-          <SummaryTable
-            metrics={revenueMetrics}
-            historicalYears={historicalYears}
-            forecastYears={forecastYears}
-            activeTab={activeTab}
-            isOtherOperatedExpanded={isOtherOperatedExpanded}
-            isUndistributedExpanded={isUndistributedExpanded}
-            subcategoryMetrics={subcategoryMetrics}
-            undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
-          />
+        <TabsContent value="revenue" className="mt-0 h-[calc(100%-40px)]">
+          <ScrollArea className="h-full border border-gray-200 rounded bg-white">
+            <SummaryTable
+              metrics={revenueMetrics}
+              historicalYears={historicalYears}
+              forecastYears={forecastYears}
+              activeTab={activeTab}
+              isOtherOperatedExpanded={isOtherOperatedExpanded}
+              isUndistributedExpanded={isUndistributedExpanded}
+              subcategoryMetrics={subcategoryMetrics}
+              undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+            />
+          </ScrollArea>
         </TabsContent>
         
-        <TabsContent value="expense" className="mt-0">
-          <div className="h-[60vh] overflow-y-auto border border-gray-200 rounded bg-white">
+        <TabsContent value="expense" className="mt-0 h-[calc(100%-40px)]">
+          <ScrollArea className="h-full border border-gray-200 rounded bg-white">
             <SummaryTable
               metrics={expenseMetrics}
               historicalYears={historicalYears}
@@ -89,7 +96,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
               subcategoryMetrics={expenseSubcategoryMetrics}
               undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
             />
-          </div>
+          </ScrollArea>
         </TabsContent>
       </Tabs>
     </div>

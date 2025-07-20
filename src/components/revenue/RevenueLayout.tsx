@@ -1,3 +1,4 @@
+
 import React from "react";
 import { SidebarProvider, SidebarTrigger } from "../ui/sidebar";
 import RevenueTable from "./RevenueTable";
@@ -187,13 +188,11 @@ const TabbedSummaryWithExpenseCalculations: React.FC<any> = (props) => {
   const { calculateTotalExpense, calculateGrossOperatingProfit } = useExpenseCalculations();
   
   return (
-    <div className="sticky top-0 z-10 bg-gray-50 pb-0 max-h-96 overflow-hidden">
-      <TabbedSummary
-        {...props}
-        calculateTotalExpense={calculateTotalExpense}
-        calculateGrossOperatingProfit={calculateGrossOperatingProfit}
-      />
-    </div>
+    <TabbedSummary
+      {...props}
+      calculateTotalExpense={calculateTotalExpense}
+      calculateGrossOperatingProfit={calculateGrossOperatingProfit}
+    />
   );
 };
 
