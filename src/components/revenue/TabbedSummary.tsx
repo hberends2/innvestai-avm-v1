@@ -78,7 +78,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
         </TabsContent>
         
         <TabsContent value="expense" className="mt-0">
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-[600px] overflow-y-auto">
             <SummaryTable
               metrics={expenseMetrics}
               historicalYears={historicalYears}
