@@ -107,7 +107,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border">
+    <div className="bg-white">
       <Table>
         <TableHeader className="sticky top-0 z-30 bg-white">
           {/* Period Headers - matching Valuation table structure exactly */}
