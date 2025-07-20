@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Filter, ArrowUpDown, GripVertical } from 'lucide-react';
+import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -29,6 +29,20 @@ interface PipelineItem {
   capRate: string;
 }
 
+interface Column {
+  key: string;
+  label: string;
+  sticky: boolean;
+  sortable: boolean;
+}
+
+type SortDirection = 'asc' | 'desc' | null;
+
+interface SortState {
+  column: string | null;
+  direction: SortDirection;
+}
+
 const Pipeline: React.FC = () => {
   const [pipelineData, setPipelineData] = useState<PipelineItem[]>([
     {
@@ -45,12 +59,12 @@ const Pipeline: React.FC = () => {
       management: 'Management',
       bidDueDate: '9/15/25',
       dueDiligenceDate: '8/1/25',
-      purchasePrice: '5,125%',
+      purchasePrice: '5,125,000',
       capRate: '5.125%'
     }
   ]);
 
-  const columns = [
+  const [columns, setColumns] = useState<Column[]>([
     { key: 'photo', label: 'Photo', sticky: true, sortable: false },
     { key: 'id', label: 'ID', sticky: true, sortable: true },
     { key: 'name', label: 'Name', sticky: true, sortable: true },
@@ -66,7 +80,11 @@ const Pipeline: React.FC = () => {
     { key: 'dueDiligenceDate', label: 'Due Diligence Date', sticky: false, sortable: true },
     { key: 'purchasePrice', label: 'Purchase Price', sticky: false, sortable: true },
     { key: 'capRate', label: 'Cap Rate', sticky: false, sortable: true },
-  ];
+  ]);
+
+  const [sortState, setSortState] = useState<SortState>({ column: null, direction: null });
+  const [draggedColumn, setDraggedColumn] = useState<number | null>(null);
+  const [dragOverColumn, setDragOverColumn] = useState<number | null>(null);
 
   const handleInputChange = (id: string, field: keyof PipelineItem, value: string) => {
     setPipelineData(prevData =>
@@ -98,6 +116,116 @@ const Pipeline: React.FC = () => {
     setPipelineData([...pipelineData, newItem]);
   };
 
+  const handleSort = (columnKey: string) => {
+    if (!columns.find(col => col.key === columnKey)?.sortable) return;
+
+    let newDirection: SortDirection = 'asc';
+    if (sortState.column === columnKey) {
+      if (sortState.direction === 'asc') newDirection = 'desc';
+      else if (sortState.direction === 'desc') newDirection = null;
+    }
+
+    setSortState({ column: columnKey, direction: newDirection });
+
+    if (newDirection === null) {
+      // Reset to original order
+      setPipelineData([...pipelineData]);
+      return;
+    }
+
+    const sortedData = [...pipelineData].sort((a, b) => {
+      const aVal = a[columnKey as keyof PipelineItem];
+      const bVal = b[columnKey as keyof PipelineItem];
+
+      // Handle numeric sorting for specific columns
+      if (columnKey === 'id' || columnKey === 'zip' || columnKey === 'keysRooms') {
+        const aNum = parseInt(aVal) || 0;
+        const bNum = parseInt(bVal) || 0;
+        return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
+      }
+
+      // Handle percentage sorting
+      if (columnKey === 'capRate') {
+        const aNum = parseFloat(aVal.replace('%', '')) || 0;
+        const bNum = parseFloat(bVal.replace('%', '')) || 0;
+        return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
+      }
+
+      // Handle currency sorting
+      if (columnKey === 'purchasePrice') {
+        const aNum = parseInt(aVal.replace(/[,$]/g, '')) || 0;
+        const bNum = parseInt(bVal.replace(/[,$]/g, '')) || 0;
+        return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
+      }
+
+      // Handle date sorting
+      if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate') {
+        const aDate = new Date(aVal);
+        const bDate = new Date(bVal);
+        return newDirection === 'asc' 
+          ? aDate.getTime() - bDate.getTime() 
+          : bDate.getTime() - aDate.getTime();
+      }
+
+      // Default string sorting
+      const result = aVal.localeCompare(bVal);
+      return newDirection === 'asc' ? result : -result;
+    });
+
+    setPipelineData(sortedData);
+  };
+
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    if (columns[index].sticky) {
+      e.preventDefault();
+      return;
+    }
+    setDraggedColumn(index);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent, index: number) => {
+    if (columns[index].sticky || draggedColumn === null) return;
+    e.preventDefault();
+    setDragOverColumn(index);
+  };
+
+  const handleDragLeave = () => {
+    setDragOverColumn(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedColumn === null || columns[dropIndex].sticky || draggedColumn === dropIndex) {
+      setDraggedColumn(null);
+      setDragOverColumn(null);
+      return;
+    }
+
+    const newColumns = [...columns];
+    const draggedItem = newColumns[draggedColumn];
+    newColumns.splice(draggedColumn, 1);
+    newColumns.splice(dropIndex, 0, draggedItem);
+
+    setColumns(newColumns);
+    setDraggedColumn(null);
+    setDragOverColumn(null);
+  };
+
+  const getSortIcon = (columnKey: string) => {
+    if (sortState.column !== columnKey) {
+      return <ArrowUpDown className="w-3 h-3 text-muted-foreground" />;
+    }
+    
+    if (sortState.direction === 'asc') {
+      return <ArrowUp className="w-3 h-3 text-primary" />;
+    } else if (sortState.direction === 'desc') {
+      return <ArrowDown className="w-3 h-3 text-primary" />;
+    }
+    
+    return <ArrowUpDown className="w-3 h-3 text-muted-foreground" />;
+  };
+
   return (
     <div className="p-6 h-screen flex flex-col">
       {/* Header with buttons */}
@@ -127,12 +255,19 @@ const Pipeline: React.FC = () => {
                 {columns.map((column, index) => (
                   <TableHead
                     key={column.key}
+                    draggable={!column.sticky}
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={(e) => handleDragOver(e, index)}
+                    onDragLeave={handleDragLeave}
+                    onDrop={(e) => handleDrop(e, index)}
                     className={`
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0
                       ${column.sticky ? 'sticky z-30 bg-muted/50' : ''}
                       ${index === 0 ? 'left-0' : ''}
                       ${index === 1 ? 'left-[80px]' : ''}
                       ${index === 2 ? 'left-[120px]' : ''}
+                      ${dragOverColumn === index ? 'bg-primary/10' : ''}
+                      ${!column.sticky ? 'cursor-move' : ''}
                       min-w-[80px]
                     `}
                   >
@@ -140,10 +275,15 @@ const Pipeline: React.FC = () => {
                       <span className="truncate">{column.label}</span>
                       <div className="flex items-center gap-1">
                         {column.sortable && (
-                          <ArrowUpDown className="w-3 h-3 text-muted-foreground" />
+                          <button
+                            onClick={() => handleSort(column.key)}
+                            className="hover:bg-muted/50 p-0.5 rounded"
+                          >
+                            {getSortIcon(column.key)}
+                          </button>
                         )}
                         {!column.sticky && (
-                          <GripVertical className="w-3 h-3 text-muted-foreground cursor-move" />
+                          <GripVertical className="w-3 h-3 text-muted-foreground" />
                         )}
                       </div>
                     </div>
