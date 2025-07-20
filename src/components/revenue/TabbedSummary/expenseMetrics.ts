@@ -31,19 +31,6 @@ export const createExpenseMetrics = (
 
   return [
     {
-      label: "Subject Property Occupancy",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatPercent(props.historicalData.occupancy[year] || 0);
-        } else {
-          const occupancyValue = props.occupancyForecastMethod === "Occupancy" 
-            ? parseFloat(props.occupancyForecast[year] || "0")
-            : props.calculateOccupancyFromYoY(year);
-          return formatPercent(occupancyValue);
-        }
-      })
-    },
-    {
       label: "Subject Property ADR",
       data: allYears.map(year => {
         if (historicalYears.includes(year)) {
