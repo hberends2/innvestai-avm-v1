@@ -107,12 +107,12 @@ const SummaryTable: React.FC<SummaryTableProps> = ({
   };
 
   return (
-    <div className="bg-white">
+    <div className="bg-white h-full">
       <Table>
-        <TableHeader className="sticky top-0 z-30 bg-white">
+        <TableHeader className="sticky top-0 z-50 bg-white shadow-sm">
           {/* Period Headers - matching Valuation table structure exactly */}
           <TableRow className="border-b-2 border-gray-300">
-            <TableHead className="w-48 px-2 bg-white sticky left-0 z-40"></TableHead>
+            <TableHead className="w-48 px-2 bg-white sticky left-0 z-50"></TableHead>
             <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm" colSpan={historicalYears.length}>
               Historical
             </TableHead>
@@ -122,7 +122,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({
           </TableRow>
           {/* Year Headers - matching Valuation table structure exactly */}
           <TableRow className="border-b border-gray-200">
-            <TableHead className="w-48 px-2 bg-white sticky left-0 z-40 font-semibold text-xs">
+            <TableHead className="w-48 px-2 bg-white sticky left-0 z-50 font-semibold text-xs">
               Metric
             </TableHead>
             {historicalYears.map(year => (
