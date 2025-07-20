@@ -78,16 +78,18 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
         </TabsContent>
         
         <TabsContent value="expense" className="mt-0">
-          <SummaryTable
-            metrics={expenseMetrics}
-            historicalYears={historicalYears}
-            forecastYears={forecastYears}
-            activeTab={activeTab}
-            isOtherOperatedExpanded={isOtherOperatedExpanded}
-            isUndistributedExpanded={isUndistributedExpanded}
-            subcategoryMetrics={expenseSubcategoryMetrics}
-            undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
-          />
+          <div className="max-h-96 overflow-y-auto">
+            <SummaryTable
+              metrics={expenseMetrics}
+              historicalYears={historicalYears}
+              forecastYears={forecastYears}
+              activeTab={activeTab}
+              isOtherOperatedExpanded={isOtherOperatedExpanded}
+              isUndistributedExpanded={isUndistributedExpanded}
+              subcategoryMetrics={expenseSubcategoryMetrics}
+              undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+            />
+          </div>
         </TabsContent>
       </Tabs>
     </div>
