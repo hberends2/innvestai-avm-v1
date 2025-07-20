@@ -65,50 +65,6 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[]):
   };
 
   const metrics: MetricRow[] = [
-    // Use existing occupancy data directly
-    {
-      label: "Subject Property Occupancy",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatPercent(historicalData.occupancy[year] || 0, 1);
-        } else {
-          const occupancyValue = occupancyForecastMethod === "Occupancy" 
-            ? parseFloat(occupancyForecast[year] || "0")
-            : calculateOccupancyFromYoY(year);
-          return formatPercent(occupancyValue, 1);
-        }
-      })
-    },
-    // Use existing ADR functions directly
-    {
-      label: "Subject Property ADR",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatCurrency(getHistoricalADR(year));
-        } else {
-          return formatCurrency(getForecastADR(year));
-        }
-      })
-    },
-    // Use existing RevPAR data and functions directly
-    {
-      label: "Subject Property RevPAR",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatCurrency(historicalData.revpar[year] || 0);
-        } else {
-          return formatCurrency(getForecastRevpar(year));
-        }
-      })
-    },
-    // Total Revenue - calculate from individual components
-    {
-      label: "Total Revenue",
-      data: allYears.map(year => {
-        const totalRevenue = calculateTotalRevenueForYear(year);
-        return formatCurrency(totalRevenue);
-      })
-    },
     // Gross Operating Profit - only use the prop function if available
     {
       label: "Gross Operating Profit",
@@ -121,9 +77,23 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[]):
         }
       })
     },
-    // GOP % of Revenue - new metric
+    // GOPPAR - Gross Operating Profit / Available Rooms
     {
-      label: "GOP % of Revenue",
+      label: "  GOPPAR",
+      data: allYears.map(year => {
+        if (calculateGrossOperatingProfit) {
+          const gop = calculateGrossOperatingProfit(year);
+          const availableRooms = getAvailableRooms(year);
+          const goppar = availableRooms > 0 ? gop / availableRooms : 0;
+          return formatCurrency(goppar);
+        } else {
+          return "N/A";
+        }
+      })
+    },
+    // GOP % of Revenue - new metric (indented)
+    {
+      label: "  GOP % of Revenue",
       data: allYears.map(year => {
         if (calculateGrossOperatingProfit) {
           const gop = calculateGrossOperatingProfit(year);
@@ -149,9 +119,9 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[]):
         }
       })
     },
-    // EBITDA % of Revenue - new metric
+    // EBITDA % of Revenue - new metric (indented)
     {
-      label: "EBITDA % of Revenue",
+      label: "  EBITDA % of Revenue",
       data: allYears.map(year => {
         if (calculateTotalExpense) {
           const totalRevenue = calculateTotalRevenueForYear(year);
