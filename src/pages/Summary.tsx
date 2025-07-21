@@ -139,7 +139,7 @@ const Summary: React.FC = () => {
                 <div className="flex border-b">
                   <div className="w-64 px-4 py-3 font-bold bg-gray-50 border-r">Summary</div>
                   {yearLabels.map((year, index) => (
-                    <div key={year} className="flex-1 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
+                    <div key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
                       <div className="font-semibold">{year}</div>
                       <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
                     </div>
