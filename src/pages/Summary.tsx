@@ -139,11 +139,13 @@ const Summary: React.FC = () => {
               <div className="bg-white rounded-lg shadow overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="sticky top-[200px] bg-gray-50 z-10 border-b">
-                      <TableHead className="w-64 px-4 py-3 font-bold bg-gray-50 border-r"></TableHead>
+                    <TableRow className="sticky top-[200px] bg-white z-10 border-b-2 border-gray-300 shadow-sm">
+                      <TableHead className="w-64 px-4 py-3 font-bold bg-white border-r border-gray-300">
+                        Summary
+                      </TableHead>
                       {yearLabels.map((year, index) => (
-                        <TableHead key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
-                          <div className="font-semibold">{year}</div>
+                        <TableHead key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-white border-r border-gray-300 last:border-r-0">
+                          <div className="font-semibold text-gray-900">{year}</div>
                           <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
                         </TableHead>
                       ))}
