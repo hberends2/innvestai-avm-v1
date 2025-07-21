@@ -133,22 +133,24 @@ const Summary: React.FC = () => {
 
             <div className="sticky top-[76px] bg-gray-50 z-20 px-6 pb-4">
               <KPICards />
+              
+              {/* Year Header Row - directly below KPI cards */}
+              <div className="bg-white rounded-t-lg shadow mt-4">
+                <div className="flex border-b">
+                  <div className="w-64 px-4 py-3 font-bold bg-gray-50 border-r">Summary</div>
+                  {yearLabels.map((year, index) => (
+                    <div key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
+                      <div className="font-semibold">{year}</div>
+                      <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <div className="px-6">
-              <div className="bg-white rounded-lg shadow overflow-x-auto">
+              <div className="bg-white rounded-b-lg shadow overflow-x-auto -mt-0">
                 <Table>
-                  <TableHeader className="sticky top-[140px] bg-white z-10 shadow-sm border-b">
-                    <TableRow>
-                      <TableHead className="w-64 font-bold bg-gray-50">Summary</TableHead>
-                      {yearLabels.map((year, index) => (
-                        <TableHead key={year} className="text-center font-bold min-w-28 bg-gray-50">
-                          <div className="font-semibold">{year}</div>
-                          <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  </TableHeader>
                 <TableBody>
                   {/* Total Acquisition Costs */}
                   <TableRow className="bg-blue-50">
