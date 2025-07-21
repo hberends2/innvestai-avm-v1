@@ -127,18 +127,18 @@ const Summary: React.FC = () => {
         
         <div className="flex-1 overflow-auto">
           <div className="w-full">
-            <div className="sticky top-0 bg-gray-50 z-30 py-6 px-6 border-b border-gray-200">
+            <div className="sticky top-0 bg-gray-50 z-30 py-6 px-6">
               <h1 className="text-2xl font-bold">Summary</h1>
             </div>
 
-            <div className="sticky top-[88px] bg-gray-50 z-20 px-6 py-4 border-b border-gray-200">
+            <div className="sticky top-[76px] bg-gray-50 z-20 px-6 pb-4">
               <KPICards />
             </div>
 
-            <div className="p-6">
+            <div className="px-6">
               <div className="bg-white rounded-lg shadow overflow-x-auto">
                 <Table>
-                  <TableHeader className="sticky top-[176px] bg-white z-10">
+                  <TableHeader className="sticky top-[156px] bg-white z-10 shadow-sm">
                     <TableRow>
                       <TableHead className="w-64 font-bold"></TableHead>
                       {yearLabels.map((year, index) => (
