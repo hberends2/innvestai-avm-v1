@@ -136,21 +136,24 @@ const Summary: React.FC = () => {
             </div>
 
             <div className="px-6">
-              <div className="bg-white rounded-lg shadow overflow-x-auto">
+              {/* Sticky Header Outside Table Container */}
+              <div className="sticky top-[200px] z-10 bg-white shadow-sm border-b-2 border-gray-300 rounded-t-lg">
+                <div className="flex">
+                  <div className="w-64 px-4 py-3 font-bold bg-white border-r border-gray-300 flex-shrink-0">
+                    Summary
+                  </div>
+                  {yearLabels.map((year, index) => (
+                    <div key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-white border-r border-gray-300 last:border-r-0 flex-shrink-0">
+                      <div className="font-semibold text-gray-900">{year}</div>
+                      <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Table Container with Overflow */}
+              <div className="bg-white shadow overflow-x-auto rounded-b-lg">
                 <Table>
-                  <TableHeader>
-                    <TableRow className="sticky top-[200px] bg-white z-10 border-b-2 border-gray-300 shadow-sm">
-                      <TableHead className="w-64 px-4 py-3 font-bold bg-white border-r border-gray-300">
-                        Summary
-                      </TableHead>
-                      {yearLabels.map((year, index) => (
-                        <TableHead key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-white border-r border-gray-300 last:border-r-0">
-                          <div className="font-semibold text-gray-900">{year}</div>
-                          <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
-                        </TableHead>
-                      ))}
-                    </TableRow>
-                  </TableHeader>
                   <TableBody>
                     {/* Total Acquisition Costs */}
                     <TableRow className="bg-blue-50">
