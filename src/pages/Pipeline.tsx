@@ -311,13 +311,14 @@ const Pipeline: React.FC = () => {
                     className={`
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
                       ${column.sticky ? 'sticky z-30 bg-muted' : ''}
-                      ${index === 0 ? 'left-0' : ''}
-                      ${index === 1 ? 'left-[80px]' : ''}
-                      ${index === 2 ? 'left-[120px]' : ''}
+                      ${index === 0 ? 'left-0 w-[80px]' : ''}
+                      ${index === 1 ? 'left-[80px] w-[80px]' : ''}
+                      ${index === 2 ? 'left-[180px] w-[180px]' : ''}
                       ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
                       ${draggedColumn === index ? 'opacity-50' : ''}
                       ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
-                      min-w-[80px] transition-all duration-150
+                      ${column.key === 'photo' ? 'w-[80px]' : column.key === 'id' ? 'w-[80px]' : column.key === 'name' ? 'w-[180px]' : column.key === 'city' ? 'w-[120px]' : column.key === 'state' ? 'w-[60px]' : column.key === 'zip' ? 'w-[80px]' : 'w-[120px]'} 
+                      transition-all duration-150
                     `}
                   >
                     <div className="flex items-center justify-between">
@@ -352,10 +353,10 @@ const Pipeline: React.FC = () => {
                       className={`
                         p-2 align-middle border-r border-border last:border-r-0
                         ${column.sticky ? 'sticky z-10 bg-background' : ''}
-                        ${index === 0 ? 'left-0' : ''}
-                        ${index === 1 ? 'left-[80px]' : ''}
-                        ${index === 2 ? 'left-[120px]' : ''}
-                        min-w-[80px]
+                        ${index === 0 ? 'left-0 w-[80px]' : ''}
+                        ${index === 1 ? 'left-[80px] w-[80px]' : ''}
+                        ${index === 2 ? 'left-[180px] w-[180px]' : ''}
+                        ${column.key === 'photo' ? 'w-[80px]' : column.key === 'id' ? 'w-[80px]' : column.key === 'name' ? 'w-[180px]' : column.key === 'city' ? 'w-[120px]' : column.key === 'state' ? 'w-[60px]' : column.key === 'zip' ? 'w-[80px]' : 'w-[120px]'}
                       `}
                     >
                       {column.key === 'photo' ? (
