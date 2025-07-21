@@ -125,13 +125,17 @@ const Summary: React.FC = () => {
       <div className="flex h-screen bg-gray-50">
         <AppSidebar onItemClick={handleSidebarItemClick} />
         
-        <div className="flex-1 p-6 overflow-auto">
-          <div className="w-full">
+        <div className="flex-1 overflow-auto">
+          {/* Sticky Header Section */}
+          <div className="sticky top-0 z-10 bg-gray-50 p-6 pb-4 border-b border-gray-200">
             <div className="mb-6">
               <h1 className="text-2xl font-bold">Summary</h1>
             </div>
-
             <KPICards />
+          </div>
+          
+          {/* Scrollable Content */}
+          <div className="p-6 pt-4">
 
             <div className="bg-white rounded-lg shadow overflow-x-auto">
               <Table>
