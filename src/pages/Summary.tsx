@@ -133,442 +133,440 @@ const Summary: React.FC = () => {
 
             <div className="sticky top-[76px] bg-gray-50 z-20 px-6 pb-4">
               <KPICards />
-              
-              {/* Year Header Row - directly below KPI cards */}
-              <div className="bg-white rounded-t-lg shadow mt-4">
-                <div className="flex border-b">
-                  <div className="w-64 px-4 py-3 font-bold bg-gray-50 border-r">Summary</div>
-                  {yearLabels.map((year, index) => (
-                    <div key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
-                      <div className="font-semibold">{year}</div>
-                      <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
 
             <div className="px-6">
-              <div className="bg-white rounded-b-lg shadow overflow-x-auto -mt-0">
+              <div className="bg-white rounded-lg shadow overflow-x-auto">
                 <Table>
-                <TableBody>
-                  {/* Total Acquisition Costs */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Total Acquisition Costs</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Purchase Price</TableCell>
-                    {acquisitionCosts.purchasePrice.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Transfer F&F / Major Capital Improvement Reserve</TableCell>
-                    {acquisitionCosts.transferFip.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Closing Costs</TableCell>
-                    {acquisitionCosts.closingCosts.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Acquisition Costs</TableCell>
-                    {acquisitionCosts.total.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
+                  <TableHeader>
+                    <TableRow className="sticky top-[200px] bg-gray-50 z-10 border-b">
+                      <TableHead className="w-64 px-4 py-3 font-bold bg-gray-50 border-r">Summary</TableHead>
+                      {yearLabels.map((year, index) => (
+                        <TableHead key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
+                          <div className="font-semibold">{year}</div>
+                          <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {/* Total Acquisition Costs */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Total Acquisition Costs</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Purchase Price</TableCell>
+                      {acquisitionCosts.purchasePrice.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Transfer F&F / Major Capital Improvement Reserve</TableCell>
+                      {acquisitionCosts.transferFip.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Closing Costs</TableCell>
+                      {acquisitionCosts.closingCosts.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Acquisition Costs</TableCell>
+                      {acquisitionCosts.total.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Departmental Revenues */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Departmental Revenues</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Rooms Revenue</TableCell>
-                    {departmentalRevenues.roomsRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6 italic underline">Other Revenue</TableCell>
-                    {departmentalRevenues.otherRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Food & Beverage</TableCell>
-                    {departmentalRevenues.foodBeverage.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Other Operated Departments</TableCell>
-                    {departmentalRevenues.otherOperatedDepartments.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Miscellaneous</TableCell>
-                    {departmentalRevenues.miscellaneous.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8 italic">Total Other Revenue</TableCell>
-                    {departmentalRevenues.otherIncome.map((value, index) => (
-                      <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Revenue</TableCell>
-                    {departmentalRevenues.totalRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Departmental Revenues */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Departmental Revenues</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Rooms Revenue</TableCell>
+                      {departmentalRevenues.roomsRevenue.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6 italic underline">Other Revenue</TableCell>
+                      {departmentalRevenues.otherRevenue.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Food & Beverage</TableCell>
+                      {departmentalRevenues.foodBeverage.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Other Operated Departments</TableCell>
+                      {departmentalRevenues.otherOperatedDepartments.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Miscellaneous</TableCell>
+                      {departmentalRevenues.miscellaneous.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8 italic">Total Other Revenue</TableCell>
+                      {departmentalRevenues.otherIncome.map((value, index) => (
+                        <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Revenue</TableCell>
+                      {departmentalRevenues.totalRevenue.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Departmental Expenses */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Departmental Expenses</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Rooms Expense</TableCell>
-                    {departmentalExpenses.roomsExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6 italic underline">Other Expenses</TableCell>
-                    {departmentalExpenses.otherExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Food & Beverage</TableCell>
-                    {departmentalExpenses.foodBeverage.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Other Operated Departments</TableCell>
-                    {departmentalExpenses.otherOperatedDepartments.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Miscellaneous</TableCell>
-                    {departmentalExpenses.miscellaneous.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8 italic">Total Other Expense</TableCell>
-                    {departmentalExpenses.otherExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Departmental Expenses</TableCell>
-                    {departmentalExpenses.totalDepartmentalExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Departmental Expenses */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Departmental Expenses</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Rooms Expense</TableCell>
+                      {departmentalExpenses.roomsExpense.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6 italic underline">Other Expenses</TableCell>
+                      {departmentalExpenses.otherExpenses.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Food & Beverage</TableCell>
+                      {departmentalExpenses.foodBeverage.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Other Operated Departments</TableCell>
+                      {departmentalExpenses.otherOperatedDepartments.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8">Miscellaneous</TableCell>
+                      {departmentalExpenses.miscellaneous.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-8 italic">Total Other Expense</TableCell>
+                      {departmentalExpenses.otherExpense.map((value, index) => (
+                        <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Departmental Expenses</TableCell>
+                      {departmentalExpenses.totalDepartmentalExpenses.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Departmental Profit */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Departmental Profit</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Rooms Profit</TableCell>
-                    {departmentalProfit.roomsProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Food & Beverage Profit</TableCell>
-                    {departmentalProfit.foodBeverageProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Other Operated Departments Profit</TableCell>
-                    {departmentalProfit.otherOperatedDepartmentsProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Miscellaneous Profit</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : "-"}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Departmental Profit</TableCell>
-                    {departmentalProfit.totalDepartmentalProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Departmental Profit */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Departmental Profit</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Rooms Profit</TableCell>
+                      {departmentalProfit.roomsProfit.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Food & Beverage Profit</TableCell>
+                      {departmentalProfit.foodBeverageProfit.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Other Operated Departments Profit</TableCell>
+                      {departmentalProfit.otherOperatedDepartmentsProfit.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Miscellaneous Profit</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : "-"}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Departmental Profit</TableCell>
+                      {departmentalProfit.totalDepartmentalProfit.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Undistributed Expenses */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Undistributed Expenses</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Administrative & General</TableCell>
-                    {undistributedExpenses.administrative.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Information Tech Services</TableCell>
-                    {undistributedExpenses.informationTech.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Sales & Marketing</TableCell>
-                    {undistributedExpenses.salesMarketing.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Property Operations & Maintenance</TableCell>
-                    {undistributedExpenses.propertyOperations.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Utilities</TableCell>
-                    {undistributedExpenses.utilities.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Undistributed Expenses</TableCell>
-                    {undistributedExpenses.totalUndistributedExpenses.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Undistributed Expenses */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Undistributed Expenses</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Administrative & General</TableCell>
+                      {undistributedExpenses.administrative.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Information Tech Services</TableCell>
+                      {undistributedExpenses.informationTech.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Sales & Marketing</TableCell>
+                      {undistributedExpenses.salesMarketing.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Property Operations & Maintenance</TableCell>
+                      {undistributedExpenses.propertyOperations.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Utilities</TableCell>
+                      {undistributedExpenses.utilities.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Undistributed Expenses</TableCell>
+                      {undistributedExpenses.totalUndistributedExpenses.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Gross Operating Profit */}
-                  <TableRow className="font-bold bg-green-100">
-                    <TableCell>Gross Operating Profit</TableCell>
-                    {grossOperatingProfit.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Gross Operating Profit */}
+                    <TableRow className="font-bold bg-green-100">
+                      <TableCell>Gross Operating Profit</TableCell>
+                      {grossOperatingProfit.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Non-Operating Expenses */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Non-Operating Expenses</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Management Fees</TableCell>
-                    {nonOperatingExpenses.management.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Real Estate Taxes</TableCell>
-                    {nonOperatingExpenses.realEstateTaxes.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Insurance</TableCell>
-                    {nonOperatingExpenses.insurance.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Total Non-Operating Expense</TableCell>
-                    {nonOperatingExpenses.totalNonOperatingExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Non-Operating Expenses */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Non-Operating Expenses</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Management Fees</TableCell>
+                      {nonOperatingExpenses.management.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Real Estate Taxes</TableCell>
+                      {nonOperatingExpenses.realEstateTaxes.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Insurance</TableCell>
+                      {nonOperatingExpenses.insurance.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Total Non-Operating Expense</TableCell>
+                      {nonOperatingExpenses.totalNonOperatingExpense.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* EBITDA */}
-                  <TableRow className="font-bold bg-green-100">
-                    <TableCell>EBITDA</TableCell>
-                    {ebitda.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* EBITDA */}
+                    <TableRow className="font-bold bg-green-100">
+                      <TableCell>EBITDA</TableCell>
+                      {ebitda.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Reserve for Replacement */}
-                  <TableRow>
-                    <TableCell>Reserve for Replacement</TableCell>
-                    {reserveForReplacement.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Reserve for Replacement */}
+                    <TableRow>
+                      <TableCell>Reserve for Replacement</TableCell>
+                      {reserveForReplacement.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* NOI */}
-                  <TableRow className="font-bold bg-green-100">
-                    <TableCell>NOI</TableCell>
-                    {noi.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* NOI */}
+                    <TableRow className="font-bold bg-green-100">
+                      <TableCell>NOI</TableCell>
+                      {noi.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Exit Section */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Exit</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Sales Price</TableCell>
-                    {debt.salesPrice.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Sales Expense</TableCell>
-                    {debt.salesExpense.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold bg-gray-100">
-                    <TableCell>Sales Proceeds (Unlevered)</TableCell>
-                    {debt.salesProceeds.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Exit Section */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Exit</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Sales Price</TableCell>
+                      {debt.salesPrice.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>Sales Expense</TableCell>
+                      {debt.salesExpense.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold bg-gray-100">
+                      <TableCell>Sales Proceeds (Unlevered)</TableCell>
+                      {debt.salesProceeds.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Debt Section */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Debt</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Loan Disbursement net Fees</TableCell>
-                    {debt.loanDisbursement.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Debt Service</TableCell>
-                    {debt.debtService.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index > 0 && index < 5 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Loan Repayment</TableCell>
-                    {debt.loanRepayment.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold">
-                    <TableCell>Unlevered Cash Flow</TableCell>
-                    {debt.unleveredCashFlow.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow className="font-bold">
-                    <TableCell>Levered Cash Flow</TableCell>
-                    {debt.leveredCashFlow.map((value, index) => (
-                      <TableCell key={index} className="text-center font-bold">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Debt Section */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Debt</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Loan Disbursement net Fees</TableCell>
+                      {debt.loanDisbursement.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Debt Service</TableCell>
+                      {debt.debtService.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index > 0 && index < 5 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Loan Repayment</TableCell>
+                      {debt.loanRepayment.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold">
+                      <TableCell>Unlevered Cash Flow</TableCell>
+                      {debt.unleveredCashFlow.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow className="font-bold">
+                      <TableCell>Levered Cash Flow</TableCell>
+                      {debt.leveredCashFlow.map((value, index) => (
+                        <TableCell key={index} className="text-center font-bold">{index === 0 ? formatCurrency(value) : formatCurrency(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Spacer */}
-                  <TableRow><TableCell colSpan={7}></TableCell></TableRow>
+                    {/* Spacer */}
+                    <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Return Metrics */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Return Metrics</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Free and Clear Return - 7.35% Ave</TableCell>
-                    {returnMetrics.unleveredIrr.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Cash on Cash - 3.19% Ave</TableCell>
-                    {returnMetrics.cashOnCash.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
-                    ))}
-                  </TableRow>
+                    {/* Return Metrics */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Return Metrics</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Free and Clear Return - 7.35% Ave</TableCell>
+                      {returnMetrics.unleveredIrr.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Cash on Cash - 3.19% Ave</TableCell>
+                      {returnMetrics.cashOnCash.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
+                      ))}
+                    </TableRow>
 
-                  {/* Risk Metrics Section */}
-                  <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Risk Metrics</TableCell>
-                    {years.map((_, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">DSCR - 0.98x Min</TableCell>
-                    {returnMetrics.dscr.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? `${value.toFixed(2)}x` : "")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6">Debt Yield - 11.55% Min</TableCell>
-                    {[0.1155, 0.1387, 0.1638, 0.1752, 0.1803].map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                </TableBody>
-              </Table>
+                    {/* Risk Metrics Section */}
+                    <TableRow className="bg-blue-50">
+                      <TableCell className="font-bold">Risk Metrics</TableCell>
+                      {years.map((_, index) => (
+                        <TableCell key={index} className="text-center"></TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">DSCR - 0.98x Min</TableCell>
+                      {returnMetrics.dscr.map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? `${value.toFixed(2)}x` : "")}</TableCell>
+                      ))}
+                    </TableRow>
+                    <TableRow>
+                      <TableCell className="pl-6">Debt Yield - 11.55% Min</TableCell>
+                      {[0.1155, 0.1387, 0.1638, 0.1752, 0.1803].map((value, index) => (
+                        <TableCell key={index} className="text-center">{index === 0 ? "" : formatPercent(value)}</TableCell>
+                      ))}
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </div>
     </SidebarProvider>
   );
