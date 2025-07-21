@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical } from 'lucide-react';
+import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,6 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 
 interface PipelineItem {
   id: string;
@@ -65,6 +75,7 @@ const Pipeline: React.FC = () => {
   ]);
 
   const [columns, setColumns] = useState<Column[]>([
+    { key: 'delete', label: '', sticky: true, sortable: false },
     { key: 'photo', label: 'Photo', sticky: true, sortable: false },
     { key: 'id', label: 'ID', sticky: true, sortable: true },
     { key: 'name', label: 'Name', sticky: true, sortable: true },
@@ -85,6 +96,8 @@ const Pipeline: React.FC = () => {
   const [sortState, setSortState] = useState<SortState>({ column: null, direction: null });
   const [draggedColumn, setDraggedColumn] = useState<number | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<number | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
 
   const handleInputChange = (id: string, field: keyof PipelineItem, value: string) => {
     setPipelineData(prevData =>
@@ -114,6 +127,24 @@ const Pipeline: React.FC = () => {
       capRate: ''
     };
     setPipelineData([...pipelineData, newItem]);
+  };
+
+  const handleDeleteClick = (id: string) => {
+    setItemToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (itemToDelete) {
+      setPipelineData(prevData => prevData.filter(item => item.id !== itemToDelete));
+      setItemToDelete(null);
+      setDeleteDialogOpen(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setItemToDelete(null);
+    setDeleteDialogOpen(false);
   };
 
   const handleSort = (columnKey: string) => {
@@ -311,12 +342,14 @@ const Pipeline: React.FC = () => {
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
                       ${column.sticky ? 'sticky z-30 bg-muted border-l-0 border-r-0' : ''}
                       ${index === 0 ? 'left-0' : ''}
-                      ${index === 1 ? 'left-[160px]' : ''}
-                      ${index === 2 ? 'left-[240px]' : ''}
+                      ${index === 1 ? 'left-[40px]' : ''}
+                      ${index === 2 ? 'left-[200px]' : ''}
+                      ${index === 3 ? 'left-[280px]' : ''}
                       ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
                       ${draggedColumn === index ? 'opacity-50' : ''}
                       ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
-                      ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
+                      ${column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
+                        column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
                         column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
                         column.key === 'name' ? 'w-[200px] min-w-[200px]' :
                         column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
@@ -361,9 +394,11 @@ const Pipeline: React.FC = () => {
                         p-2 align-middle border-r border-border last:border-r-0
                         ${column.sticky ? 'sticky z-10 bg-background border-l-0 border-r-0' : ''}
                         ${index === 0 ? 'left-0' : ''}
-                        ${index === 1 ? 'left-[160px]' : ''}
-                        ${index === 2 ? 'left-[240px]' : ''}
-                        ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
+                        ${index === 1 ? 'left-[40px]' : ''}
+                        ${index === 2 ? 'left-[200px]' : ''}
+                        ${index === 3 ? 'left-[280px]' : ''}
+                        ${column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
+                          column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
                           column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' :
                           column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
                           column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
@@ -372,19 +407,28 @@ const Pipeline: React.FC = () => {
                           column.key === 'keysRooms' ? 'w-[120px] min-w-[120px]' : 
                           column.key === 'status' ? 'w-[160px] min-w-[160px]' : 
                           'w-[140px] min-w-[140px]'}
-                      `}
-                    >
-                      {column.key === 'photo' ? (
-                        <div className="w-8 h-8 bg-muted rounded border border-border"></div>
-                      ) : (
-                        <Input
-                          value={item[column.key as keyof PipelineItem]}
-                          onChange={(e) => handleInputChange(item.id, column.key as keyof PipelineItem, e.target.value)}
-                          placeholder={column.label}
-                          className="border-0 bg-transparent p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground/50"
-                        />
-                      )}
-                    </TableCell>
+                       `}
+                     >
+                       {column.key === 'delete' ? (
+                         <Button
+                           variant="ghost"
+                           size="sm"
+                           onClick={() => handleDeleteClick(item.id)}
+                           className="h-6 w-6 p-0 hover:bg-destructive/10 hover:text-destructive"
+                         >
+                           <Trash2 className="h-3 w-3" />
+                         </Button>
+                       ) : column.key === 'photo' ? (
+                         <div className="w-8 h-8 bg-muted rounded border border-border"></div>
+                       ) : (
+                         <Input
+                           value={item[column.key as keyof PipelineItem]}
+                           onChange={(e) => handleInputChange(item.id, column.key as keyof PipelineItem, e.target.value)}
+                           placeholder={column.label}
+                           className="border-0 bg-transparent p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground/50"
+                         />
+                       )}
+                     </TableCell>
                   ))}
                 </TableRow>
               ))}
@@ -392,6 +436,27 @@ const Pipeline: React.FC = () => {
           </Table>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Deal</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this deal from your pipeline? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={handleDeleteCancel}>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteConfirm}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
