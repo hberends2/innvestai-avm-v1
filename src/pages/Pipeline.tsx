@@ -359,7 +359,7 @@ const Pipeline: React.FC = () => {
                       key={`${item.id}-${column.key}`}
                       className={`
                         p-2 align-middle border-r border-border last:border-r-0
-                        ${column.sticky ? 'sticky z-10 bg-muted border-l-0 border-r-0' : ''}
+                        ${column.sticky ? 'sticky z-10 bg-background border-l-0 border-r-0' : ''}
                         ${index === 0 ? 'left-0' : ''}
                         ${index === 1 ? 'left-[160px]' : ''}
                         ${index === 2 ? 'left-[240px]' : ''}
