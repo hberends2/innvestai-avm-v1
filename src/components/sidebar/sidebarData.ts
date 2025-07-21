@@ -88,6 +88,11 @@ export const mainNavCategories: CategoryItem[] = [
     ],
   },
   {
+    id: "summary",
+    name: "Investment Summary",
+    path: "/summary"
+  },
+  {
     id: "reports",
     name: "Reports",
     subCategories: [
@@ -98,11 +103,6 @@ export const mainNavCategories: CategoryItem[] = [
     id: "documents",
     name: "Documents",
     path: "/documents"
-  },
-  {
-    id: "summary",
-    name: "Summary",
-    path: "/summary"
   }
   // Department & Item Setup removed from sidebar
 ];
