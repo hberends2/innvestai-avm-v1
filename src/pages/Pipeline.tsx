@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import AppSidebar from "../components/AppSidebar";
 import {
   Table,
   TableBody,
@@ -302,8 +304,18 @@ const Pipeline: React.FC = () => {
     return <ArrowUpDown className="w-3 h-3 text-muted-foreground" />;
   };
 
+  const handleSidebarItemClick = (modalName: string) => {
+    // Pipeline page doesn't need modal functionality
+    console.log('Sidebar item clicked:', modalName);
+  };
+
   return (
-    <div className="p-6 h-screen flex flex-col">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar onItemClick={handleSidebarItemClick} />
+        <main className="flex-1">
+          <SidebarTrigger className="m-4" />
+          <div className="p-6 h-screen flex flex-col">
       {/* Header with buttons */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-foreground">Pipeline</h1>
@@ -457,7 +469,10 @@ const Pipeline: React.FC = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+          </div>
+        </main>
+      </div>
+    </SidebarProvider>
   );
 };
 
