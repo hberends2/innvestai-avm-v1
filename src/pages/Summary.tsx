@@ -3,6 +3,7 @@ import AppSidebar from "../components/AppSidebar";
 import { SidebarProvider } from "../components/ui/sidebar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { toast } from "../hooks/use-toast";
+import KPICards from "../components/revenue/KPICards";
 // Import hooks if available, otherwise use sample data
 
 const Summary: React.FC = () => {
@@ -129,6 +130,8 @@ const Summary: React.FC = () => {
             <div className="mb-6">
               <h1 className="text-2xl font-bold">Summary</h1>
             </div>
+
+            <KPICards />
 
             <div className="bg-white rounded-lg shadow overflow-x-auto">
               <Table>
