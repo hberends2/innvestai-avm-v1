@@ -140,7 +140,7 @@ const Summary: React.FC = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="sticky top-[200px] bg-gray-50 z-10 border-b">
-                      <TableHead className="w-64 px-4 py-3 font-bold bg-gray-50 border-r">Summary</TableHead>
+                      <TableHead className="w-64 px-4 py-3 font-bold bg-gray-50 border-r"></TableHead>
                       {yearLabels.map((year, index) => (
                         <TableHead key={year} className="min-w-28 px-4 py-3 text-center font-bold bg-gray-50 border-r last:border-r-0">
                           <div className="font-semibold">{year}</div>
