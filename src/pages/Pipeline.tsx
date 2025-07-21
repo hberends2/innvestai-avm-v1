@@ -309,16 +309,16 @@ const Pipeline: React.FC = () => {
                     onDragEnd={handleDragEnd}
                     className={`
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
-                      ${column.sticky ? 'sticky z-30 bg-background border-l-2 border-l-background' : ''}
+                      ${column.sticky ? 'sticky z-30 bg-muted border-l-0 border-r-0' : ''}
                       ${index === 0 ? 'left-0' : ''}
                       ${index === 1 ? 'left-[160px]' : ''}
-                      ${index === 2 ? 'left-[200px]' : ''}
+                      ${index === 2 ? 'left-[240px]' : ''}
                       ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
                       ${draggedColumn === index ? 'opacity-50' : ''}
                       ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
                       ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
-                        column.key === 'id' ? 'w-[40px] min-w-[40px] max-w-[40px]' : 
-                        column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
+                        column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
+                        column.key === 'name' ? 'w-[200px] min-w-[200px]' :
                         column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
                         column.key === 'state' ? 'w-[80px] min-w-[80px]' : 
                         column.key === 'zip' ? 'w-[100px] min-w-[100px]' : 
@@ -359,12 +359,12 @@ const Pipeline: React.FC = () => {
                       key={`${item.id}-${column.key}`}
                       className={`
                         p-2 align-middle border-r border-border last:border-r-0
-                        ${column.sticky ? 'sticky z-10 bg-background border-l-2 border-l-background' : ''}
+                        ${column.sticky ? 'sticky z-10 bg-muted border-l-0 border-r-0' : ''}
                         ${index === 0 ? 'left-0' : ''}
                         ${index === 1 ? 'left-[160px]' : ''}
-                        ${index === 2 ? 'left-[200px]' : ''}
+                        ${index === 2 ? 'left-[240px]' : ''}
                         ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
-                          column.key === 'id' ? 'w-[40px] min-w-[40px] max-w-[40px]' : 
+                          column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' :
                           column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
                           column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
                           column.key === 'state' ? 'w-[80px] min-w-[80px]' : 
