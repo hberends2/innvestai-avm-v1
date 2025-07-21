@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -176,38 +177,83 @@ const Pipeline: React.FC = () => {
   };
 
   const handleDragStart = (e: React.DragEvent, index: number) => {
+    // Prevent dragging sticky columns
     if (columns[index].sticky) {
       e.preventDefault();
       return;
     }
+    
     setDraggedColumn(index);
     e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/html', ''); // Required for some browsers
+    
+    // Add visual feedback
+    const target = e.currentTarget as HTMLElement;
+    target.style.opacity = '0.5';
   };
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
-    if (columns[index].sticky || draggedColumn === null) return;
+    // Prevent drop on sticky columns or if no column is being dragged
+    if (columns[index].sticky || draggedColumn === null || draggedColumn === index) {
+      return;
+    }
+    
     e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
     setDragOverColumn(index);
   };
 
-  const handleDragLeave = () => {
-    setDragOverColumn(null);
+  const handleDragEnter = (e: React.DragEvent, index: number) => {
+    if (columns[index].sticky || draggedColumn === null || draggedColumn === index) {
+      return;
+    }
+    e.preventDefault();
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    // Only clear drag over state if we're actually leaving the element
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    const currentTarget = e.currentTarget as HTMLElement;
+    
+    if (!currentTarget.contains(relatedTarget)) {
+      setDragOverColumn(null);
+    }
   };
 
   const handleDrop = (e: React.DragEvent, dropIndex: number) => {
     e.preventDefault();
+    e.stopPropagation();
+    
+    // Prevent dropping on sticky columns or invalid drops
     if (draggedColumn === null || columns[dropIndex].sticky || draggedColumn === dropIndex) {
-      setDraggedColumn(null);
-      setDragOverColumn(null);
+      resetDragState();
       return;
     }
 
     const newColumns = [...columns];
     const draggedItem = newColumns[draggedColumn];
+    
+    // Remove the dragged item from its original position
     newColumns.splice(draggedColumn, 1);
-    newColumns.splice(dropIndex, 0, draggedItem);
+    
+    // Insert it at the new position
+    const adjustedDropIndex = draggedColumn < dropIndex ? dropIndex - 1 : dropIndex;
+    newColumns.splice(adjustedDropIndex, 0, draggedItem);
 
     setColumns(newColumns);
+    resetDragState();
+  };
+
+  const handleDragEnd = (e: React.DragEvent) => {
+    // Reset visual feedback
+    const target = e.currentTarget as HTMLElement;
+    target.style.opacity = '1';
+    
+    // Clean up drag state
+    resetDragState();
+  };
+
+  const resetDragState = () => {
     setDraggedColumn(null);
     setDragOverColumn(null);
   };
@@ -258,17 +304,20 @@ const Pipeline: React.FC = () => {
                     draggable={!column.sticky}
                     onDragStart={(e) => handleDragStart(e, index)}
                     onDragOver={(e) => handleDragOver(e, index)}
+                    onDragEnter={(e) => handleDragEnter(e, index)}
                     onDragLeave={handleDragLeave}
                     onDrop={(e) => handleDrop(e, index)}
+                    onDragEnd={handleDragEnd}
                     className={`
-                      h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0
+                      h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
                       ${column.sticky ? 'sticky z-30 bg-muted/50' : ''}
                       ${index === 0 ? 'left-0' : ''}
                       ${index === 1 ? 'left-[80px]' : ''}
                       ${index === 2 ? 'left-[120px]' : ''}
-                      ${dragOverColumn === index ? 'bg-primary/10' : ''}
-                      ${!column.sticky ? 'cursor-move' : ''}
-                      min-w-[80px]
+                      ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
+                      ${draggedColumn === index ? 'opacity-50' : ''}
+                      ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
+                      min-w-[80px] transition-all duration-150
                     `}
                   >
                     <div className="flex items-center justify-between">
@@ -276,14 +325,17 @@ const Pipeline: React.FC = () => {
                       <div className="flex items-center gap-1">
                         {column.sortable && (
                           <button
-                            onClick={() => handleSort(column.key)}
-                            className="hover:bg-muted/50 p-0.5 rounded"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleSort(column.key);
+                            }}
+                            className="hover:bg-muted/50 p-0.5 rounded transition-colors"
                           >
                             {getSortIcon(column.key)}
                           </button>
                         )}
                         {!column.sticky && (
-                          <GripVertical className="w-3 h-3 text-muted-foreground" />
+                          <GripVertical className="w-3 h-3 text-muted-foreground opacity-60" />
                         )}
                       </div>
                     </div>
