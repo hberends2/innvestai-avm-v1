@@ -310,7 +310,7 @@ const Pipeline: React.FC = () => {
                     onDragEnd={handleDragEnd}
                     className={`
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
-                      ${column.sticky ? 'sticky z-30 bg-muted/50' : ''}
+                      ${column.sticky ? 'sticky z-30 bg-muted' : ''}
                       ${index === 0 ? 'left-0' : ''}
                       ${index === 1 ? 'left-[80px]' : ''}
                       ${index === 2 ? 'left-[120px]' : ''}
