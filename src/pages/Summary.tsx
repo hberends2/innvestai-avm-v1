@@ -125,27 +125,30 @@ const Summary: React.FC = () => {
       <div className="flex h-screen bg-gray-50">
         <AppSidebar onItemClick={handleSidebarItemClick} />
         
-        <div className="flex-1 p-6 overflow-auto">
+        <div className="flex-1 overflow-auto">
           <div className="w-full">
-            <div className="mb-6">
+            <div className="sticky top-0 bg-gray-50 z-30 py-6 px-6 border-b border-gray-200">
               <h1 className="text-2xl font-bold">Summary</h1>
             </div>
 
-            <KPICards />
+            <div className="sticky top-[88px] bg-gray-50 z-20 px-6 py-4 border-b border-gray-200">
+              <KPICards />
+            </div>
 
-            <div className="bg-white rounded-lg shadow overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-64 font-bold"></TableHead>
-                    {yearLabels.map((year, index) => (
-                      <TableHead key={year} className="text-center font-bold min-w-28">
-                        <div>{year}</div>
-                        <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
-                      </TableHead>
-                    ))}
-                  </TableRow>
-                </TableHeader>
+            <div className="p-6">
+              <div className="bg-white rounded-lg shadow overflow-x-auto">
+                <Table>
+                  <TableHeader className="sticky top-[176px] bg-white z-10">
+                    <TableRow>
+                      <TableHead className="w-64 font-bold"></TableHead>
+                      {yearLabels.map((year, index) => (
+                        <TableHead key={year} className="text-center font-bold min-w-28">
+                          <div>{year}</div>
+                          <div className="text-xs font-normal text-gray-600">{actualYears[index]}</div>
+                        </TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
                 <TableBody>
                   {/* Total Acquisition Costs */}
                   <TableRow className="bg-blue-50">
@@ -563,6 +566,7 @@ const Summary: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </SidebarProvider>
   );
