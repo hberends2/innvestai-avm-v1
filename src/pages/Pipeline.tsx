@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -297,7 +296,7 @@ const Pipeline: React.FC = () => {
         <div className="relative">
           <Table className="w-full">
             <TableHeader className="sticky top-0 z-20">
-              <TableRow className="bg-muted/50 border-b border-border">
+              <TableRow className="bg-muted border-b border-border">
                 {columns.map((column, index) => (
                   <TableHead
                     key={column.key}
@@ -312,19 +311,19 @@ const Pipeline: React.FC = () => {
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
                       ${column.sticky ? 'sticky z-30 bg-background border-l-2 border-l-background' : ''}
                       ${index === 0 ? 'left-0' : ''}
-                      ${index === 1 ? 'left-[80px]' : ''}
-                      ${index === 2 ? 'left-[260px]' : ''}
+                      ${index === 1 ? 'left-[160px]' : ''}
+                      ${index === 2 ? 'left-[200px]' : ''}
                       ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
                       ${draggedColumn === index ? 'opacity-50' : ''}
                       ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
-                      ${column.key === 'photo' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
-                        column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
-                        column.key === 'name' ? 'w-[180px] min-w-[180px]' : 
+                      ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
+                        column.key === 'id' ? 'w-[40px] min-w-[40px] max-w-[40px]' : 
+                        column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
                         column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
                         column.key === 'state' ? 'w-[80px] min-w-[80px]' : 
                         column.key === 'zip' ? 'w-[100px] min-w-[100px]' : 
-                        column.key === 'keys_rooms' ? 'w-[120px] min-w-[120px]' : 
-                        column.key === 'status' ? 'w-[140px] min-w-[140px]' : 
+                        column.key === 'keysRooms' ? 'w-[120px] min-w-[120px]' : 
+                        column.key === 'status' ? 'w-[160px] min-w-[160px]' : 
                         'w-[140px] min-w-[140px]'} 
                       transition-all duration-150
                     `}
@@ -362,16 +361,16 @@ const Pipeline: React.FC = () => {
                         p-2 align-middle border-r border-border last:border-r-0
                         ${column.sticky ? 'sticky z-10 bg-background border-l-2 border-l-background' : ''}
                         ${index === 0 ? 'left-0' : ''}
-                        ${index === 1 ? 'left-[80px]' : ''}
-                        ${index === 2 ? 'left-[260px]' : ''}
-                        ${column.key === 'photo' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
-                          column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
-                          column.key === 'name' ? 'w-[180px] min-w-[180px]' : 
+                        ${index === 1 ? 'left-[160px]' : ''}
+                        ${index === 2 ? 'left-[200px]' : ''}
+                        ${column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
+                          column.key === 'id' ? 'w-[40px] min-w-[40px] max-w-[40px]' : 
+                          column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
                           column.key === 'city' ? 'w-[120px] min-w-[120px]' : 
                           column.key === 'state' ? 'w-[80px] min-w-[80px]' : 
                           column.key === 'zip' ? 'w-[100px] min-w-[100px]' : 
                           column.key === 'keysRooms' ? 'w-[120px] min-w-[120px]' : 
-                          column.key === 'status' ? 'w-[140px] min-w-[140px]' : 
+                          column.key === 'status' ? 'w-[160px] min-w-[160px]' : 
                           'w-[140px] min-w-[140px]'}
                       `}
                     >
