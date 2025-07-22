@@ -31,26 +31,6 @@ export const createExpenseMetrics = (
 
   return [
     {
-      label: "Subject Property ADR",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatCurrency(getHistoricalADR(year));
-        } else {
-          return formatCurrency(getForecastADR(year));
-        }
-      })
-    },
-    {
-      label: "Subject Property RevPAR",
-      data: allYears.map(year => {
-        if (historicalYears.includes(year)) {
-          return formatCurrency(helpers.getHistoricalRevpar(year));
-        } else {
-          return formatCurrency(getForecastRevpar(year));
-        }
-      })
-    },
-    {
       label: "Rooms Expense",
       data: allYears.map(year => {
         if (historicalYears.includes(year)) {
