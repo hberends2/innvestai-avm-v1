@@ -586,13 +586,13 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Free and Clear Return - 7.35% Ave</TableCell>
+                    <TableCell colSpan={2}>Free & Clear Return - 7.35% Avg</TableCell>
                     {returnMetrics.unleveredIrr.slice(1).map((value, index) => (
                       <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Cash on Cash - 3.19% Ave</TableCell>
+                    <TableCell colSpan={2}>Cash on Cash - 3.19% Avg</TableCell>
                     {returnMetrics.cashOnCash.slice(1).map((value, index) => (
                       <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
                     ))}
@@ -606,13 +606,13 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>DSCR - 0.98x Min</TableCell>
+                    <TableCell colSpan={2}>DSCR - 0.98x Min</TableCell>
                     {returnMetrics.dscr.slice(1).map((value, index) => (
                       <TableCell key={index} className="text-center">{value > 0 ? `${value.toFixed(2)}x` : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Debt Yield - 11.55% Min</TableCell>
+                    <TableCell colSpan={2}>Debt Yield - 11.55% Min</TableCell>
                     {[0.1387, 0.1638, 0.1752, 0.1803].map((value, index) => (
                       <TableCell key={index} className="text-center">{formatPercent(value)}</TableCell>
                     ))}
