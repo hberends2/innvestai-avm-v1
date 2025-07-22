@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import AppSidebar from "../components/AppSidebar";
 import { SidebarProvider } from "../components/ui/sidebar";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { toast } from "../hooks/use-toast";
 import KPICards from "../components/revenue/KPICards";
+import { ChevronDown, ChevronRight } from "lucide-react";
 // Import hooks if available, otherwise use sample data
 
 const Summary: React.FC = () => {
   // Using sample data for now - replace with actual data hooks when available
+  const [isOtherRevenueExpanded, setIsOtherRevenueExpanded] = useState(true);
 
   const handleSidebarItemClick = (modalName: string) => {
     console.log("Sidebar item clicked:", modalName);
@@ -186,9 +188,9 @@ const Summary: React.FC = () => {
                   {/* Spacer */}
                   <TableRow><TableCell colSpan={7}></TableCell></TableRow>
 
-                  {/* Departmental Revenues */}
+                  {/* Revenue */}
                   <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold">Departmental Revenues</TableCell>
+                    <TableCell className="font-bold">Revenue</TableCell>
                     {years.map((_, index) => (
                       <TableCell key={index} className="text-center"></TableCell>
                     ))}
@@ -200,35 +202,45 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6 italic underline">Other Revenue</TableCell>
-                    {departmentalRevenues.otherRevenue.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : ""}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Food & Beverage</TableCell>
-                    {departmentalRevenues.foodBeverage.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Other Operated Departments</TableCell>
-                    {departmentalRevenues.otherOperatedDepartments.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8">Miscellaneous</TableCell>
-                    {departmentalRevenues.miscellaneous.map((value, index) => (
-                      <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8 italic">Total Other Revenue</TableCell>
+                    <TableCell className="pl-6">
+                      <div 
+                        className="flex items-center cursor-pointer"
+                        onClick={() => setIsOtherRevenueExpanded(!isOtherRevenueExpanded)}
+                      >
+                        {isOtherRevenueExpanded ? (
+                          <ChevronDown className="h-4 w-4 mr-2" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 mr-2" />
+                        )}
+                        Total Other Revenue
+                      </div>
+                    </TableCell>
                     {departmentalRevenues.otherIncome.map((value, index) => (
-                      <TableCell key={index} className="text-center italic">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
+                  {isOtherRevenueExpanded && (
+                    <>
+                      <TableRow>
+                        <TableCell className="pl-8">Food & Beverage</TableCell>
+                        {departmentalRevenues.foodBeverage.map((value, index) => (
+                          <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8">Other Operated Departments</TableCell>
+                        {departmentalRevenues.otherOperatedDepartments.map((value, index) => (
+                          <TableCell key={index} className="text-center">{index === 0 ? "" : formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8">Miscellaneous</TableCell>
+                        {departmentalRevenues.miscellaneous.map((value, index) => (
+                          <TableCell key={index} className="text-center">{index === 0 ? "" : (value > 0 ? formatCurrency(value) : "-")}</TableCell>
+                        ))}
+                      </TableRow>
+                    </>
+                  )}
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell>Total Revenue</TableCell>
                     {departmentalRevenues.totalRevenue.map((value, index) => (
