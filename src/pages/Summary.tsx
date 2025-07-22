@@ -545,19 +545,19 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6">Loan Disbursement net Fees</TableCell>
+                    <TableCell>Loan Disbursement net Fees</TableCell>
                     {debt.loanDisbursement.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6">Debt Service</TableCell>
+                    <TableCell>Debt Service</TableCell>
                     {debt.debtService.map((value, index) => (
                       <TableCell key={index} className="text-center">{index > 0 && index < 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6">Loan Repayment</TableCell>
+                    <TableCell>Loan Repayment</TableCell>
                     {debt.loanRepayment.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 5 ? formatCurrency(value) : ""}</TableCell>
                     ))}
