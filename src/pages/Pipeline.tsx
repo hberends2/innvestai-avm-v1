@@ -313,9 +313,9 @@ const Pipeline: React.FC = () => {
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
         <AppSidebar onItemClick={handleSidebarItemClick} />
-        <main className="flex-1">
+        <main className="flex-1 overflow-hidden">
           <SidebarTrigger className="m-4" />
-          <div className="p-6 h-screen flex flex-col">
+          <div className="p-6 h-screen flex flex-col overflow-hidden">
       {/* Header with buttons */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-semibold text-foreground">Pipeline</h1>
@@ -334,11 +334,11 @@ const Pipeline: React.FC = () => {
         </div>
       </div>
 
-      {/* Table Container with scrollbars */}
-      <div className="flex-1 overflow-auto border border-border rounded-lg">
-        <div className="relative">
+      {/* Table Container with scrollbars contained within component */}
+      <div className="flex-1 overflow-auto border border-border rounded-lg relative">
+        <div className="min-w-full">
           <Table className="w-full">
-            <TableHeader className="sticky top-0 z-20">
+            <TableHeader className="sticky top-0 z-10 bg-muted">
               <TableRow className="bg-muted border-b border-border">
                 {columns.map((column, index) => (
                   <TableHead
