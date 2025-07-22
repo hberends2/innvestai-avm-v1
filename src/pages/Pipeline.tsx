@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "../components/AppSidebar";
+import PropertyDetailsModal from "../components/modals/PropertyDetailsModal";
 import {
   Table,
   TableBody,
@@ -100,6 +101,7 @@ const Pipeline: React.FC = () => {
   const [dragOverColumn, setDragOverColumn] = useState<number | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+  const [showPropertyModal, setShowPropertyModal] = useState(false);
 
   const handleInputChange = (id: string, field: keyof PipelineItem, value: string) => {
     setPipelineData(prevData =>
@@ -129,6 +131,7 @@ const Pipeline: React.FC = () => {
       capRate: ''
     };
     setPipelineData([...pipelineData, newItem]);
+    setShowPropertyModal(true);
   };
 
   const handleDeleteClick = (id: string) => {
@@ -309,6 +312,15 @@ const Pipeline: React.FC = () => {
     console.log('Sidebar item clicked:', modalName);
   };
 
+  const handlePropertyModalClose = () => {
+    setShowPropertyModal(false);
+  };
+
+  const handlePropertyModalNext = () => {
+    setShowPropertyModal(false);
+    // Navigate to next step as needed
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -469,6 +481,13 @@ const Pipeline: React.FC = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Property Details Modal */}
+      <PropertyDetailsModal 
+        open={showPropertyModal}
+        onClose={handlePropertyModalClose} 
+        onNext={handlePropertyModalNext} 
+      />
           </div>
         </main>
       </div>
