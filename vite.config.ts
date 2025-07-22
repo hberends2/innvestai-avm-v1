@@ -9,14 +9,20 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [
-    react(),
+    react({
+      jsxImportSource: 'react',
+    }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  define: {
+    global: 'globalThis',
+  },
   optimizeDeps: {
-    exclude: ["lucide-react"]
+    exclude: ["lucide-react"],
+    include: ['react', 'react-dom']
   }
 }));
