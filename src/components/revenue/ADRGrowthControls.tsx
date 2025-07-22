@@ -26,7 +26,7 @@ const ADRGrowthControls: React.FC<ADRGrowthControlsProps> = ({
 }) => {
   const options = [
     { value: "flat", label: "Flat Growth" },
-    { value: "yearly", label: "Yearly Growth" }
+    { value: "yearly", label: "YoY Growth" }
   ];
 
   return (

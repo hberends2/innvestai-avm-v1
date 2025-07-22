@@ -31,7 +31,7 @@ const RevPARGrowthControls: React.FC<RevPARGrowthControlsProps> = ({
         </SelectTrigger>
         <SelectContent className="bg-white border border-gray-300 shadow-lg z-50">
           <SelectItem value="flat" className="text-left whitespace-normal">Flat Growth</SelectItem>
-          <SelectItem value="yearly" className="text-left whitespace-normal">Yearly Growth</SelectItem>
+          <SelectItem value="yearly" className="text-left whitespace-normal">YoY Growth</SelectItem>
         </SelectContent>
       </Select>
       {revparGrowthType === "flat" && (
