@@ -11,6 +11,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 const Summary: React.FC = () => {
   // Using sample data for now - replace with actual data hooks when available
   const [isOtherRevenueExpanded, setIsOtherRevenueExpanded] = useState(true);
+  const [isOtherExpenseExpanded, setIsOtherExpenseExpanded] = useState(true);
 
   const handleSidebarItemClick = (modalName: string) => {
     console.log("Sidebar item clicked:", modalName);
@@ -254,7 +255,7 @@ const Summary: React.FC = () => {
 
                   {/* Departmental Expenses */}
                   <TableRow className="bg-blue-50">
-                    <TableCell className="font-bold" colSpan={2}>Departmental Expenses</TableCell>
+                    <TableCell className="font-bold" colSpan={2}>Expense</TableCell>
                     {years.slice(1).map((_, index) => (
                       <TableCell key={index} className="text-center"></TableCell>
                     ))}
@@ -266,37 +267,47 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6 italic underline" colSpan={2}>Other Expenses</TableCell>
-                    {departmentalExpenses.otherExpenses.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center"></TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8" colSpan={2}>Food & Beverage</TableCell>
-                    {departmentalExpenses.foodBeverage.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8" colSpan={2}>Other Operated Departments</TableCell>
-                    {departmentalExpenses.otherOperatedDepartments.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8" colSpan={2}>Miscellaneous</TableCell>
-                    {departmentalExpenses.miscellaneous.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-8 italic" colSpan={2}>Total Other Expense</TableCell>
+                    <TableCell className="pl-6" colSpan={2}>
+                      <div 
+                        className="flex items-center cursor-pointer"
+                        onClick={() => setIsOtherExpenseExpanded(!isOtherExpenseExpanded)}
+                      >
+                        {isOtherExpenseExpanded ? (
+                          <ChevronDown className="h-4 w-4 mr-2" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 mr-2" />
+                        )}
+                        Total Other Expense
+                      </div>
+                    </TableCell>
                     {departmentalExpenses.otherExpense.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center italic">{formatCurrency(value)}</TableCell>
+                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
+                  {isOtherExpenseExpanded && (
+                    <>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Food & Beverage</TableCell>
+                        {departmentalExpenses.foodBeverage.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Other Operated Departments</TableCell>
+                        {departmentalExpenses.otherOperatedDepartments.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Miscellaneous</TableCell>
+                        {departmentalExpenses.miscellaneous.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                        ))}
+                      </TableRow>
+                    </>
+                  )}
                   <TableRow className="font-bold bg-gray-100">
-                    <TableCell colSpan={2}>Total Departmental Expenses</TableCell>
+                    <TableCell colSpan={2}>Total Expense</TableCell>
                     {departmentalExpenses.totalDepartmentalExpenses.slice(1).map((value, index) => (
                       <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
                     ))}
