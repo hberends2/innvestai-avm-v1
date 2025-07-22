@@ -12,6 +12,7 @@ const Summary: React.FC = () => {
   // Using sample data for now - replace with actual data hooks when available
   const [isOtherRevenueExpanded, setIsOtherRevenueExpanded] = useState(true);
   const [isOtherExpenseExpanded, setIsOtherExpenseExpanded] = useState(true);
+  const [isOtherProfitExpanded, setIsOtherProfitExpanded] = useState(true);
 
   const handleSidebarItemClick = (modalName: string) => {
     console.log("Sidebar item clicked:", modalName);
@@ -77,8 +78,16 @@ const Summary: React.FC = () => {
     roomsProfit: years.map(i => departmentalRevenues.roomsRevenue[i] - departmentalExpenses.roomsExpense[i]),
     foodBeverageProfit: years.map(i => departmentalRevenues.foodBeverage[i] - departmentalExpenses.foodBeverage[i]),
     otherOperatedDepartmentsProfit: years.map(i => departmentalRevenues.otherOperatedDepartments[i] - departmentalExpenses.otherOperatedDepartments[i]),
+    miscellaneousProfit: years.map(i => (departmentalRevenues.miscellaneous[i] || 0) - (departmentalExpenses.miscellaneous[i] || 0)),
     totalDepartmentalProfit: getSampleData(10219569, 0.065)
   };
+
+  // Calculate total other department profit (sum of F&B, Other Operated, and Miscellaneous)
+  const totalOtherDepartmentProfit = years.map(i => 
+    departmentalProfit.foodBeverageProfit[i] + 
+    departmentalProfit.otherOperatedDepartmentsProfit[i] + 
+    departmentalProfit.miscellaneousProfit[i]
+  );
 
   const undistributedExpenses = {
     administrative: getSampleData(0, 0),
@@ -330,23 +339,45 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Food & Beverage Profit</TableCell>
-                    {departmentalProfit.foodBeverageProfit.slice(1).map((value, index) => (
+                    <TableCell className="pl-6" colSpan={2}>
+                      <div 
+                        className="flex items-center cursor-pointer"
+                        onClick={() => setIsOtherProfitExpanded(!isOtherProfitExpanded)}
+                      >
+                        {isOtherProfitExpanded ? (
+                          <ChevronDown className="h-4 w-4 mr-2" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 mr-2" />
+                        )}
+                        Total Other Department
+                      </div>
+                    </TableCell>
+                    {totalOtherDepartmentProfit.slice(1).map((value, index) => (
                       <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
                     ))}
                   </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Other Operated Departments Profit</TableCell>
-                    {departmentalProfit.otherOperatedDepartmentsProfit.slice(1).map((value, index) => (
-                      <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
-                    ))}
-                  </TableRow>
-                  <TableRow>
-                    <TableCell className="pl-6" colSpan={2}>Miscellaneous Profit</TableCell>
-                    {years.slice(1).map((_, index) => (
-                      <TableCell key={index} className="text-center">-</TableCell>
-                    ))}
-                  </TableRow>
+                  {isOtherProfitExpanded && (
+                    <>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Food & Beverage Profit</TableCell>
+                        {departmentalProfit.foodBeverageProfit.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Other Operated Departments Profit</TableCell>
+                        {departmentalProfit.otherOperatedDepartmentsProfit.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{formatCurrency(value)}</TableCell>
+                        ))}
+                      </TableRow>
+                      <TableRow>
+                        <TableCell className="pl-8" colSpan={2}>Miscellaneous Profit</TableCell>
+                        {departmentalProfit.miscellaneousProfit.slice(1).map((value, index) => (
+                          <TableCell key={index} className="text-center">{value > 0 ? formatCurrency(value) : "-"}</TableCell>
+                        ))}
+                      </TableRow>
+                    </>
+                  )}
                   <TableRow className="font-bold bg-gray-100">
                     <TableCell colSpan={2}>Total Departmental Profit</TableCell>
                     {departmentalProfit.totalDepartmentalProfit.slice(1).map((value, index) => (
