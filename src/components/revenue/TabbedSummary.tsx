@@ -10,6 +10,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   const [activeTab, setActiveTab] = useState("keyMetrics");
   const [isOtherOperatedExpanded, setIsOtherOperatedExpanded] = useState(false);
   const [isUndistributedExpanded, setIsUndistributedExpanded] = useState(false);
+  const [isNonOperatingExpanded, setIsNonOperatingExpanded] = useState(false);
 
   const { historicalYears, forecastYears, helpers } = props;
   const allYears = [...historicalYears, ...forecastYears];
@@ -21,7 +22,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   const keyMetrics = createKeyMetrics(props, allYears);
   const occupancyMetrics = createOccupancyMetrics(props, allYears);
   const revenueMetrics = createRevenueMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded);
-  const expenseMetrics = createExpenseMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, isUndistributedExpanded, setIsUndistributedExpanded);
+  const expenseMetrics = createExpenseMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, isUndistributedExpanded, setIsUndistributedExpanded, isNonOperatingExpanded, setIsNonOperatingExpanded);
   const subcategoryMetrics = createSubcategoryMetrics(props, allYears);
   const expenseSubcategoryMetrics = createExpenseSubcategoryMetrics(props, allYears);
   const undistributedSubcategoryMetrics = createUndistributedSubcategoryMetrics(props, allYears);

@@ -17,7 +17,9 @@ export const createExpenseMetrics = (
   isOtherOperatedExpanded: boolean,
   setIsOtherOperatedExpanded: (expanded: boolean) => void,
   isUndistributedExpanded: boolean,
-  setIsUndistributedExpanded: (expanded: boolean) => void
+  setIsUndistributedExpanded: (expanded: boolean) => void,
+  isNonOperatingExpanded: boolean,
+  setIsNonOperatingExpanded: (expanded: boolean) => void
 ): MetricRow[] => {
   const { 
     historicalYears, 
@@ -72,15 +74,72 @@ export const createExpenseMetrics = (
       isUndistributed: true
     },
     {
-      label: "Non-Operating",
+      label: React.createElement(
+        'div', 
+        { 
+          className: "flex items-center cursor-pointer",
+          onClick: () => setIsNonOperatingExpanded(!isNonOperatingExpanded)
+        },
+        isNonOperatingExpanded ? 
+          React.createElement(ChevronDown, { className: "h-3 w-3 mr-1" }) :
+          React.createElement(ChevronRight, { className: "h-3 w-3 mr-1" }),
+        "Total Non-Operating Expense"
+      ),
       data: allYears.map(year => {
         if (historicalYears.includes(year)) {
           return formatCurrency(historicalExpenseData.nonOperating[year] || 0);
         } else {
           return formatCurrency(calculateForecastExpense(year, 'nonOperating'));
         }
-      })
+      }),
+      isCollapsible: true
     },
+    ...(isNonOperatingExpanded ? [
+      {
+        label: "  Management Fees",
+        data: allYears.map(year => {
+          if (historicalYears.includes(year)) {
+            return formatCurrency(historicalExpenseData.managementFees?.[year] || 0);
+          } else {
+            return formatCurrency(calculateForecastExpense(year, 'managementFees'));
+          }
+        }),
+        isSubItem: true
+      },
+      {
+        label: "  Real Estate Taxes",
+        data: allYears.map(year => {
+          if (historicalYears.includes(year)) {
+            return formatCurrency(historicalExpenseData.realEstateTaxes?.[year] || 0);
+          } else {
+            return formatCurrency(calculateForecastExpense(year, 'realEstateTaxes'));
+          }
+        }),
+        isSubItem: true
+      },
+      {
+        label: "  Insurance",
+        data: allYears.map(year => {
+          if (historicalYears.includes(year)) {
+            return formatCurrency(historicalExpenseData.insurance?.[year] || 0);
+          } else {
+            return formatCurrency(calculateForecastExpense(year, 'insurance'));
+          }
+        }),
+        isSubItem: true
+      },
+      {
+        label: "  Other Non-Operating",
+        data: allYears.map(year => {
+          if (historicalYears.includes(year)) {
+            return formatCurrency(historicalExpenseData.otherNonOp?.[year] || 0);
+          } else {
+            return formatCurrency(calculateForecastExpense(year, 'otherNonOp'));
+          }
+        }),
+        isSubItem: true
+      }
+    ] : []),
     {
       label: React.createElement('span', { className: 'font-bold' }, 'Total Expense'),
       data: allYears.map(year => 

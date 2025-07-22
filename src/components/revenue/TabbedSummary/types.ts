@@ -9,6 +9,7 @@ export interface MetricRow {
   isUndistributedSubcategory?: boolean;
   isCollapsible?: boolean;
   isUndistributed?: boolean;
+  isSubItem?: boolean;
 }
 
 export interface TabbedSummaryProps {
