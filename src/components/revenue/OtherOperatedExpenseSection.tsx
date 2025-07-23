@@ -69,6 +69,7 @@ const OtherOperatedExpenseSection: React.FC<OtherOperatedExpenseSectionProps> = 
         historicalData={historicalYears.map(() => "")}
         forecastData={forecastYears.map(() => "")}
         isSectionHeader={true}
+        isMajorSectionHeader={true}
       />
 
       {/* Food & Beverage Expense */}
