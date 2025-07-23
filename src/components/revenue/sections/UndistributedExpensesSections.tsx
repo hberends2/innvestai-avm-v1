@@ -530,6 +530,15 @@ const UndistributedExpensesSections: React.FC<UndistributedExpensesSectionsProps
 
   return (
     <>
+      {/* Undistributed Expense Section Header */}
+      <MetricRow
+        label={<span className="font-bold text-gray-900">Undistributed Expense</span>}
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isSectionHeader={true}
+        isMajorSectionHeader={true}
+      />
+
       {/* Administrative & General Section */}
       <MetricRow
         label={<span className="font-bold text-gray-900">Administrative & General</span>}
