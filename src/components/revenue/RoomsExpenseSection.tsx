@@ -137,7 +137,7 @@ const RoomsExpenseSection: React.FC<RoomsExpenseSectionProps> = ({
       />
 
       <ExpenseDropdownRow
-        label="Forecast Method"
+        label="Rooms Expense"
         dropdownValue={roomsExpenseMethod}
         onDropdownChange={setRoomsExpenseMethod}
         historicalYears={historicalYears}
