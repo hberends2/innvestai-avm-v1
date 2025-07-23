@@ -52,6 +52,7 @@ const ConsolidatedNonOperatingExpensesSection: React.FC<ConsolidatedNonOperating
         historicalData={props.historicalYears.map(() => "")}
         forecastData={props.forecastYears.map(() => "")}
         isSectionHeader={true}
+        isMajorSectionHeader={true}
       />
 
       {/* Management Fees */}
