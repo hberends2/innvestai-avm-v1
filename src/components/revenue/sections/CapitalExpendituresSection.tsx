@@ -109,7 +109,7 @@ const CapitalExpendituresSection: React.FC<CapitalExpendituresSectionProps> = ({
         historicalData={historicalYears.map(() => "")}
         forecastData={forecastYears.map(() => "")}
         isSectionHeader={true}
-        className="bg-gray-100"
+        isMajorSectionHeader={true}
       />
 
       {capitalExpenseItems.map((item) => (
