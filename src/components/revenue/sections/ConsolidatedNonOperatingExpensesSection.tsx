@@ -1,6 +1,7 @@
 import React from "react";
 import ExpenseSubSection from "../ExpenseSubSection";
 import MetricRow from "../MetricRow";
+import { CalculationHelpers } from "../RevenueTableHelpers";
 
 interface ConsolidatedNonOperatingExpensesSectionProps {
   historicalYears: number[];
@@ -21,13 +22,18 @@ interface ConsolidatedNonOperatingExpensesSectionProps {
   calculateExpense: (year: number, inputValue: string, expenseType: string) => number;
   formatCurrency: (value: number) => string;
   historicalExpenseData: any;
+  helpers: CalculationHelpers;
 }
 
 const ConsolidatedNonOperatingExpensesSection: React.FC<ConsolidatedNonOperatingExpensesSectionProps> = (props) => {
   const calculateTotalNonOperatingExpenses = (year: number): number => {
     const managementFeesExpense = props.historicalExpenseData?.managementFees?.[year] !== undefined
       ? (props.historicalExpenseData.managementFees[year] || 0)
-      : props.calculateExpense(year, props.managementFeesExpenseInput[year], 'managementFees');
+      : (() => {
+          const percentage = parseFloat(props.managementFeesExpenseInput[year] || "0") / 100;
+          const totalRevenue = props.helpers.calculateTotalRevenue(year, false);
+          return percentage * totalRevenue;
+        })();
     
     const realEstateTaxesExpense = props.historicalExpenseData?.realEstateTaxes?.[year] !== undefined
       ? (props.historicalExpenseData.realEstateTaxes[year] || 0)
@@ -59,19 +65,51 @@ const ConsolidatedNonOperatingExpensesSection: React.FC<ConsolidatedNonOperating
       <tr id="management-fees-section" className="scroll-mt-4">
         <td colSpan={10} className="h-0 p-0"></td>
       </tr>
-      <ExpenseSubSection
-        title="Management Fees"
-        historicalYears={props.historicalYears}
+      
+      {/* Management Fees Section Header */}
+      <MetricRow
+        label={<span className="font-bold text-gray-900">Management Fees</span>}
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isSectionHeader={true}
+      />
+
+      {/* Management Fees (% of Revenue) */}
+      <MetricRow
+        label="Management Fees (% of Revenue)"
+        historicalData={props.historicalYears.map(year => {
+          const totalManagementFees = props.historicalExpenseData?.managementFees?.[year] || 0;
+          const totalRevenue = props.helpers.calculateTotalRevenue(year, true);
+          if (totalRevenue > 0) {
+            const percentage = (totalManagementFees / totalRevenue) * 100;
+            return `${percentage.toFixed(1)}%`;
+          }
+          return "";
+        })}
+        forecastData={props.forecastYears.map(() => "")}
+        isEditable={true}
+        editableData={props.managementFeesExpenseInput}
+        onEditableChange={props.handleManagementFeesExpenseChange}
+        onEditableBlur={props.handleManagementFeesExpenseBlur}
         forecastYears={props.forecastYears}
-        historicalExpenseData={props.historicalExpenseData}
-        expenseType="managementFees"
-        expenseForecastMethod={props.expenseForecastMethod}
-        expenseInput={props.managementFeesExpenseInput}
-        handleExpenseChange={props.handleManagementFeesExpenseChange}
-        handleExpenseBlur={props.handleManagementFeesExpenseBlur}
-        calculateExpense={props.calculateExpense}
-        formatCurrency={props.formatCurrency}
-        getHistoricalExpenseData={(year, expenseType) => ""}
+        isYoYRow={true}
+        isUserInputRow={true}
+        isIndented={true}
+      />
+      
+      {/* Total Management Fees */}
+      <MetricRow
+        label="Total Management Fees"
+        historicalData={props.historicalYears.map(year => 
+          props.formatCurrency(props.historicalExpenseData?.managementFees?.[year] || 0)
+        )}
+        forecastData={props.forecastYears.map(year => {
+          const percentage = parseFloat(props.managementFeesExpenseInput[year] || "0") / 100;
+          const totalRevenue = props.helpers.calculateTotalRevenue(year, false);
+          const totalManagementFees = percentage * totalRevenue;
+          return props.formatCurrency(totalManagementFees);
+        })}
+        isIndented={true}
       />
 
       {/* Real Estate Taxes */}

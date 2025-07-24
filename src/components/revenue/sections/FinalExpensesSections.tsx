@@ -73,6 +73,7 @@ const FinalExpensesSections: React.FC<FinalExpensesSectionsProps> = (props) => {
         calculateExpense={props.calculateExpense}
         formatCurrency={props.formatCurrency}
         historicalExpenseData={props.historicalExpenseData}
+        helpers={props.helpers}
       />
 
       <ExpenseSummarySection
