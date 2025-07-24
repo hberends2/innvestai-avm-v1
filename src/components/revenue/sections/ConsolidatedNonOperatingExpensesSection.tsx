@@ -37,15 +37,15 @@ const ConsolidatedNonOperatingExpensesSection: React.FC<ConsolidatedNonOperating
     
     const realEstateTaxesExpense = props.historicalExpenseData?.realEstateTaxes?.[year] !== undefined
       ? (props.historicalExpenseData.realEstateTaxes[year] || 0)
-      : props.calculateExpense(year, props.realEstateTaxesExpenseInput[year], 'realEstateTaxes');
+      : parseFloat(props.realEstateTaxesExpenseInput[year]?.replace(/[$,]/g, '') || "0");
     
     const insuranceExpense = props.historicalExpenseData?.insurance?.[year] !== undefined
       ? (props.historicalExpenseData.insurance[year] || 0)
-      : props.calculateExpense(year, props.insuranceExpenseInput[year], 'insurance');
+      : parseFloat(props.insuranceExpenseInput[year]?.replace(/[$,]/g, '') || "0");
     
     const otherNonOpExpense = props.historicalExpenseData?.otherNonOp?.[year] !== undefined
       ? (props.historicalExpenseData.otherNonOp[year] || 0)
-      : props.calculateExpense(year, props.otherNonOpExpenseInput[year], 'otherNonOp');
+      : parseFloat(props.otherNonOpExpenseInput[year]?.replace(/[$,]/g, '') || "0");
     
     return managementFeesExpense + realEstateTaxesExpense + insuranceExpense + otherNonOpExpense;
   };
@@ -116,57 +116,120 @@ const ConsolidatedNonOperatingExpensesSection: React.FC<ConsolidatedNonOperating
       <tr id="real-estate-taxes-section" className="scroll-mt-4">
         <td colSpan={10} className="h-0 p-0"></td>
       </tr>
-      <ExpenseSubSection
-        title="Real Estate Taxes"
-        historicalYears={props.historicalYears}
+      
+      {/* Real Estate Taxes Section Header */}
+      <MetricRow
+        label={<span className="font-bold text-gray-900">Real Estate Taxes</span>}
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isSectionHeader={true}
+      />
+
+      {/* Real Estate Taxes Input */}
+      <MetricRow
+        label="Real Estate Taxes"
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isEditable={true}
+        editableData={props.realEstateTaxesExpenseInput}
+        onEditableChange={props.handleRealEstateTaxesExpenseChange}
+        onEditableBlur={props.handleRealEstateTaxesExpenseBlur}
         forecastYears={props.forecastYears}
-        historicalExpenseData={props.historicalExpenseData}
-        expenseType="realEstateTaxes"
-        expenseForecastMethod={props.expenseForecastMethod}
-        expenseInput={props.realEstateTaxesExpenseInput}
-        handleExpenseChange={props.handleRealEstateTaxesExpenseChange}
-        handleExpenseBlur={props.handleRealEstateTaxesExpenseBlur}
-        calculateExpense={props.calculateExpense}
-        formatCurrency={props.formatCurrency}
-        getHistoricalExpenseData={(year, expenseType) => ""}
+        isUserInputRow={true}
+        isIndented={true}
+      />
+      
+      {/* Total Real Estate Taxes */}
+      <MetricRow
+        label="Total Real Estate Taxes"
+        historicalData={props.historicalYears.map(year => 
+          props.formatCurrency(props.historicalExpenseData?.realEstateTaxes?.[year] || 0)
+        )}
+        forecastData={props.forecastYears.map(year => {
+          const amount = parseFloat(props.realEstateTaxesExpenseInput[year]?.replace(/[$,]/g, '') || "0");
+          return props.formatCurrency(amount);
+        })}
+        isIndented={true}
       />
 
       {/* Insurance */}
       <tr id="insurance-section" className="scroll-mt-4">
         <td colSpan={10} className="h-0 p-0"></td>
       </tr>
-      <ExpenseSubSection
-        title="Insurance"
-        historicalYears={props.historicalYears}
+      
+      {/* Insurance Section Header */}
+      <MetricRow
+        label={<span className="font-bold text-gray-900">Insurance</span>}
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isSectionHeader={true}
+      />
+
+      {/* Insurance Input */}
+      <MetricRow
+        label="Insurance"
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isEditable={true}
+        editableData={props.insuranceExpenseInput}
+        onEditableChange={props.handleInsuranceExpenseChange}
+        onEditableBlur={props.handleInsuranceExpenseBlur}
         forecastYears={props.forecastYears}
-        historicalExpenseData={props.historicalExpenseData}
-        expenseType="insurance"
-        expenseForecastMethod={props.expenseForecastMethod}
-        expenseInput={props.insuranceExpenseInput}
-        handleExpenseChange={props.handleInsuranceExpenseChange}
-        handleExpenseBlur={props.handleInsuranceExpenseBlur}
-        calculateExpense={props.calculateExpense}
-        formatCurrency={props.formatCurrency}
-        getHistoricalExpenseData={(year, expenseType) => ""}
+        isUserInputRow={true}
+        isIndented={true}
+      />
+      
+      {/* Total Insurance */}
+      <MetricRow
+        label="Total Insurance"
+        historicalData={props.historicalYears.map(year => 
+          props.formatCurrency(props.historicalExpenseData?.insurance?.[year] || 0)
+        )}
+        forecastData={props.forecastYears.map(year => {
+          const amount = parseFloat(props.insuranceExpenseInput[year]?.replace(/[$,]/g, '') || "0");
+          return props.formatCurrency(amount);
+        })}
+        isIndented={true}
       />
 
       {/* Other Non-Operating */}
       <tr id="other-non-operating-section" className="scroll-mt-4">
         <td colSpan={10} className="h-0 p-0"></td>
       </tr>
-      <ExpenseSubSection
-        title="Other Non-Operating"
-        historicalYears={props.historicalYears}
+      
+      {/* Other Non-Operating Section Header */}
+      <MetricRow
+        label={<span className="font-bold text-gray-900">Other Non-Operating</span>}
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isSectionHeader={true}
+      />
+
+      {/* Other Non-Operating Input */}
+      <MetricRow
+        label="Other Non-Operating"
+        historicalData={props.historicalYears.map(() => "")}
+        forecastData={props.forecastYears.map(() => "")}
+        isEditable={true}
+        editableData={props.otherNonOpExpenseInput}
+        onEditableChange={props.handleOtherNonOpExpenseChange}
+        onEditableBlur={props.handleOtherNonOpExpenseBlur}
         forecastYears={props.forecastYears}
-        historicalExpenseData={props.historicalExpenseData}
-        expenseType="otherNonOp"
-        expenseForecastMethod={props.expenseForecastMethod}
-        expenseInput={props.otherNonOpExpenseInput}
-        handleExpenseChange={props.handleOtherNonOpExpenseChange}
-        handleExpenseBlur={props.handleOtherNonOpExpenseBlur}
-        calculateExpense={props.calculateExpense}
-        formatCurrency={props.formatCurrency}
-        getHistoricalExpenseData={(year, expenseType) => ""}
+        isUserInputRow={true}
+        isIndented={true}
+      />
+      
+      {/* Total Other Non-Operating */}
+      <MetricRow
+        label="Total Other Non-Operating"
+        historicalData={props.historicalYears.map(year => 
+          props.formatCurrency(props.historicalExpenseData?.otherNonOp?.[year] || 0)
+        )}
+        forecastData={props.forecastYears.map(year => {
+          const amount = parseFloat(props.otherNonOpExpenseInput[year]?.replace(/[$,]/g, '') || "0");
+          return props.formatCurrency(amount);
+        })}
+        isIndented={true}
       />
 
       {/* Total Non-Operating Expenses */}
