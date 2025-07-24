@@ -8,23 +8,25 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useRevenueData } from "@/hooks/useRevenueData";
 import { formatCurrency } from "@/utils/calculationUtils";
+import { useValuationData } from "@/hooks/useValuationData";
 
 const Valuation: React.FC = () => {
   const [activeSection, setActiveSection] = useState<string>("");
   const { forecastYears } = useRevenueData();
+  const { valuationData, updateValuationData } = useValuationData();
 
   const handleItemClick = (modalName: string) => {
     setActiveSection(modalName);
   };
 
-  // Acquisition inputs
-  const [discountRate, setDiscountRate] = useState("12.0");
-  const [capRate, setCapRate] = useState("6.0");
-  const [acquisitionCosts, setAcquisitionCosts] = useState("1.0");
-  const [capitalImprovements, setCapitalImprovements] = useState("10000000");
-  const [reserveForReplacement, setReserveForReplacement] = useState("4.0");
+  // Acquisition inputs - use from valuation data hook
+  const discountRate = valuationData.discountRate;
+  const capRate = valuationData.capRate;
+  const acquisitionCosts = valuationData.acquisitionCosts;
+  const capitalImprovements = valuationData.capitalImprovements;
+  const reserveForReplacement = valuationData.reserveForReplacement;
 
-  // Financing inputs
+  // Financing inputs - keep as local state since they're not needed in other components
   const [ltv, setLtv] = useState("65.0");
   const [interestRate, setInterestRate] = useState("11.0");
   const [loanFees, setLoanFees] = useState("1.0");
@@ -160,21 +162,29 @@ const Valuation: React.FC = () => {
   // Sample loan amount for calculations
   const loanAmount = 36075000;
 
-  // Purchase Price input
+  // Purchase Price input - keep as local state since it's not needed in other components
   const [purchasePrice, setPurchasePrice] = useState("55500000");
   
-  // Exit inputs
-  const [exitCapRate, setExitCapRate] = useState("7.0");
-  const [salesExpense, setSalesExpense] = useState("3.0");
+  // Exit inputs - use from valuation data hook
+  const exitCapRate = valuationData.exitCapRate;
+  const salesExpense = valuationData.salesExpense;
 
-  const handlePercentageChange = (value: string, setter: (val: string) => void) => {
+  const handlePercentageChange = (value: string, fieldOrSetter: keyof typeof valuationData | ((val: string) => void)) => {
     const numericValue = value.replace(/[^0-9.]/g, "");
-    setter(numericValue);
+    if (typeof fieldOrSetter === 'function') {
+      fieldOrSetter(numericValue);
+    } else {
+      updateValuationData({ [fieldOrSetter]: numericValue });
+    }
   };
 
-  const handleCurrencyChange = (value: string, setter: (val: string) => void) => {
+  const handleCurrencyChange = (value: string, fieldOrSetter: keyof typeof valuationData | ((val: string) => void)) => {
     const numericValue = value.replace(/[^0-9]/g, "");
-    setter(numericValue);
+    if (typeof fieldOrSetter === 'function') {
+      fieldOrSetter(numericValue);
+    } else {
+      updateValuationData({ [fieldOrSetter]: numericValue });
+    }
   };
 
   const handleIntegerChange = (value: string, setter: (val: string) => void) => {
@@ -292,46 +302,46 @@ const Valuation: React.FC = () => {
               <CardContent className="p-6">
                 <div className="grid grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Discount Rate</Label>
-                      <Input
-                        value={formatPercentageDisplay(discountRate)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setDiscountRate)}
-                        className="text-blue-600 font-medium"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Cap Rate</Label>
-                      <Input
-                        value={formatPercentageDisplay(capRate)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setCapRate)}
-                        className="text-blue-600 font-medium"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Acquisition Costs (lender's fees excluded)</Label>
-                      <Input
-                        value={formatPercentageDisplay(acquisitionCosts)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setAcquisitionCosts)}
-                        className="text-blue-600 font-medium"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Estimated Capital Improvements</Label>
-                      <Input
-                        value={formatCurrencyDisplay(capitalImprovements)}
-                        onChange={(e) => handleCurrencyChange(e.target.value, setCapitalImprovements)}
-                        className="text-blue-600 font-medium"
-                      />
-                    </div>
-                    <div className="grid grid-cols-2 gap-4 items-center">
-                      <Label>Reserve for Replacement</Label>
-                      <Input
-                        value={formatPercentageDisplay(reserveForReplacement)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setReserveForReplacement)}
-                        className="text-blue-600 font-medium"
-                      />
-                    </div>
+                     <div className="grid grid-cols-2 gap-4 items-center">
+                       <Label>Discount Rate</Label>
+                       <Input
+                         value={formatPercentageDisplay(discountRate)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'discountRate')}
+                         className="text-blue-600 font-medium"
+                       />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4 items-center">
+                       <Label>Cap Rate</Label>
+                       <Input
+                         value={formatPercentageDisplay(capRate)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'capRate')}
+                         className="text-blue-600 font-medium"
+                       />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4 items-center">
+                       <Label>Acquisition Costs (lender's fees excluded)</Label>
+                       <Input
+                         value={formatPercentageDisplay(acquisitionCosts)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'acquisitionCosts')}
+                         className="text-blue-600 font-medium"
+                       />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4 items-center">
+                       <Label>Estimated Capital Improvements</Label>
+                       <Input
+                         value={formatCurrencyDisplay(capitalImprovements)}
+                         onChange={(e) => handleCurrencyChange(e.target.value, 'capitalImprovements')}
+                         className="text-blue-600 font-medium"
+                       />
+                     </div>
+                     <div className="grid grid-cols-2 gap-4 items-center">
+                       <Label>Reserve for Replacement</Label>
+                       <Input
+                         value={formatPercentageDisplay(reserveForReplacement)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'reserveForReplacement')}
+                         className="text-blue-600 font-medium"
+                       />
+                     </div>
                   </div>
                 </div>
               </CardContent>
@@ -346,19 +356,19 @@ const Valuation: React.FC = () => {
                   <div className="w-1/3 space-y-4 pr-4">
                     <div className="flex justify-between items-center">
                       <Label>LTV</Label>
-                      <Input
-                        value={formatPercentageDisplay(ltv)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setLtv)}
-                        className="text-blue-600 font-medium text-right w-20"
-                      />
+                       <Input
+                         value={formatPercentageDisplay(ltv)}
+                         onChange={(e) => handlePercentageChange(e.target.value, setLtv)}
+                         className="text-blue-600 font-medium text-right w-20"
+                       />
                     </div>
                     <div className="flex justify-between items-center">
                       <Label>Interest Rate</Label>
-                      <Input
-                        value={formatPercentageDisplay(interestRate)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setInterestRate)}
-                        className="text-blue-600 font-medium text-right w-20"
-                      />
+                       <Input
+                         value={formatPercentageDisplay(interestRate)}
+                         onChange={(e) => handlePercentageChange(e.target.value, setInterestRate)}
+                         className="text-blue-600 font-medium text-right w-20"
+                       />
                     </div>
                     
                     {/* Closing Costs Section - single row layout */}
@@ -377,11 +387,11 @@ const Valuation: React.FC = () => {
                         
                         {closingCostsMethod === "% of Loan Amount" && (
                           <>
-                            <Input
-                              value={formatPercentageDisplay(loanFees)}
-                              onChange={(e) => handlePercentageChange(e.target.value, setLoanFees)}
-                              className="text-blue-600 font-medium text-right w-16"
-                            />
+                             <Input
+                               value={formatPercentageDisplay(loanFees)}
+                               onChange={(e) => handlePercentageChange(e.target.value, setLoanFees)}
+                               className="text-blue-600 font-medium text-right w-16"
+                             />
                             <span className="text-gray-500">%</span>
                           </>
                         )}
@@ -631,19 +641,19 @@ const Valuation: React.FC = () => {
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4 items-center">
                       <Label>Exit Cap Rate</Label>
-                      <Input
-                        value={formatPercentageDisplay(exitCapRate)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setExitCapRate)}
-                        className="text-blue-600 font-medium"
-                      />
+                       <Input
+                         value={formatPercentageDisplay(exitCapRate)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'exitCapRate')}
+                         className="text-blue-600 font-medium"
+                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4 items-center">
                       <Label>Sales Expense</Label>
-                      <Input
-                        value={formatPercentageDisplay(salesExpense)}
-                        onChange={(e) => handlePercentageChange(e.target.value, setSalesExpense)}
-                        className="text-blue-600 font-medium"
-                      />
+                       <Input
+                         value={formatPercentageDisplay(salesExpense)}
+                         onChange={(e) => handlePercentageChange(e.target.value, 'salesExpense')}
+                         className="text-blue-600 font-medium"
+                       />
                     </div>
                   </div>
                 </div>
@@ -664,11 +674,11 @@ const Valuation: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Purchase Price</span>
-                      <Input
-                        value={formatCurrencyDisplay(purchasePrice)}
-                        onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
-                        className="text-blue-600 font-medium text-right w-32"
-                      />
+                       <Input
+                         value={formatCurrencyDisplay(purchasePrice)}
+                         onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
+                         className="text-blue-600 font-medium text-right w-32"
+                       />
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Lenders Fees</span>

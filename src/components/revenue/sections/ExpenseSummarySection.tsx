@@ -5,6 +5,7 @@ import { CalculationHelpers } from "../RevenueTableHelpers";
 import { createExpenseSummaryCalculations } from "./ExpenseSummaryCalculations";
 import ExpenseSummaryRows from "./ExpenseSummaryRows";
 import ReserveForReplacementRow from "./ReserveForReplacementRow";
+import { useValuationData } from "@/hooks/useValuationData";
 
 interface ExpenseSummarySectionProps {
   historicalYears: number[];
@@ -29,13 +30,16 @@ const ExpenseSummarySection: React.FC<ExpenseSummarySectionProps> = ({
   helpers,
   calculateTotalNonOperatingExpenses
 }) => {
+  const { valuationData } = useValuationData();
+  
   // Create calculation helpers
   const calculations = createExpenseSummaryCalculations(
     historicalYears,
     reserveForReplacementInput,
     historicalExpenseData,
     helpers,
-    calculateTotalNonOperatingExpenses
+    calculateTotalNonOperatingExpenses,
+    valuationData.reserveForReplacement
   );
 
   return (

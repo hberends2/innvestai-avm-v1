@@ -13,7 +13,8 @@ export const createExpenseSummaryCalculations = (
   reserveForReplacementInput: Record<number, string>,
   historicalExpenseData: any,
   helpers: CalculationHelpers,
-  calculateTotalNonOperatingExpenses: (year: number) => number
+  calculateTotalNonOperatingExpenses: (year: number) => number,
+  reserveForReplacementPercentage: string
 ): ExpenseSummaryCalculations => {
   
   const calculateTotalExpense = (year: number): number => {
@@ -54,8 +55,8 @@ export const createExpenseSummaryCalculations = (
       return 0;
     }
     
-    const firstHistoricalYear = historicalYears[0];
-    const percentageValue = parseFloat(reserveForReplacementInput[firstHistoricalYear] || "0");
+    // Use the percentage from Valuation page instead of user input
+    const percentageValue = parseFloat(reserveForReplacementPercentage || "0");
     const totalRevenue = helpers.calculateTotalRevenue(year, false);
     return (percentageValue / 100) * totalRevenue;
   };
