@@ -70,33 +70,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
   };
 
   const handleSave = async () => {
-    // Check required fields
-    const requiredFields = [
-      "propertyName",
-      "propertyAddress",
-      "city",
-      "state",
-      "numberOfRooms",
-      "propertyType",
-      "status", // Added status as a required field
-    ];
-
-    const isFormValid = requiredFields.every(
-      (field) => field === "propertyType" 
-        ? propertyTypeOption !== "" 
-        : field === "status"
-          ? statusOption !== ""
-          : formData[field as keyof typeof formData] !== ""
-    );
-
-    if (!isFormValid) {
-      toast({
-        title: "Validation Error",
-        description: "Please fill out all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
+    // No validation required - allow saving with empty fields
 
     // Create property object matching the Property type
     const propertyData = {
