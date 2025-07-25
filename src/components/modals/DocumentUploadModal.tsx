@@ -13,7 +13,7 @@ const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({ onClose, onNe
   const [isDragOver, setIsDragOver] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
 
-  const dropdownOptions = ["Financial Statement", "STR Report"];
+  const dropdownOptions = ["Financial Statement", "Offering Memorandum", "STR Report"];
 
   const handleFileUpload = (files: FileList) => {
     const newFiles = Array.from(files).map((file) => ({
