@@ -663,117 +663,118 @@ const Valuation: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="equity" className="space-y-6">
-            <div className="grid grid-cols-3 gap-8">
-              {/* Left Column - Labels */}
-              <div className="space-y-6">
-                <div className="flex items-center h-10">
-                  <Label>Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
-                </div>
-                <div className="flex items-center h-10">
-                  <Label>Investor Equity</Label>
-                </div>
-                {valuationData.partners.map((partner, index) => (
-                  <div key={partner.id} className="flex items-center h-10">
-                    <Label>Partner {index + 1}</Label>
+            <Card>
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <Label>Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
+                    <span className="font-medium">
+                      ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                    </span>
                   </div>
-                ))}
-                <div className="flex items-center h-10">
-                  <button
-                    onClick={() => {
-                      const newPartner = {
-                        id: Date.now().toString(),
-                        percentage: "0.0"
-                      };
-                      updateValuationData({ partners: [...valuationData.partners, newPartner] });
-                    }}
-                    className="text-blue-600 hover:text-blue-800 font-medium"
-                  >
-                    + Add Partner
-                  </button>
-                </div>
-                {/* Validation Warning */}
-                {(() => {
-                  const totalPercentage = parseFloat(valuationData.investorEquityPercentage) + 
-                    valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0);
-                  return totalPercentage !== 100 ? (
-                    <div className="text-red-600 text-sm font-medium">
-                      Total investor and partner equity inputs must = 100%
+                  
+                  <div className="flex justify-between items-center">
+                    <Label>Investor Equity</Label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        value={valuationData.investorEquityPercentage}
+                        onChange={(e) => updateValuationData({ investorEquityPercentage: e.target.value })}
+                        className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                      />
+                      <span>%</span>
+                      <span className="ml-4 font-medium">
+                        ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </span>
                     </div>
-                  ) : null;
-                })()}
-                <div className="flex items-center h-10">
-                  <Label>Debt ({parseFloat(ltv).toFixed(0)}%)</Label>
-                </div>
-              </div>
+                  </div>
 
-              {/* Center Column - Inputs */}
-              <div className="bg-gray-100 p-6 rounded-lg space-y-6">
-                <div className="flex items-center h-10">
-                  {/* No input for Total Equity Contribution - it's calculated */}
-                </div>
-                <div className="flex items-center gap-2 h-10">
-                  <input
-                    type="number"
-                    value={valuationData.investorEquityPercentage}
-                    onChange={(e) => updateValuationData({ investorEquityPercentage: e.target.value })}
-                    className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
-                    step="0.1"
-                    min="0"
-                    max="100"
-                  />
-                  <span>%</span>
-                </div>
-                {valuationData.partners.map((partner, index) => (
-                  <div key={partner.id} className="flex items-center gap-2 h-10">
-                    <input
-                      type="number"
-                      value={partner.percentage}
-                      onChange={(e) => {
-                        const newPartners = [...valuationData.partners];
-                        newPartners[index] = { ...partner, percentage: e.target.value };
-                        updateValuationData({ partners: newPartners });
+                  {valuationData.partners.map((partner, index) => (
+                    <div key={partner.id} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Input
+                          value={partner.name}
+                          onChange={(e) => {
+                            const newPartners = [...valuationData.partners];
+                            newPartners[index] = { ...partner, name: e.target.value };
+                            updateValuationData({ partners: newPartners });
+                          }}
+                          placeholder={`Partner ${index + 1}`}
+                          className="w-32 text-sm"
+                        />
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="number"
+                            value={partner.percentage}
+                            onChange={(e) => {
+                              const newPartners = [...valuationData.partners];
+                              newPartners[index] = { ...partner, percentage: e.target.value };
+                              updateValuationData({ partners: newPartners });
+                            }}
+                            className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                          />
+                          <span>%</span>
+                          <span className="ml-4 font-medium">
+                            ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                          </span>
+                          {valuationData.partners.length > 1 && (
+                            <button
+                              onClick={() => {
+                                const newPartners = valuationData.partners.filter((_, i) => i !== index);
+                                updateValuationData({ partners: newPartners });
+                              }}
+                              className="text-red-600 hover:text-red-800 ml-2"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="flex justify-start">
+                    <button
+                      onClick={() => {
+                        const newPartner = {
+                          id: Date.now().toString(),
+                          name: `Partner ${valuationData.partners.length + 1}`,
+                          percentage: "0.0"
+                        };
+                        updateValuationData({ partners: [...valuationData.partners, newPartner] });
                       }}
-                      className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
-                      step="0.1"
-                      min="0"
-                      max="100"
-                    />
-                    <span>%</span>
-                    {valuationData.partners.length > 1 && (
-                      <button
-                        onClick={() => {
-                          const newPartners = valuationData.partners.filter((_, i) => i !== index);
-                          updateValuationData({ partners: newPartners });
-                        }}
-                        className="text-red-600 hover:text-red-800 ml-2"
-                      >
-                        ×
-                      </button>
-                    )}
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      + Add Partner
+                    </button>
                   </div>
-                ))}
-              </div>
 
-              {/* Right Column - Values */}
-              <div className="space-y-6">
-                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
-                  ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                </div>
-                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
-                  ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                </div>
-                {valuationData.partners.map((partner, index) => (
-                  <div key={partner.id} className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
-                    ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  {/* Validation Warning - Centered */}
+                  {(() => {
+                    const totalPercentage = parseFloat(valuationData.investorEquityPercentage) + 
+                      valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0);
+                    return totalPercentage !== 100 ? (
+                      <div className="text-red-600 text-sm font-medium text-center">
+                        Total investor and partner equity inputs must = 100%
+                      </div>
+                    ) : null;
+                  })()}
+
+                  <div className="flex justify-between items-center">
+                    <Label>Debt ({parseFloat(ltv).toFixed(0)}%)</Label>
+                    <span className="font-medium">
+                      ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                    </span>
                   </div>
-                ))}
-                <div className="h-10"></div> {/* Spacer for Add Partner button */}
-                <div className="h-10"></div> {/* Spacer for validation message */}
-                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
-                  ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Bottom section - same for all tabs */}

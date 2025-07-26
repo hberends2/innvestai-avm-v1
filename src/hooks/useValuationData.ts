@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 interface Partner {
   id: string;
+  name: string;
   percentage: string;
 }
 
@@ -27,7 +28,7 @@ let valuationState: ValuationData = {
   exitCapRate: "7.0",
   salesExpense: "3.0",
   investorEquityPercentage: "20.0",
-  partners: [{ id: "1", percentage: "50.0" }]
+  partners: [{ id: "1", name: "Partner 1", percentage: "50.0" }]
 };
 
 const listeners = new Set<() => void>();
