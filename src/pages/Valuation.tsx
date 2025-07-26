@@ -663,121 +663,117 @@ const Valuation: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="equity" className="space-y-6">
-            <Card>
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  {/* Total Equity Contribution */}
-                  <div className="grid grid-cols-12 gap-4 items-center">
-                    <Label className="col-span-6">Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
-                    <div className="col-span-6">
-                      ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                    </div>
+            <div className="grid grid-cols-3 gap-8">
+              {/* Left Column - Labels */}
+              <div className="space-y-6">
+                <div className="flex items-center h-10">
+                  <Label>Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
+                </div>
+                <div className="flex items-center h-10">
+                  <Label>Investor Equity</Label>
+                </div>
+                {valuationData.partners.map((partner, index) => (
+                  <div key={partner.id} className="flex items-center h-10">
+                    <Label>Partner {index + 1}</Label>
                   </div>
-
-                  {/* Investor Equity */}
-                  <div className="grid grid-cols-12 gap-4 items-center">
-                    <Label className="col-span-6">Investor Equity</Label>
-                    <div className="col-span-6 flex items-center gap-2">
-                      <input
-                        type="number"
-                        value={valuationData.investorEquityPercentage}
-                        onChange={(e) => updateValuationData({ investorEquityPercentage: e.target.value })}
-                        className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
-                        step="0.1"
-                        min="0"
-                        max="100"
-                      />
-                      <span>%</span>
-                      <span className="ml-4">
-                        ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                      </span>
+                ))}
+                <div className="flex items-center h-10">
+                  <button
+                    onClick={() => {
+                      const newPartner = {
+                        id: Date.now().toString(),
+                        percentage: "0.0"
+                      };
+                      updateValuationData({ partners: [...valuationData.partners, newPartner] });
+                    }}
+                    className="text-blue-600 hover:text-blue-800 font-medium"
+                  >
+                    + Add Partner
+                  </button>
+                </div>
+                {/* Validation Warning */}
+                {(() => {
+                  const totalPercentage = parseFloat(valuationData.investorEquityPercentage) + 
+                    valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0);
+                  return totalPercentage !== 100 ? (
+                    <div className="text-red-600 text-sm font-medium">
+                      Total investor and partner equity inputs must = 100%
                     </div>
-                  </div>
+                  ) : null;
+                })()}
+                <div className="flex items-center h-10">
+                  <Label>Debt ({parseFloat(ltv).toFixed(0)}%)</Label>
+                </div>
+              </div>
 
-                  {/* Partner Equity Rows */}
-                  {valuationData.partners.map((partner, index) => (
-                     <div key={partner.id} className="grid grid-cols-12 gap-4 items-center">
-                       <Label className="col-span-6 flex items-center gap-2">
-                         <input
-                           type="text"
-                           value={`Partner ${index + 1}`}
-                           className="w-24 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium"
-                           readOnly
-                         />
-                         {valuationData.partners.length > 1 && (
-                           <button
-                             onClick={() => {
-                               const newPartners = valuationData.partners.filter((_, i) => i !== index);
-                               updateValuationData({ partners: newPartners });
-                             }}
-                             className="text-red-600 hover:text-red-800"
-                           >
-                             ×
-                           </button>
-                         )}
-                       </Label>
-                       <div className="col-span-6 flex items-center gap-2">
-                        <input
-                          type="number"
-                          value={partner.percentage}
-                          onChange={(e) => {
-                            const newPartners = [...valuationData.partners];
-                            newPartners[index] = { ...partner, percentage: e.target.value };
-                            updateValuationData({ partners: newPartners });
-                          }}
-                          className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
-                          step="0.1"
-                          min="0"
-                          max="100"
-                        />
-                        <span>%</span>
-                        <span className="ml-4">
-                          ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-
-                  {/* Add Partner Button - indented by 5 characters */}
-                  <div className="ml-5">
-                    <button
-                      onClick={() => {
-                        const newPartner = {
-                          id: Date.now().toString(),
-                          percentage: "0.0"
-                        };
-                        updateValuationData({ partners: [...valuationData.partners, newPartner] });
+              {/* Center Column - Inputs */}
+              <div className="bg-gray-100 p-6 rounded-lg space-y-6">
+                <div className="flex items-center h-10">
+                  {/* No input for Total Equity Contribution - it's calculated */}
+                </div>
+                <div className="flex items-center gap-2 h-10">
+                  <input
+                    type="number"
+                    value={valuationData.investorEquityPercentage}
+                    onChange={(e) => updateValuationData({ investorEquityPercentage: e.target.value })}
+                    className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                  />
+                  <span>%</span>
+                </div>
+                {valuationData.partners.map((partner, index) => (
+                  <div key={partner.id} className="flex items-center gap-2 h-10">
+                    <input
+                      type="number"
+                      value={partner.percentage}
+                      onChange={(e) => {
+                        const newPartners = [...valuationData.partners];
+                        newPartners[index] = { ...partner, percentage: e.target.value };
+                        updateValuationData({ partners: newPartners });
                       }}
-                      className="text-blue-600 hover:text-blue-800 font-medium"
-                    >
-                      + Add Partner
-                    </button>
+                      className="w-20 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium text-center"
+                      step="0.1"
+                      min="0"
+                      max="100"
+                    />
+                    <span>%</span>
+                    {valuationData.partners.length > 1 && (
+                      <button
+                        onClick={() => {
+                          const newPartners = valuationData.partners.filter((_, i) => i !== index);
+                          updateValuationData({ partners: newPartners });
+                        }}
+                        className="text-red-600 hover:text-red-800 ml-2"
+                      >
+                        ×
+                      </button>
+                    )}
                   </div>
+                ))}
+              </div>
 
-                  {/* Validation Warning */}
-                  {(() => {
-                    const totalPercentage = parseFloat(valuationData.investorEquityPercentage) + 
-                      valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0);
-                    return totalPercentage !== 100 ? (
-                      <div className="grid grid-cols-2 gap-4">
-                        <div></div>
-                        <div className="text-red-600 text-sm font-medium">
-                          Total investor and partner equity inputs must = 100%
-                        </div>
-                      </div>
-                    ) : null;
-                  })()}
-
-                  {/* Debt */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <Label>Debt ({parseFloat(ltv).toFixed(0)}%)</Label>
-                     <div className="text-right">
-                       ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
-                     </div>
-                   </div>
-                 </div>
-              </CardContent>
-            </Card>
+              {/* Right Column - Values */}
+              <div className="space-y-6">
+                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
+                  ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                </div>
+                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
+                  ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                </div>
+                {valuationData.partners.map((partner, index) => (
+                  <div key={partner.id} className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
+                    ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                  </div>
+                ))}
+                <div className="h-10"></div> {/* Spacer for Add Partner button */}
+                <div className="h-10"></div> {/* Spacer for validation message */}
+                <div className="border border-gray-300 rounded p-3 text-right h-10 flex items-center justify-end">
+                  ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                </div>
+              </div>
+            </div>
           </TabsContent>
 
           {/* Bottom section - same for all tabs */}
