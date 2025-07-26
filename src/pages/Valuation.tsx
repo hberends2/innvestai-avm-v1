@@ -841,19 +841,28 @@ const Valuation: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Total Equity Contributions ({(100 - parseFloat(ltv)).toFixed(0)}%)</span>
-                      <span className="font-medium">$xx,xxx,xxx</span>
+                      <span className="font-medium">
+                        ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Partner Investors (xx.x%)</span>
-                      <span className="font-medium">$ x,xxx,xxx</span>
+                      <span className="mr-4">Partner Investors ({valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0).toFixed(1)}%)</span>
+                      <span className="font-medium">
+                        ${valuationData.partners.reduce((sum, partner) => {
+                          const partnerAmount = (parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage || "0") / 100;
+                          return sum + partnerAmount;
+                        }, 0).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Investor Equity (xx.x%)</span>
-                      <span className="font-medium">$ x,xxx,xxx</span>
+                      <span className="mr-4">Investor Equity ({parseFloat(valuationData.investorEquityPercentage).toFixed(1)}%)</span>
+                      <span className="font-medium">
+                        ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Debt</span>
-                      <span className="font-medium">$ 36,075,000</span>
+                      <span className="font-medium">${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
                     </div>
                   </div>
                 </div>
