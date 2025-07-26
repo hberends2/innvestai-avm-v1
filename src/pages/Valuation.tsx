@@ -291,9 +291,10 @@ const Valuation: React.FC = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="acquisition" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="acquisition">Acquisition</TabsTrigger>
             <TabsTrigger value="financing">Financing</TabsTrigger>
+            <TabsTrigger value="equity">Equity</TabsTrigger>
             <TabsTrigger value="exit">Exit</TabsTrigger>
           </TabsList>
 
@@ -661,10 +662,20 @@ const Valuation: React.FC = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="equity" className="space-y-6">
+            <Card>
+              <CardContent className="p-6">
+                <div className="text-center text-gray-500 py-8">
+                  <p>Equity content will be added here</p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           {/* Bottom section - same for all tabs */}
           <Card className="mt-6">
             <CardContent className="p-6">
-              <div className="grid grid-cols-3 gap-8">
+              <div className="grid grid-cols-4 gap-8">
                 <div>
                   <h3 className="text-lg font-semibold mb-4">Acquisition Metrics</h3>
                   <div className="space-y-2">
@@ -712,6 +723,28 @@ const Valuation: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Loan Balance Repayment</span>
+                      <span className="font-medium">$ 36,075,000</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold mb-4">Equity Contributions</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4">Total Equity Contributions ({(100 - parseFloat(ltv)).toFixed(0)}%)</span>
+                      <span className="font-medium">$xx,xxx,xxx</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4">Partner Investors (xx.x%)</span>
+                      <span className="font-medium">$ x,xxx,xxx</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4">Investor Equity (xx.x%)</span>
+                      <span className="font-medium">$ x,xxx,xxx</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4">Debt</span>
                       <span className="font-medium">$ 36,075,000</span>
                     </div>
                   </div>
