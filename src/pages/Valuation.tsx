@@ -738,9 +738,8 @@ const Valuation: React.FC = () => {
                     </div>
                   ))}
 
-                  {/* Add Partner Button */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
-                    <div></div>
+                  {/* Add Partner Button - indented by 5 characters */}
+                  <div className="ml-5">
                     <button
                       onClick={() => {
                         const newPartner = {
@@ -749,7 +748,7 @@ const Valuation: React.FC = () => {
                         };
                         updateValuationData({ partners: [...valuationData.partners, newPartner] });
                       }}
-                      className="text-blue-600 hover:text-blue-800 font-medium text-left"
+                      className="text-blue-600 hover:text-blue-800 font-medium"
                     >
                       + Add Partner
                     </button>
