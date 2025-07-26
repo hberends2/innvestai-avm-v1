@@ -667,15 +667,15 @@ const Valuation: React.FC = () => {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   {/* Total Equity Contribution */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
+                  <div className="flex items-center justify-between">
                     <Label>Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
-                    <div className="text-right">
+                    <div>
                       ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </div>
                   </div>
 
                   {/* Investor Equity */}
-                  <div className="grid grid-cols-2 gap-4 items-center">
+                  <div className="flex items-center justify-between">
                     <Label>Investor Equity</Label>
                     <div className="flex items-center gap-2">
                       <input
@@ -696,7 +696,7 @@ const Valuation: React.FC = () => {
 
                   {/* Partner Equity Rows */}
                   {valuationData.partners.map((partner, index) => (
-                    <div key={partner.id} className="grid grid-cols-2 gap-4 items-center">
+                    <div key={partner.id} className="flex items-center justify-between">
                       <Label className="flex items-center gap-2">
                         <input
                           type="text"
