@@ -665,8 +665,141 @@ const Valuation: React.FC = () => {
           <TabsContent value="equity" className="space-y-6">
             <Card>
               <CardContent className="p-6">
-                <div className="text-center text-gray-500 py-8">
-                  <p>Equity content will be added here</p>
+                <div className="space-y-6">
+                  {/* Total Equity Contribution */}
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div className="flex-1">
+                      <span className="font-medium">Total Equity Contribution</span>
+                    </div>
+                    <div className="w-24 text-center">
+                      <span className="font-medium">{(100 - parseFloat(ltv)).toFixed(0)}%</span>
+                    </div>
+                    <div className="w-32 text-right">
+                      <span className="font-medium">
+                        ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                      </span>
+                    </div>
+                    <div className="w-48 text-right text-sm text-red-600">
+                      = 100 - LTV
+                    </div>
+                  </div>
+
+                  {/* Investor Equity */}
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div className="flex-1">
+                      <span className="font-medium">Investor Equity</span>
+                    </div>
+                    <div className="w-24">
+                      <input
+                        type="number"
+                        value={valuationData.investorEquityPercentage}
+                        onChange={(e) => updateValuationData({ investorEquityPercentage: e.target.value })}
+                        className="w-full px-2 py-1 border border-gray-300 rounded text-center"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                     <div className="w-32 text-right">
+                       <span className="font-medium">
+                         ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                       </span>
+                     </div>
+                    <div className="w-48 text-right text-sm text-red-600">
+                      = Loan Amount * Investor Equity %
+                    </div>
+                  </div>
+
+                  {/* Partner Equity Rows */}
+                  {valuationData.partners.map((partner, index) => (
+                    <div key={partner.id} className="flex items-center justify-between py-3 border-b">
+                      <div className="flex-1 flex items-center">
+                        <input
+                          type="text"
+                          value={`Partner ${index + 1}`}
+                          className="w-32 px-2 py-1 border border-gray-300 rounded mr-4"
+                          readOnly
+                        />
+                        {valuationData.partners.length > 1 && (
+                          <button
+                            onClick={() => {
+                              const newPartners = valuationData.partners.filter((_, i) => i !== index);
+                              updateValuationData({ partners: newPartners });
+                            }}
+                            className="text-red-600 hover:text-red-800 ml-2"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                      <div className="w-24">
+                        <input
+                          type="number"
+                          value={partner.percentage}
+                          onChange={(e) => {
+                            const newPartners = [...valuationData.partners];
+                            newPartners[index] = { ...partner, percentage: e.target.value };
+                            updateValuationData({ partners: newPartners });
+                          }}
+                          className="w-full px-2 py-1 border border-gray-300 rounded text-center"
+                          step="0.1"
+                          min="0"
+                          max="100"
+                        />
+                      </div>
+                       <div className="w-32 text-right">
+                         <span className="font-medium">
+                           ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                         </span>
+                       </div>
+                      <div className="w-48"></div>
+                    </div>
+                  ))}
+
+                  {/* Add Partner Button */}
+                  <div className="flex items-center py-3">
+                    <button
+                      onClick={() => {
+                        const newPartner = {
+                          id: Date.now().toString(),
+                          percentage: "0.0"
+                        };
+                        updateValuationData({ partners: [...valuationData.partners, newPartner] });
+                      }}
+                      className="text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      + Add Partner
+                    </button>
+                  </div>
+
+                  {/* Validation Warning */}
+                  {(() => {
+                    const totalPercentage = parseFloat(valuationData.investorEquityPercentage) + 
+                      valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0);
+                    return totalPercentage !== 100 ? (
+                      <div className="text-red-600 text-sm font-medium">
+                        Total investor and partner equity inputs must = 100%
+                      </div>
+                    ) : null;
+                  })()}
+
+                  {/* Debt */}
+                  <div className="flex items-center justify-between py-3 border-b">
+                    <div className="flex-1">
+                      <span className="font-medium">Debt</span>
+                    </div>
+                    <div className="w-24 text-center">
+                      <span className="font-medium">{parseFloat(ltv).toFixed(0)}%</span>
+                    </div>
+                     <div className="w-32 text-right">
+                       <span className="font-medium">
+                         ${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}
+                       </span>
+                     </div>
+                    <div className="w-48 text-right text-sm text-red-600">
+                      = Loan Amount
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>

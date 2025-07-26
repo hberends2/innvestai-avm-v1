@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
 
+interface Partner {
+  id: string;
+  percentage: string;
+}
+
 interface ValuationData {
   reserveForReplacement: string;
   discountRate: string;
@@ -8,6 +13,8 @@ interface ValuationData {
   capitalImprovements: string;
   exitCapRate: string;
   salesExpense: string;
+  investorEquityPercentage: string;
+  partners: Partner[];
 }
 
 // Create a simple state management for valuation data
@@ -18,7 +25,9 @@ let valuationState: ValuationData = {
   acquisitionCosts: "1.0",
   capitalImprovements: "10000000",
   exitCapRate: "7.0",
-  salesExpense: "3.0"
+  salesExpense: "3.0",
+  investorEquityPercentage: "20.0",
+  partners: [{ id: "1", percentage: "50.0" }]
 };
 
 const listeners = new Set<() => void>();
