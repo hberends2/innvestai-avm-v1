@@ -667,17 +667,17 @@ const Valuation: React.FC = () => {
               <CardContent className="p-6">
                 <div className="space-y-4">
                   {/* Total Equity Contribution */}
-                  <div className="flex items-center justify-between">
-                    <Label>Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
-                    <div>
+                  <div className="grid grid-cols-12 gap-4 items-center">
+                    <Label className="col-span-6">Total Equity Contribution ({(100 - parseFloat(ltv)).toFixed(0)}%)</Label>
+                    <div className="col-span-6">
                       ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                     </div>
                   </div>
 
                   {/* Investor Equity */}
-                  <div className="flex items-center justify-between">
-                    <Label>Investor Equity</Label>
-                    <div className="flex items-center gap-2">
+                  <div className="grid grid-cols-12 gap-4 items-center">
+                    <Label className="col-span-6">Investor Equity</Label>
+                    <div className="col-span-6 flex items-center gap-2">
                       <input
                         type="number"
                         value={valuationData.investorEquityPercentage}
@@ -696,27 +696,27 @@ const Valuation: React.FC = () => {
 
                   {/* Partner Equity Rows */}
                   {valuationData.partners.map((partner, index) => (
-                    <div key={partner.id} className="flex items-center justify-between">
-                      <Label className="flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={`Partner ${index + 1}`}
-                          className="w-24 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium"
-                          readOnly
-                        />
-                        {valuationData.partners.length > 1 && (
-                          <button
-                            onClick={() => {
-                              const newPartners = valuationData.partners.filter((_, i) => i !== index);
-                              updateValuationData({ partners: newPartners });
-                            }}
-                            className="text-red-600 hover:text-red-800"
-                          >
-                            ×
-                          </button>
-                        )}
-                      </Label>
-                      <div className="flex items-center gap-2">
+                     <div key={partner.id} className="grid grid-cols-12 gap-4 items-center">
+                       <Label className="col-span-6 flex items-center gap-2">
+                         <input
+                           type="text"
+                           value={`Partner ${index + 1}`}
+                           className="w-24 px-2 py-1 border border-gray-300 rounded text-blue-600 font-medium"
+                           readOnly
+                         />
+                         {valuationData.partners.length > 1 && (
+                           <button
+                             onClick={() => {
+                               const newPartners = valuationData.partners.filter((_, i) => i !== index);
+                               updateValuationData({ partners: newPartners });
+                             }}
+                             className="text-red-600 hover:text-red-800"
+                           >
+                             ×
+                           </button>
+                         )}
+                       </Label>
+                       <div className="col-span-6 flex items-center gap-2">
                         <input
                           type="number"
                           value={partner.percentage}
