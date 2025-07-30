@@ -113,25 +113,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
           className="h-20 w-auto"
         />
         
-        {/* Property Information */}
-        {currentProperty && (
-          <div className="mt-3 space-y-1">
-            <div className="text-base font-medium text-gray-900">
-              {currentProperty.name}
-            </div>
-            <div className="text-sm text-gray-600">
-              {currentProperty.city}
-            </div>
-          </div>
-        )}
-        
         {location.pathname === '/revenue' && (
           <div className="mt-4 pt-4 border-t border-gray-300">
             <h2 className="text-lg font-semibold text-gray-800">Revenue Analysis</h2>
           </div>
         )}
       </div>
-      <nav className="mt-2 flex-grow">
+      <nav className="mt-2 flex-1 overflow-y-auto">
         <ul>
           {/* Main navigation categories */}
           <SidebarSection
@@ -155,7 +143,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
       
       {/* Property Details Section - Sticky above footer */}
       {currentProperty && (
-        <div className="mt-auto p-4 bg-gray-50 border-t border-gray-200 space-y-2">
+        <div className="p-4 bg-gray-50 border-t border-gray-200 space-y-2">
           <div className="text-lg font-semibold text-gray-900">
             {currentProperty.name}
           </div>
