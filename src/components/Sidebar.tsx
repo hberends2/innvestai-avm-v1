@@ -142,22 +142,28 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
       </nav>
       
       {/* Property Details Section - Sticky above footer */}
-      {currentProperty && (
-        <div className="p-4 bg-gray-50 border-t border-gray-200 space-y-2">
-          <div className="text-lg font-semibold text-gray-900">
-            {currentProperty.name}
+      <div className="p-4 bg-gray-50 border-t border-gray-200 space-y-2">
+        {currentProperty ? (
+          <>
+            <div className="text-lg font-semibold text-gray-900">
+              {currentProperty.name}
+            </div>
+            <div className="text-base text-gray-700">
+              {currentProperty.city}
+            </div>
+            <div className="space-y-1 text-sm text-gray-600">
+              <div>Rooms/Keys: {currentProperty.rooms}</div>
+              <div>Property Type: {currentProperty.class}</div>
+              <div>Status: {currentProperty.chgInRms}</div>
+              <div>Version: [version name]</div>
+            </div>
+          </>
+        ) : (
+          <div className="text-sm text-gray-500">
+            No property selected
           </div>
-          <div className="text-base text-gray-700">
-            {currentProperty.city}
-          </div>
-          <div className="space-y-1 text-sm text-gray-600">
-            <div>Rooms/Keys: {currentProperty.rooms}</div>
-            <div>Property Type: {currentProperty.class}</div>
-            <div>Status: {currentProperty.chgInRms}</div>
-            <div>Version: [version name]</div>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
       
       <SidebarFooter />
     </div>
