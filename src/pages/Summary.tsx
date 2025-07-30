@@ -10,9 +10,9 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 
 const Summary: React.FC = () => {
   // Using sample data for now - replace with actual data hooks when available
-  const [isOtherRevenueExpanded, setIsOtherRevenueExpanded] = useState(true);
-  const [isOtherExpenseExpanded, setIsOtherExpenseExpanded] = useState(true);
-  const [isOtherProfitExpanded, setIsOtherProfitExpanded] = useState(true);
+  const [isOtherRevenueExpanded, setIsOtherRevenueExpanded] = useState(false);
+  const [isOtherExpenseExpanded, setIsOtherExpenseExpanded] = useState(false);
+  const [isOtherProfitExpanded, setIsOtherProfitExpanded] = useState(false);
 
   const handleSidebarItemClick = (modalName: string) => {
     console.log("Sidebar item clicked:", modalName);
