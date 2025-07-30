@@ -265,7 +265,7 @@ const Valuation: React.FC = () => {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">CoC Return</CardTitle>
+              <CardTitle className="text-sm font-medium text-gray-600">Avg CoC Return</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">15.8%</div>

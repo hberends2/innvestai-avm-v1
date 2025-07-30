@@ -5,7 +5,7 @@ const KPICards: React.FC = () => {
   const kpis = [
     { title: "IRR", value: "12.5%" },
     { title: "ROI", value: "18.2%" },
-    { title: "CoC Return", value: "15.8%" },
+    { title: "Avg CoC Return", value: "15.8%" },
     { title: "Cap Rate (Acquisition)", value: "6.2%" },
     { title: "Cap Rate (Exit)", value: "5.8%" }
   ];
