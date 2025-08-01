@@ -43,7 +43,8 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
     "Select Service",
     "Convention",
     "Extended Stay",
-    "All Inclusive"
+    "All Inclusive",
+    "Market Comp"
   ];
 
   // Status options (keeping as placeholders)
