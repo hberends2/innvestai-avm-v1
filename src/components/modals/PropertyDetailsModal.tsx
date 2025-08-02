@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import FormField from "../ui/FormField";
 import Dropdown from "../ui/Dropdown";
 import ThumbnailUpload from "../ui/ThumbnailUpload";
+import { Checkbox } from "../ui/checkbox";
 import { usePropertyData } from "../../hooks/usePropertyData";
 import { useToast } from "../../hooks/use-toast";
 
@@ -36,6 +37,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
   const [propertyTypeOption, setPropertyTypeOption] = useState("");
   const [statusOption, setStatusOption] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [isMarketComp, setIsMarketComp] = useState(false);
 
   // Property type options
   const propertyTypeOptions = [
@@ -43,8 +45,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
     "Select Service",
     "Convention",
     "Extended Stay",
-    "All Inclusive",
-    "Market Comp"
+    "All Inclusive"
   ];
 
   // Status options (keeping as placeholders)
@@ -224,6 +225,17 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
             value={formData.versionName}
             onChange={(value) => handleInputChange("versionName", value)}
           />
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="marketComp"
+              checked={isMarketComp}
+              onCheckedChange={(checked) => setIsMarketComp(checked === true)}
+            />
+            <label htmlFor="marketComp" className="text-xs font-medium">
+              Market Comp
+            </label>
+          </div>
 
           <ThumbnailUpload
             onFileSelect={handleThumbnailChange}
