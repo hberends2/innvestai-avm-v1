@@ -40,6 +40,9 @@ interface PipelineItem {
   dueDiligenceDate: string;
   purchasePrice: string;
   capRate: string;
+  marketComp: string;
+  createdDate: string;
+  lastModifiedDate: string;
 }
 
 interface Column {
@@ -73,7 +76,10 @@ const Pipeline: React.FC = () => {
       bidDueDate: '9/15/25',
       dueDiligenceDate: '8/1/25',
       purchasePrice: '5,125,000',
-      capRate: '5.125%'
+      capRate: '5.125%',
+      marketComp: 'Yes',
+      createdDate: '12/15/24',
+      lastModifiedDate: '1/2/25'
     }
   ]);
 
@@ -94,6 +100,9 @@ const Pipeline: React.FC = () => {
     { key: 'dueDiligenceDate', label: 'Due Diligence Date', sticky: false, sortable: true },
     { key: 'purchasePrice', label: 'Purchase Price', sticky: false, sortable: true },
     { key: 'capRate', label: 'Cap Rate', sticky: false, sortable: true },
+    { key: 'marketComp', label: 'Market Comp', sticky: false, sortable: true },
+    { key: 'createdDate', label: 'Created Date', sticky: false, sortable: true },
+    { key: 'lastModifiedDate', label: 'Last Modified Date', sticky: false, sortable: true },
   ]);
 
   const [sortState, setSortState] = useState<SortState>({ column: null, direction: null });
@@ -128,7 +137,10 @@ const Pipeline: React.FC = () => {
       bidDueDate: '',
       dueDiligenceDate: '',
       purchasePrice: '',
-      capRate: ''
+      capRate: '',
+      marketComp: '',
+      createdDate: new Date().toLocaleDateString(),
+      lastModifiedDate: new Date().toLocaleDateString()
     };
     setPipelineData([...pipelineData, newItem]);
     setShowPropertyModal(true);
@@ -195,7 +207,7 @@ const Pipeline: React.FC = () => {
       }
 
       // Handle date sorting
-      if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate') {
+      if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate' || columnKey === 'createdDate' || columnKey === 'lastModifiedDate') {
         const aDate = new Date(aVal);
         const bDate = new Date(bVal);
         return newDirection === 'asc' 
