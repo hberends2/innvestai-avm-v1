@@ -226,14 +226,14 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
           />
 
           <div className="flex items-center space-x-2">
+            <label htmlFor="marketComp" className="text-xs font-medium">
+              Market Comp
+            </label>
             <Checkbox
               id="marketComp"
               checked={isMarketComp}
               onCheckedChange={(checked) => setIsMarketComp(checked === true)}
             />
-            <label htmlFor="marketComp" className="text-xs font-medium">
-              Market Comp
-            </label>
           </div>
 
           <div className="md:col-span-2">
