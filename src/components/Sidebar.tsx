@@ -133,7 +133,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
           <li className="px-4 py-2">
             <button 
               disabled
-              className="w-full text-left px-3 py-2 text-sm text-gray-400 bg-gray-50 rounded border border-gray-200 cursor-not-allowed"
+              className="w-full text-left px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed opacity-75"
             >
               Save as New Version
             </button>
