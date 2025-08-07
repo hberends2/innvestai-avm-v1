@@ -135,7 +135,7 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
             <li className="px-4 py-2 border-t border-gray-200">
               <button 
                 disabled
-                className="w-full text-left px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed opacity-75"
+                className="w-full text-center px-3 py-2 text-base font-bold text-white bg-emerald-600 border border-emerald-600 rounded-md cursor-not-allowed opacity-75 hover:bg-emerald-700 transition-colors"
               >
                 {collapsed ? "Save" : "Save as New Version"}
               </button>
