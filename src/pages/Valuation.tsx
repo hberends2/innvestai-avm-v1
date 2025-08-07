@@ -822,16 +822,16 @@ const Valuation: React.FC = () => {
                       <span className="font-medium">{formatCurrency(calculatePurchasePriceFromCapRate())}</span>
                     </div>
                     <div className="flex justify-between items-center">
+                      <span className="mr-4">Purchase Price-DCF ({parseFloat(discountRate).toFixed(1)}% Discount Rate)</span>
+                      <span className="font-medium">{formatCurrency(calculateDCFPurchasePrice())}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
                       <span className="mr-4">Purchase Price</span>
                        <Input
                          value={formatCurrencyDisplay(purchasePrice)}
                          onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
                          className="text-blue-600 font-medium text-right w-32"
                        />
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="mr-4">Purchase Price-DCF ({parseFloat(discountRate).toFixed(1)}% Discount Rate)</span>
-                      <span className="font-medium">{formatCurrency(calculateDCFPurchasePrice())}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Lenders Fees</span>
