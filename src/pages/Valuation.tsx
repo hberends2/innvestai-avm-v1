@@ -221,6 +221,39 @@ const Valuation: React.FC = () => {
     return firstYearNOI / (capRateValue / 100);
   };
 
+  // Helper function for DCF Purchase Price calculation
+  const calculateDCFPurchasePrice = () => {
+    // Sample projected NOI values for years 1-5 (these should be connected to actual revenue data)
+    const projectedNOI = {
+      1: 9658088,
+      2: 10124792,
+      3: 10609730,
+      4: 11114499,
+      5: 11639774
+    };
+    
+    const discountRateValue = parseFloat(discountRate) / 100 || 0.12;
+    const exitCapRateValue = parseFloat(exitCapRate) / 100 || 0.07;
+    const holdPeriod = 5;
+    
+    // Calculate present value of projected cash flows (years 1-5)
+    let pvOfCashFlows = 0;
+    for (let t = 1; t <= holdPeriod; t++) {
+      const cashFlow = projectedNOI[t as keyof typeof projectedNOI];
+      pvOfCashFlows += cashFlow / Math.pow(1 + discountRateValue, t);
+    }
+    
+    // Calculate terminal value (sale price at end of hold period)
+    const exitYearNOI = projectedNOI[5]; // Year 5 NOI
+    const terminalValue = exitYearNOI / exitCapRateValue;
+    
+    // Present value of terminal value
+    const pvOfTerminalValue = terminalValue / Math.pow(1 + discountRateValue, holdPeriod);
+    
+    // DCF Purchase Price = PV of cash flows + PV of terminal value
+    return pvOfCashFlows + pvOfTerminalValue;
+  };
+
   const handleDetailedCostChange = (field: string, value: string) => {
     setDetailedClosingCosts(prev => ({
       ...prev,
@@ -795,6 +828,10 @@ const Valuation: React.FC = () => {
                          onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
                          className="text-blue-600 font-medium text-right w-32"
                        />
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4">Purchase Price-DCF ({parseFloat(discountRate).toFixed(1)}% Discount Rate)</span>
+                      <span className="font-medium">{formatCurrency(calculateDCFPurchasePrice())}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">Lenders Fees</span>
