@@ -129,6 +129,16 @@ const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
             onSubCategoryClick={handleSubCategoryClick}
           />
           
+          {/* Save as New Version Button */}
+          <li className="px-4 py-2">
+            <button 
+              disabled
+              className="w-full text-left px-3 py-2 text-sm text-gray-400 bg-gray-50 rounded border border-gray-200 cursor-not-allowed"
+            >
+              Save as New Version
+            </button>
+          </li>
+          
           {/* Parking Lot section */}
           <SidebarSection
             title="Parking Lot"
