@@ -14,6 +14,7 @@ import { CategoryItem } from "./sidebar/SidebarCategory";
 import { mainNavCategories, parkingLotCategories } from "./sidebar/sidebarData";
 import { toast } from "./ui/use-toast";
 import { usePropertyData } from "../hooks/usePropertyData";
+import PropertyDetailsModal from "./modals/PropertyDetailsModal";
 
 interface AppSidebarProps {
   onItemClick: (modalName: string) => void;
@@ -22,6 +23,7 @@ interface AppSidebarProps {
 
 const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) => {
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [showPropertyModal, setShowPropertyModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { properties } = usePropertyData();
@@ -104,6 +106,22 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
     onItemClick(subCategoryId);
   };
 
+  const handleSaveAsNewVersion = () => {
+    setShowPropertyModal(true);
+  };
+
+  const handlePropertyModalClose = () => {
+    setShowPropertyModal(false);
+  };
+
+  const handlePropertyModalNext = () => {
+    setShowPropertyModal(false);
+    toast({
+      title: "Version Saved",
+      description: "New version created successfully",
+    });
+  };
+
   return (
     <Sidebar className="w-64 bg-gray-100">
       <SidebarHeader className="p-4 bg-gray-100 text-gray-800">
@@ -134,8 +152,8 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
             {/* Save as New Version Button */}
             <li className="px-4 py-2 border-t border-gray-200">
               <button 
-                disabled
-                className="w-full text-center px-3 py-2 text-base font-bold text-white bg-emerald-600 border border-emerald-600 rounded-md cursor-not-allowed opacity-75 hover:bg-emerald-700 transition-colors"
+                onClick={handleSaveAsNewVersion}
+                className="w-full text-center px-3 py-2 text-base font-bold text-white bg-emerald-600 border border-emerald-600 rounded-md hover:bg-emerald-700 transition-colors"
               >
                 {collapsed ? "Save" : "Save as New Version"}
               </button>
@@ -176,6 +194,13 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
       <SidebarFooter>
         <CustomSidebarFooter />
       </SidebarFooter>
+      
+      {/* Property Details Modal */}
+      <PropertyDetailsModal 
+        open={showPropertyModal}
+        onClose={handlePropertyModalClose} 
+        onNext={handlePropertyModalNext} 
+      />
     </Sidebar>
   );
 };

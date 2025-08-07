@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 
 interface FormFieldProps {
   id: string;
@@ -10,7 +10,7 @@ interface FormFieldProps {
   placeholder?: string;
 }
 
-const FormField: React.FC<FormFieldProps> = ({
+const FormField = forwardRef<HTMLInputElement, FormFieldProps>(({
   id,
   label,
   type,
@@ -18,7 +18,7 @@ const FormField: React.FC<FormFieldProps> = ({
   onChange,
   required = false,
   placeholder,
-}) => {
+}, ref) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let newValue = e.target.value;
     
@@ -43,6 +43,7 @@ const FormField: React.FC<FormFieldProps> = ({
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
+        ref={ref}
         type="text"
         id={id}
         value={value}
@@ -62,6 +63,8 @@ const FormField: React.FC<FormFieldProps> = ({
       />
     </div>
   );
-};
+});
+
+FormField.displayName = "FormField";
 
 export default FormField;

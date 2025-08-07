@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../ui/dialog";
 import { Button } from "../ui/button";
 import FormField from "../ui/FormField";
@@ -17,6 +17,7 @@ interface PropertyDetailsModalProps {
 const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClose, onNext }) => {
   const { addProperty } = usePropertyData();
   const { toast } = useToast();
+  const versionNameRef = useRef<HTMLInputElement>(null);
   
   const [formData, setFormData] = useState({
     propertyName: "",
@@ -37,6 +38,16 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
   const [statusOption, setStatusOption] = useState("");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [isMarketComp, setIsMarketComp] = useState(false);
+
+  // Focus on Version Name field when modal opens
+  useEffect(() => {
+    if (open && versionNameRef.current) {
+      // Use a small delay to ensure the modal is fully rendered
+      setTimeout(() => {
+        versionNameRef.current?.focus();
+      }, 100);
+    }
+  }, [open]);
 
   // Property type options
   const propertyTypeOptions = [
@@ -218,6 +229,7 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
           />
           
           <FormField
+            ref={versionNameRef}
             id="versionName"
             label="Version Name"
             type="text"
