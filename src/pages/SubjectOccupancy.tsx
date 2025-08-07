@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import AppSidebar from "../components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import OccupancyReportContent from "../components/occupancy-forecast/OccupancyReportContent";
 import OccupancyForecastContent from "../components/occupancy-forecast/OccupancyForecastContent";
 import { usePropertyData } from "../hooks/usePropertyData";
@@ -48,39 +49,46 @@ const SubjectOccupancy = () => {
     const property = properties.find(p => p.id === propertyId) || null;
     setSelectedProperty(property);
   };
-  return <div className="min-h-screen flex w-full">
-      <Sidebar onItemClick={handleItemClick} />
-      <main className="flex-1 p-6 bg-gray-50">
-        <div className="w-full">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Occupancy Analysis</h1>
-          
-          {/* Property Selection Dropdown (if multiple properties exist) */}
-          {properties.length > 1 && <div className="mb-6">
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar onItemClick={handleItemClick} />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="p-2 border-b bg-white">
+            <SidebarTrigger />
+          </div>
+          <main className="flex-1 p-6 bg-gray-50">
+            <div className="w-full">
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">Occupancy Analysis</h1>
               
-              
-            </div>}
-          
-          {/* Tabs for switching between report and forecast input */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="mb-6">
-              
-              
-            </TabsList>
-            
-            <TabsContent value="report" className="mt-6">
-              <OccupancyReportContent />
-            </TabsContent>
-            
-            <TabsContent value="forecast" className="mt-6">
-              {selectedProperty ? <OccupancyForecastContent property={selectedProperty} /> : <div className="text-center p-6 bg-gray-100 rounded-lg">
-                  <p className="text-gray-600">
-                    Select a property to create an occupancy forecast.
-                  </p>
+              {/* Property Selection Dropdown (if multiple properties exist) */}
+              {properties.length > 1 && <div className="mb-6">
+                  
+                  
                 </div>}
-            </TabsContent>
-          </Tabs>
+              
+              {/* Tabs for switching between report and forecast input */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="mb-6">
+                  
+                  
+                </TabsList>
+                
+                <TabsContent value="report" className="mt-6">
+                  <OccupancyReportContent />
+                </TabsContent>
+                
+                <TabsContent value="forecast" className="mt-6">
+                  {selectedProperty ? <OccupancyForecastContent property={selectedProperty} /> : <div className="text-center p-6 bg-gray-100 rounded-lg">
+                      <p className="text-gray-600">
+                        Select a property to create an occupancy forecast.
+                      </p>
+                    </div>}
+                </TabsContent>
+              </Tabs>
+            </div>
+          </main>
         </div>
-      </main>
       
       {/* Any remaining modals that haven't been integrated yet */}
       {activeModal && <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -92,6 +100,8 @@ const SubjectOccupancy = () => {
             </button>
           </div>
         </div>}
-    </div>;
+      </div>
+    </SidebarProvider>
+  );
 };
 export default SubjectOccupancy;

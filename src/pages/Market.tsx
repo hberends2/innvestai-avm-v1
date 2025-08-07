@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
-import Sidebar from "../components/Sidebar";
+import AppSidebar from "../components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import { Button } from "../components/ui/button";
 import { PlusSquare } from "lucide-react";
 import PropertyFormModal from "../components/modals/PropertyFormModal";
@@ -90,33 +91,39 @@ const Market: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      <Sidebar onItemClick={handleSidebarItemClick} />
-      
-      <div className="flex-1 p-6 overflow-auto">
-        <div className="w-full">
-          <div className="mb-6 flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Market Comps</h1>
-            <Button onClick={handleAddProperty} className="flex items-center gap-2">
-              <PlusSquare className="h-5 w-5" />
-              <span>Add Property</span>
-            </Button>
+    <SidebarProvider>
+      <div className="flex h-screen bg-gray-50 w-full">
+        <AppSidebar onItemClick={handleSidebarItemClick} />
+        
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="p-2 border-b bg-white">
+            <SidebarTrigger />
           </div>
+          <div className="flex-1 p-6 overflow-auto">
+            <div className="w-full">
+              <div className="mb-6 flex justify-between items-center">
+                <h1 className="text-2xl font-bold">Market Comps</h1>
+                <Button onClick={handleAddProperty} className="flex items-center gap-2">
+                  <PlusSquare className="h-5 w-5" />
+                  <span>Add Property</span>
+                </Button>
+              </div>
 
-          {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <p className="text-gray-500">Loading properties...</p>
+              {isLoading ? (
+                <div className="flex justify-center items-center h-64">
+                  <p className="text-gray-500">Loading properties...</p>
+                </div>
+              ) : (
+                <PropertyTable 
+                  properties={properties}
+                  onEdit={handleEditProperty}
+                  onDelete={deleteProperty}
+                  onAnalyze={handleAnalyzeProperty}
+                />
+              )}
             </div>
-          ) : (
-            <PropertyTable 
-              properties={properties}
-              onEdit={handleEditProperty}
-              onDelete={deleteProperty}
-              onAnalyze={handleAnalyzeProperty}
-            />
-          )}
+          </div>
         </div>
-      </div>
 
       {isModalOpen && (
         <PropertyFormModal
@@ -125,7 +132,8 @@ const Market: React.FC = () => {
           property={editingProperty}
         />
       )}
-    </div>
+      </div>
+    </SidebarProvider>
   );
 };
 

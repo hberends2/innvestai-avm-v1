@@ -6,12 +6,14 @@ import {
   SidebarContent,
   SidebarHeader,
   SidebarFooter,
+  useSidebar,
 } from "./ui/sidebar";
 import SidebarSection from "./sidebar/SidebarSection";
 import CustomSidebarFooter from "./sidebar/SidebarFooter";
 import { CategoryItem } from "./sidebar/SidebarCategory";
 import { mainNavCategories, parkingLotCategories } from "./sidebar/sidebarData";
 import { toast } from "./ui/use-toast";
+import { usePropertyData } from "../hooks/usePropertyData";
 
 interface AppSidebarProps {
   onItemClick: (modalName: string) => void;
@@ -22,6 +24,12 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
   const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const { properties } = usePropertyData();
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
+  
+  // Get the current property (use first property as default)
+  const currentProperty = properties.length > 0 ? properties[0] : null;
 
   useEffect(() => {
     // Auto-expand categories that contain the current active page
@@ -123,6 +131,16 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
               activeSection={activeSection}
             />
             
+            {/* Save as New Version Button */}
+            <li className="px-4 py-2 border-t border-gray-200">
+              <button 
+                disabled
+                className="w-full text-left px-3 py-2 text-sm font-medium text-gray-500 bg-gray-100 border border-gray-300 rounded-md cursor-not-allowed opacity-75"
+              >
+                {collapsed ? "Save" : "Save as New Version"}
+              </button>
+            </li>
+            
             {/* Parking Lot section */}
             <SidebarSection
               title="Parking Lot"
@@ -132,6 +150,25 @@ const AppSidebar: React.FC<AppSidebarProps> = ({ onItemClick, activeSection }) =
               onSubCategoryClick={handleSubCategoryClick}
               showDivider={true}
             />
+            
+            {/* Property Details Section */}
+            {currentProperty && (
+              <li className="px-4 py-4 border-t border-gray-200 mt-4">
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
+                  {collapsed ? "Prop" : "Current Property"}
+                </div>
+                <div className="space-y-1 text-sm text-gray-700">
+                  <div className="font-medium truncate">{currentProperty.name}</div>
+                  {!collapsed && (
+                    <>
+                      <div className="text-gray-600">{currentProperty.city}</div>
+                      <div className="text-gray-600">{currentProperty.rooms} rooms</div>
+                      <div className="text-gray-600">Class {currentProperty.class}</div>
+                    </>
+                  )}
+                </div>
+              </li>
+            )}
           </ul>
         </nav>
       </SidebarContent>

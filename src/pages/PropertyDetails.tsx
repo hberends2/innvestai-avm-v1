@@ -1,7 +1,8 @@
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import AppSidebar from "../components/AppSidebar";
+import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
 import PropertyDetailsModal from "../components/modals/PropertyDetailsModal";
 import CategorySelectionModal from "../components/modals/CategorySelectionModal";
 import DocumentUploadModal from "../components/modals/DocumentUploadModal";
@@ -69,16 +70,22 @@ const PropertyDetails = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full">
-      <Sidebar onItemClick={handleItemClick} />
-      <main className="flex-1 p-6 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Property Details</h1>
-          <div className="bg-white rounded-lg shadow p-6">
-            <p className="text-gray-600">Configure your property details here.</p>
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full">
+        <AppSidebar onItemClick={handleItemClick} />
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="p-2 border-b bg-white">
+            <SidebarTrigger />
           </div>
+          <main className="flex-1 p-6 bg-gray-50">
+            <div className="max-w-7xl mx-auto">
+              <h1 className="text-3xl font-bold text-gray-900 mb-6">Property Details</h1>
+              <div className="bg-white rounded-lg shadow p-6">
+                <p className="text-gray-600">Configure your property details here.</p>
+              </div>
+            </div>
+          </main>
         </div>
-      </main>
       
       {/* PropertyDetailsModal - Uses Dialog, so uses open prop */}
       <PropertyDetailsModal 
@@ -103,7 +110,8 @@ const PropertyDetails = () => {
           onNext={handleDocumentModalNext}
         />
       )}
-    </div>
+      </div>
+    </SidebarProvider>
   );
 };
 
