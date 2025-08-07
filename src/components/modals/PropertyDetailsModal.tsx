@@ -42,10 +42,11 @@ const PropertyDetailsModal: React.FC<PropertyDetailsModalProps> = ({ open, onClo
   // Focus on Version Name field when modal opens
   useEffect(() => {
     if (open && versionNameRef.current) {
-      // Use a small delay to ensure the modal is fully rendered
+      // Use a longer delay to ensure the modal is fully rendered and other focus events have completed
       setTimeout(() => {
         versionNameRef.current?.focus();
-      }, 100);
+        versionNameRef.current?.select();
+      }, 200);
     }
   }, [open]);
 
