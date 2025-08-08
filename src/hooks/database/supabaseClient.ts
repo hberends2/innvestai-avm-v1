@@ -5,7 +5,8 @@
 export const STORAGE_KEYS = {
   PROPERTIES: 'properties',
   OCCUPANCY_DATA: 'occupancy_data',
-  FINANCIAL_SUMMARIES: 'financial_summaries'
+  FINANCIAL_SUMMARIES: 'financial_summaries',
+  VALUATION_DATA: 'valuation_data'
 } as const;
 
 export const getLocalData = <T>(key: string, defaultValue: T): T => {

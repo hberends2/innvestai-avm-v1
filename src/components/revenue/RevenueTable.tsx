@@ -11,13 +11,6 @@ const RevenueTable: React.FC<RevenueTableProps> = ({
   forecastYears = [],
   ...props
 }) => {
-  console.log('RevenueTable rendering with props:', {
-    roomsKeys,
-    historicalYears,
-    forecastYears,
-    adrGrowthType: props.adrGrowthType,
-    occupancyForecastMethod: props.occupancyForecastMethod
-  });
 
   // Create calculation helpers
   const helpers = createCalculationHelpers(

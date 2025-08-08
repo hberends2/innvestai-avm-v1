@@ -1,5 +1,5 @@
 
-import React from "react";
+
 
 // Helper function to calculate expenses
 export const calculateExpense = (year: number, inputValue: string, expenseType: string) => {
