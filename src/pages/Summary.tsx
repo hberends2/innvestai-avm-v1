@@ -178,6 +178,16 @@ const Summary: React.FC = () => {
                     ))}
                   </TableRow>
                   <TableRow>
+                    <TableCell className="pl-12 italic">Purchase Price per Key</TableCell>
+                    {acquisitionCosts.purchasePrice.map((value, index) => {
+                      const roomsKeys = 108; // POC value as requested
+                      const pricePerKey = index === 0 ? value / roomsKeys : 0;
+                      return (
+                        <TableCell key={index} className="text-center italic">{index === 0 ? formatCurrency(pricePerKey) : ""}</TableCell>
+                      );
+                    })}
+                  </TableRow>
+                  <TableRow>
                     <TableCell className="pl-6">Transfer F&F / Major Capital Improvement Reserve</TableCell>
                     {acquisitionCosts.transferFip.map((value, index) => (
                       <TableCell key={index} className="text-center">{index === 0 ? formatCurrency(value) : ""}</TableCell>
