@@ -69,6 +69,7 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], 
     {
       label: "Gross Operating Profit",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (calculateGrossOperatingProfit) {
           const gop = calculateGrossOperatingProfit(year);
           return formatCurrency(gop);
@@ -81,6 +82,7 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], 
     {
       label: "  GOPPAR",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (calculateGrossOperatingProfit) {
           const gop = calculateGrossOperatingProfit(year);
           const availableRooms = getAvailableRooms(year);
@@ -95,6 +97,7 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], 
     {
       label: "  GOP % of Revenue",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (calculateGrossOperatingProfit) {
           const gop = calculateGrossOperatingProfit(year);
           const totalRevenue = calculateTotalRevenueForYear(year);
@@ -109,6 +112,7 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], 
     {
       label: "EBITDA",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (calculateTotalExpense) {
           const totalRevenue = calculateTotalRevenueForYear(year);
           const totalExpense = calculateTotalExpense(year);
@@ -123,6 +127,7 @@ export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], 
     {
       label: "  EBITDA % of Revenue",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (calculateTotalExpense) {
           const totalRevenue = calculateTotalRevenueForYear(year);
           const totalExpense = calculateTotalExpense(year);

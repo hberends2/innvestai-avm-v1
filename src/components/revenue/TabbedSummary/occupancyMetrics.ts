@@ -14,15 +14,22 @@ export const createOccupancyMetrics = (
   return [
     {
       label: "Rooms/Keys",
-      data: allYears.map(() => roomsKeys.toLocaleString())
+      data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
+        return roomsKeys.toLocaleString();
+      })
     },
     {
       label: "Available Rooms",
-      data: allYears.map(year => getAvailableRooms(year).toLocaleString())
+      data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
+        return getAvailableRooms(year).toLocaleString();
+      })
     },
     {
       label: "Occupied Rooms",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (historicalYears.includes(year)) {
           return helpers.getHistoricalOccupiedRooms(year).toLocaleString();
         } else {
@@ -33,6 +40,7 @@ export const createOccupancyMetrics = (
     {
       label: "Subject Property Occupancy",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (historicalYears.includes(year)) {
           return formatPercent(props.historicalData.occupancy[year] || 0);
         } else {

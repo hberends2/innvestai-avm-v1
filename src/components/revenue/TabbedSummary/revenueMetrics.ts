@@ -26,6 +26,7 @@ export const createRevenueMetrics = (
     {
       label: "Subject Property ADR",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (historicalYears.includes(year)) {
           return formatCurrency(getHistoricalADR(year));
         } else {
@@ -36,6 +37,7 @@ export const createRevenueMetrics = (
     {
       label: "Subject Property RevPAR",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (historicalYears.includes(year)) {
           return formatCurrency(helpers.getHistoricalRevpar(year));
         } else {
@@ -46,6 +48,7 @@ export const createRevenueMetrics = (
     {
       label: "Rooms Revenue",
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         if (historicalYears.includes(year)) {
           return formatCurrency(props.historicalData.roomsRevenue[year] || 0);
         } else {
@@ -65,12 +68,13 @@ export const createRevenueMetrics = (
           React.createElement(ChevronRight, { className: "h-3 w-3 mr-1" }),
         "Total Other Operated Revenue"
       ),
-      data: allYears.map(year => formatCurrency(helpers.calculateTotalOtherOperatedRevenue(year))),
+      data: allYears.map(year => shouldAddYTD && year === ytdYear ? "-" : formatCurrency(helpers.calculateTotalOtherOperatedRevenue(year))),
       isCollapsible: true
     },
     {
       label: React.createElement('span', { className: 'font-bold' }, 'Total Revenue'),
       data: allYears.map(year => {
+        if (shouldAddYTD && year === ytdYear) return "-";
         return React.createElement(
           'span',
           { className: 'font-bold' },
