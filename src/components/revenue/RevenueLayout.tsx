@@ -37,55 +37,55 @@ const RevenueLayout: React.FC<RevenueLayoutProps> = ({
           <div className="p-2 border-b bg-white">
             <SidebarTrigger />
           </div>
-          <div className="p-6 flex-1 flex flex-col overflow-hidden">
-            <KPICards />
+          <div className="p-6 flex-1 overflow-x-auto">
+            <div className="min-w-max">
+              <KPICards />
 
-            <ExpenseCalculationsProvider
-              expenseForecastMethod={revenueCalculations.expenseForecastMethod}
-              helpers={helpers}
-              historicalYears={historicalYears}
-              roomsExpenseInput={revenueCalculations.roomsExpenseInput}
-              fbExpenseInput={revenueCalculations.fbExpenseInput}
-              otherOperatedExpenseInput={revenueCalculations.otherOperatedExpenseInput}
-              miscellaneousExpenseInput={revenueCalculations.miscellaneousExpenseInput}
-              allocatedExpenseInput={revenueCalculations.allocatedExpenseInput}
-              propertyOperationsExpenseInput={revenueCalculations.propertyOperationsExpenseInput}
-              administrativeGeneralExpenseInput={revenueCalculations.administrativeGeneralExpenseInput}
-              infoTechServicesExpenseInput={revenueCalculations.infoTechServicesExpenseInput}
-              salesMarketingExpenseInput={revenueCalculations.salesMarketingExpenseInput}
-              utilitiesExpenseInput={revenueCalculations.utilitiesExpenseInput}
-              managementFeesExpenseInput={revenueCalculations.managementFeesExpenseInput}
-              realEstateTaxesExpenseInput={revenueCalculations.realEstateTaxesExpenseInput}
-              insuranceExpenseInput={revenueCalculations.insuranceExpenseInput}
-              otherNonOpExpenseInput={revenueCalculations.otherNonOpExpenseInput}
-            >
-              <div className="sticky top-0 z-10 bg-gray-50 pb-0">
-                <TabbedSummaryWithExpenseCalculations
-                  roomsKeys={roomsKeys}
-                  historicalYears={historicalYears}
-                  forecastYears={forecastYears}
-                  historicalData={historicalData}
-                  occupancyForecast={revenueCalculations.occupancyForecast}
-                  occupancyForecastMethod={revenueCalculations.occupancyForecastMethod}
-                  calculateOccupancyFromYoY={helpers.calculateOccupancyFromYoYForYear}
-                  getAvailableRooms={helpers.getAvailableRoomsForYear}
-                  getForecastRoomsRevenue={helpers.getForecastRoomsRevenueForYear}
-                  getHistoricalADR={helpers.getHistoricalADRForYearCalculated}
-                  getForecastADR={helpers.getForecastADRForYear}
-                  getForecastRevpar={helpers.getForecastRevparForYear}
-                  fbPerOccupiedRoom={revenueCalculations.fbPerOccupiedRoom}
-                  resortFeePerOccupiedRoom={revenueCalculations.resortFeePerOccupiedRoom}
-                  otherOperatedPerOccupiedRoom={revenueCalculations.otherOperatedPerOccupiedRoom}
-                  miscellaneousPerOccupiedRoom={revenueCalculations.miscellaneousPerOccupiedRoom}
-                  allocatedPerOccupiedRoom={revenueCalculations.allocatedPerOccupiedRoom}
-                  formatCurrency={formatCurrency}
-                  formatPercent={formatPercent}
-                  helpers={helpers}
-                />
-              </div>
-            </ExpenseCalculationsProvider>
+              <ExpenseCalculationsProvider
+                expenseForecastMethod={revenueCalculations.expenseForecastMethod}
+                helpers={helpers}
+                historicalYears={historicalYears}
+                roomsExpenseInput={revenueCalculations.roomsExpenseInput}
+                fbExpenseInput={revenueCalculations.fbExpenseInput}
+                otherOperatedExpenseInput={revenueCalculations.otherOperatedExpenseInput}
+                miscellaneousExpenseInput={revenueCalculations.miscellaneousExpenseInput}
+                allocatedExpenseInput={revenueCalculations.allocatedExpenseInput}
+                propertyOperationsExpenseInput={revenueCalculations.propertyOperationsExpenseInput}
+                administrativeGeneralExpenseInput={revenueCalculations.administrativeGeneralExpenseInput}
+                infoTechServicesExpenseInput={revenueCalculations.infoTechServicesExpenseInput}
+                salesMarketingExpenseInput={revenueCalculations.salesMarketingExpenseInput}
+                utilitiesExpenseInput={revenueCalculations.utilitiesExpenseInput}
+                managementFeesExpenseInput={revenueCalculations.managementFeesExpenseInput}
+                realEstateTaxesExpenseInput={revenueCalculations.realEstateTaxesExpenseInput}
+                insuranceExpenseInput={revenueCalculations.insuranceExpenseInput}
+                otherNonOpExpenseInput={revenueCalculations.otherNonOpExpenseInput}
+              >
+                <div className="mb-6">
+                  <TabbedSummaryWithExpenseCalculations
+                    roomsKeys={roomsKeys}
+                    historicalYears={historicalYears}
+                    forecastYears={forecastYears}
+                    historicalData={historicalData}
+                    occupancyForecast={revenueCalculations.occupancyForecast}
+                    occupancyForecastMethod={revenueCalculations.occupancyForecastMethod}
+                    calculateOccupancyFromYoY={helpers.calculateOccupancyFromYoYForYear}
+                    getAvailableRooms={helpers.getAvailableRoomsForYear}
+                    getForecastRoomsRevenue={helpers.getForecastRoomsRevenueForYear}
+                    getHistoricalADR={helpers.getHistoricalADRForYearCalculated}
+                    getForecastADR={helpers.getForecastADRForYear}
+                    getForecastRevpar={helpers.getForecastRevparForYear}
+                    fbPerOccupiedRoom={revenueCalculations.fbPerOccupiedRoom}
+                    resortFeePerOccupiedRoom={revenueCalculations.resortFeePerOccupiedRoom}
+                    otherOperatedPerOccupiedRoom={revenueCalculations.otherOperatedPerOccupiedRoom}
+                    miscellaneousPerOccupiedRoom={revenueCalculations.miscellaneousPerOccupiedRoom}
+                    allocatedPerOccupiedRoom={revenueCalculations.allocatedPerOccupiedRoom}
+                    formatCurrency={formatCurrency}
+                    formatPercent={formatPercent}
+                    helpers={helpers}
+                  />
+                </div>
+              </ExpenseCalculationsProvider>
 
-            <div className="flex-1 min-h-0 flex flex-col">
               <RevenueTable 
                 roomsKeys={roomsKeys} 
                 historicalYears={historicalYears} 
