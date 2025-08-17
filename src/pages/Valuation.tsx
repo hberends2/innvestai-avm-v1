@@ -213,6 +213,75 @@ const Valuation: React.FC = () => {
     return loanAmount * (basisPoints / 10000);
   };
 
+  // Calculate closing costs based on method selection
+  const calculateClosingCosts = () => {
+    if (closingCostsMethod === "% of Loan Amount") {
+      const percentageValue = parseFloat(loanFees) || 0;
+      return loanAmount * (percentageValue / 100);
+    } else if (closingCostsMethod === "Detail") {
+      // Sum all detailed closing costs
+      let total = 0;
+      
+      // Lender charges
+      total += calculateOriginationFee();
+      total += parseFloat(detailedClosingCosts.underwritingFee) || 0;
+      total += parseFloat(detailedClosingCosts.lenderLegal) || 0;
+      total += calculateDebtPlacementFee();
+      total += parseFloat(detailedClosingCosts.interestRateCap) || 0;
+      total += parseFloat(detailedClosingCosts.outOfPocketExpenses) || 0;
+      total += parseFloat(detailedClosingCosts.creditSearches) || 0;
+      total += parseFloat(detailedClosingCosts.insuranceConsultant) || 0;
+      total += parseFloat(detailedClosingCosts.processingFee) || 0;
+      total += parseFloat(detailedClosingCosts.appraisal) || 0;
+      total += parseFloat(detailedClosingCosts.interestRateHedge) || 0;
+      
+      // Third party reports
+      for (let i = 1; i <= 5; i++) {
+        const reportKey = `thirdPartyReport${i}` as keyof typeof detailedClosingCosts;
+        const report = detailedClosingCosts[reportKey] as { description: string; amount: string };
+        total += parseFloat(report.amount) || 0;
+      }
+      
+      // All other detailed costs
+      total += parseFloat(detailedClosingCosts.interestExpense) || 0;
+      total += parseFloat(detailedClosingCosts.taxImpound) || 0;
+      total += parseFloat(detailedClosingCosts.insuranceImpound) || 0;
+      total += parseFloat(detailedClosingCosts.insurancePremium) || 0;
+      total += parseFloat(detailedClosingCosts.ffeReserve) || 0;
+      total += parseFloat(detailedClosingCosts.adaReserve) || 0;
+      total += parseFloat(detailedClosingCosts.immediateRepairReserve) || 0;
+      total += parseFloat(detailedClosingCosts.generalLedger) || 0;
+      total += parseFloat(detailedClosingCosts.realEstateTaxes) || 0;
+      total += parseFloat(detailedClosingCosts.titleSearches) || 0;
+      total += parseFloat(detailedClosingCosts.titlePremium) || 0;
+      total += parseFloat(detailedClosingCosts.escrow) || 0;
+      total += parseFloat(detailedClosingCosts.recordingFees) || 0;
+      total += parseFloat(detailedClosingCosts.transferTax) || 0;
+      total += parseFloat(detailedClosingCosts.mortgageTax) || 0;
+      total += parseFloat(detailedClosingCosts.transferTaxOther) || 0;
+      total += parseFloat(detailedClosingCosts.applicationFee) || 0;
+      total += parseFloat(detailedClosingCosts.buyerCounsel) || 0;
+      total += parseFloat(detailedClosingCosts.equityPlacementFee) || 0;
+      total += parseFloat(detailedClosingCosts.acquisitionFee) || 0;
+      
+      // Travel charges
+      for (let i = 1; i <= 3; i++) {
+        const travelKey = `travelCharge${i}` as keyof typeof detailedClosingCosts;
+        const travel = detailedClosingCosts[travelKey] as { description: string; amount: string };
+        total += parseFloat(travel.amount) || 0;
+      }
+      
+      total += parseFloat(detailedClosingCosts.workingCapital) || 0;
+      total += parseFloat(detailedClosingCosts.excessCashCapital) || 0;
+      total += parseFloat(detailedClosingCosts.contingency) || 0;
+      total += parseFloat(detailedClosingCosts.yearOneTaxReserve) || 0;
+      total += parseFloat(detailedClosingCosts.yearOneInsuranceReserve) || 0;
+      
+      return total;
+    }
+    return 0;
+  };
+
   // Helper function for Purchase Price calculation
   const calculatePurchasePriceFromCapRate = () => {
     // Sample First Year Forecast NOI - this should be connected to actual revenue data
@@ -850,6 +919,10 @@ const Valuation: React.FC = () => {
                     <div className="flex justify-between items-center">
                       <span className="mr-4 text-sm">Loan Amount</span>
                       <span className="font-medium text-sm">$ 36,075,000</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4 text-sm">Closing Costs</span>
+                      <span className="font-medium text-sm">{formatCurrency(calculateClosingCosts())}</span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4 text-sm">Loan Disbursal Amount</span>
