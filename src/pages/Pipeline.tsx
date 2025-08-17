@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DatePicker } from "@/components/ui/DatePicker";
 import AppSidebar from "../components/AppSidebar";
+import { usePipelineData } from "../hooks/usePipelineData";
 import PropertyDetailsModal from "../components/modals/PropertyDetailsModal";
 import {
   Table,
@@ -63,29 +64,7 @@ interface SortState {
 }
 
 const Pipeline: React.FC = () => {
-  const [pipelineData, setPipelineData] = useState<PipelineItem[]>([
-    {
-      id: '1',
-      photo: '',
-      name: 'Hotel Howie',
-      city: 'Paris',
-      state: 'TX',
-      zip: '54521',
-      keysRooms: '312',
-      propertyType: 'All Inclusive',
-      status: 'Under Review',
-      brand: 'Mgmt 6',
-      management: 'Management',
-      bidDueDate: '9/15/25',
-      dueDiligenceDate: '8/1/25',
-      closingDate: '10/1/25',
-      purchasePrice: '5,125,000',
-      capRate: '5.125%',
-      marketComp: 'Yes',
-      createdDate: '12/15/24',
-      lastModifiedDate: '1/2/25'
-    }
-  ]);
+  const { pipelineData, setPipelineData } = usePipelineData();
 
   const [columns, setColumns] = useState<Column[]>([
     { key: 'delete', label: '', sticky: true, sortable: false },
