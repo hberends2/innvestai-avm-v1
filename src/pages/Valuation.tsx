@@ -833,10 +833,10 @@ const Valuation: React.FC = () => {
                          className="text-blue-600 font-medium text-right w-32"
                        />
                     </div>
-                    <div className="flex justify-between items-center">
-                      <span className="mr-4">Lenders Fees</span>
-                      <span className="font-medium">$ 360,750</span>
-                    </div>
+                     <div className="flex justify-between items-center">
+                       <span className="mr-4">Acquisition Fees</span>
+                       <span className="font-medium">$ 360,750</span>
+                     </div>
                     <div className="flex justify-between items-center">
                       <span className="mr-4">All-In-Basis</span>
                       <span className="font-medium">$ 66,555,493</span>
