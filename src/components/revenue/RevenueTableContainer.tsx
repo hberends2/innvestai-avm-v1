@@ -100,11 +100,13 @@ interface RevenueTableContainerProps {
 const RevenueTableContainer: React.FC<RevenueTableContainerProps> = (props) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border p-6 mb-2 h-full">
-      <ScrollArea className="h-full w-full" id="revenue-scroll-area">
-        <Table className="relative">
-          <RevenueTableHeaders />
-          <RevenueTableSections {...props} historicalExpenseData={historicalExpenseData} />
-        </Table>
+      <ScrollArea className="h-full w-full overflow-auto" id="revenue-scroll-area">
+        <div className="min-w-max">
+          <Table className="relative">
+            <RevenueTableHeaders />
+            <RevenueTableSections {...props} historicalExpenseData={historicalExpenseData} />
+          </Table>
+        </div>
       </ScrollArea>
     </div>
   );

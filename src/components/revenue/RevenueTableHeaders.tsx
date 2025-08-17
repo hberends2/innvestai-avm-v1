@@ -10,14 +10,9 @@ const RevenueTableHeaders = () => {
       {/* Period Headers */}
       <TableRow className="border-b-2 border-gray-300">
         <TableHead className="w-48 px-1 bg-white sticky left-0 z-30"></TableHead>
-        <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm" colSpan={4}>
+        <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm" colSpan={shouldAddYTD ? 5 : 4}>
           Historical
         </TableHead>
-        {shouldAddYTD && (
-          <TableHead className="text-center bg-yellow-50 px-1 font-semibold text-sm" colSpan={1}>
-            YTD
-          </TableHead>
-        )}
         <TableHead className="text-center bg-green-50 px-1 font-semibold text-sm" colSpan={shouldAddYTD ? 4 : 5}>
           Forecast
         </TableHead>
@@ -41,7 +36,7 @@ const RevenueTableHeaders = () => {
           2024
         </TableHead>
         {shouldAddYTD && (
-          <TableHead className="text-center bg-yellow-50 px-1 font-semibold text-sm min-w-[80px]">
+          <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm min-w-[80px]">
             {ytdYear} YTD
           </TableHead>
         )}

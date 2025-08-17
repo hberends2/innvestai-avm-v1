@@ -132,7 +132,7 @@ const MetricRow: React.FC<MetricRowProps> = ({
         ))}
         {shouldAddYTD && (
           <TableCell 
-            className={`text-center py-2 px-2 min-w-[80px] ${isUserInputRow ? 'bg-yellow-50' : 'bg-yellow-25'}`}
+            className={`text-center py-2 px-2 min-w-[80px] ${isUserInputRow ? 'bg-yellow-50' : 'bg-blue-25'}`}
           >
             {ytdData || "-"}
           </TableCell>
@@ -190,7 +190,7 @@ const MetricRow: React.FC<MetricRowProps> = ({
       ))}
       {shouldAddYTD && (
         <TableCell 
-          className={`text-center ${baseCellClass} min-w-[80px] ${isHeaderRow ? 'bg-gray-600' : isUserInputRow ? 'bg-yellow-50' : 'bg-yellow-25'}`}
+          className={`text-center ${baseCellClass} min-w-[80px] ${isHeaderRow ? 'bg-gray-600' : isUserInputRow ? 'bg-yellow-50' : 'bg-blue-25'}`}
         >
           {ytdData || "-"}
         </TableCell>
