@@ -3,6 +3,8 @@ import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical, Trash2 } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DatePicker } from "@/components/ui/DatePicker";
 import AppSidebar from "../components/AppSidebar";
 import PropertyDetailsModal from "../components/modals/PropertyDetailsModal";
 import {
@@ -38,6 +40,7 @@ interface PipelineItem {
   management: string;
   bidDueDate: string;
   dueDiligenceDate: string;
+  closingDate: string;
   purchasePrice: string;
   capRate: string;
   marketComp: string;
@@ -75,6 +78,7 @@ const Pipeline: React.FC = () => {
       management: 'Management',
       bidDueDate: '9/15/25',
       dueDiligenceDate: '8/1/25',
+      closingDate: '10/1/25',
       purchasePrice: '5,125,000',
       capRate: '5.125%',
       marketComp: 'Yes',
@@ -98,6 +102,7 @@ const Pipeline: React.FC = () => {
     { key: 'management', label: 'Management', sticky: false, sortable: true },
     { key: 'bidDueDate', label: 'Bid Due Date', sticky: false, sortable: true },
     { key: 'dueDiligenceDate', label: 'Due Diligence Date', sticky: false, sortable: true },
+    { key: 'closingDate', label: 'Closing Date', sticky: false, sortable: true },
     { key: 'purchasePrice', label: 'Purchase Price', sticky: false, sortable: true },
     { key: 'capRate', label: 'Cap Rate', sticky: false, sortable: true },
     { key: 'marketComp', label: 'Market Comp', sticky: false, sortable: true },
@@ -136,6 +141,7 @@ const Pipeline: React.FC = () => {
       management: '',
       bidDueDate: '',
       dueDiligenceDate: '',
+      closingDate: '',
       purchasePrice: '',
       capRate: '',
       marketComp: '',
@@ -207,7 +213,7 @@ const Pipeline: React.FC = () => {
       }
 
       // Handle date sorting
-      if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate' || columnKey === 'createdDate' || columnKey === 'lastModifiedDate') {
+      if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate' || columnKey === 'closingDate' || columnKey === 'createdDate' || columnKey === 'lastModifiedDate') {
         const aDate = new Date(aVal);
         const bDate = new Date(bVal);
         return newDirection === 'asc' 
@@ -333,6 +339,57 @@ const Pipeline: React.FC = () => {
     // Navigate to next step as needed
   };
 
+  // Property type options (same as Property Details modal)
+  const propertyTypeOptions = [
+    "Full Service",
+    "Select Service", 
+    "Convention",
+    "Extended Stay",
+    "All Inclusive"
+  ];
+
+  const renderEditableCell = (item: PipelineItem, column: Column) => {
+    const fieldKey = column.key as keyof PipelineItem;
+    
+    if (column.key === 'propertyType') {
+      return (
+        <Select
+          value={item.propertyType}
+          onValueChange={(value) => handleInputChange(item.id, 'propertyType', value)}
+        >
+          <SelectTrigger className="h-10 w-full">
+            <SelectValue placeholder="Select type" />
+          </SelectTrigger>
+          <SelectContent>
+            {propertyTypeOptions.map((option) => (
+              <SelectItem key={option} value={option}>
+                {option}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      );
+    }
+
+    if (column.key === 'bidDueDate' || column.key === 'dueDiligenceDate' || column.key === 'closingDate') {
+      return (
+        <DatePicker
+          value={item[fieldKey]}
+          onChange={(value) => handleInputChange(item.id, fieldKey, value)}
+          placeholder="Select date"
+        />
+      );
+    }
+
+    return (
+      <Input
+        value={item[fieldKey]}
+        onChange={(e) => handleInputChange(item.id, fieldKey, e.target.value)}
+        className="h-10 w-full"
+      />
+    );
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full">
@@ -454,16 +511,11 @@ const Pipeline: React.FC = () => {
                          >
                            <Trash2 className="h-3 w-3" />
                          </Button>
-                       ) : column.key === 'photo' ? (
-                         <div className="w-8 h-8 bg-muted rounded border border-border"></div>
-                       ) : (
-                         <Input
-                           value={item[column.key as keyof PipelineItem]}
-                           onChange={(e) => handleInputChange(item.id, column.key as keyof PipelineItem, e.target.value)}
-                           placeholder={column.label}
-                           className="border-0 bg-transparent p-0 h-auto text-sm focus-visible:ring-0 placeholder:text-muted-foreground/50"
-                         />
-                       )}
+                        ) : column.key === 'photo' ? (
+                          <div className="w-8 h-8 bg-muted rounded border border-border"></div>
+                        ) : (
+                          renderEditableCell(item, column)
+                        )}
                      </TableCell>
                   ))}
                 </TableRow>
