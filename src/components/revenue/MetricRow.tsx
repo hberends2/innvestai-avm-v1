@@ -1,12 +1,14 @@
 
 import React, { ReactNode, useState } from "react";
 import { TableRow, TableCell } from "../ui/table";
+import { usePipelineData } from "../../hooks/usePipelineData";
 
 interface MetricRowProps {
   id?: string;
   label: ReactNode;
   historicalData: ReactNode[];
   forecastData: ReactNode[];
+  ytdData?: ReactNode;
   isHeaderRow?: boolean;
   className?: string;
   // Section header props
@@ -40,6 +42,7 @@ const MetricRow: React.FC<MetricRowProps> = ({
   label,
   historicalData,
   forecastData,
+  ytdData,
   isHeaderRow = false,
   className = "",
   isSectionHeader = false,
@@ -58,6 +61,9 @@ const MetricRow: React.FC<MetricRowProps> = ({
   isFbInputRow = false,
   isGrowthRow = false
 }) => {
+  const { shouldAddYTDColumn } = usePipelineData();
+  const { shouldAdd: shouldAddYTD } = shouldAddYTDColumn();
+  
   // Track which inputs are currently being edited
   const [editingInputs, setEditingInputs] = useState<Set<number>>(new Set());
 
@@ -89,6 +95,12 @@ const MetricRow: React.FC<MetricRowProps> = ({
           >
           </TableCell>
         ))}
+        {shouldAddYTD && (
+          <TableCell 
+            className={`text-center py-2 px-2 min-w-[80px] ${sectionBg}`}
+          >
+          </TableCell>
+        )}
         {forecastData.map((_, index) => (
           <TableCell 
             key={`forecast-${index}`} 
@@ -118,6 +130,13 @@ const MetricRow: React.FC<MetricRowProps> = ({
             {data}
           </TableCell>
         ))}
+        {shouldAddYTD && (
+          <TableCell 
+            className={`text-center py-2 px-2 min-w-[80px] ${isUserInputRow ? 'bg-yellow-50' : 'bg-yellow-25'}`}
+          >
+            {ytdData || "-"}
+          </TableCell>
+        )}
         {forecastData.map((data, index) => {
           const year = forecastYears[index];
           const isEditableCell = isEditable && year;
@@ -169,6 +188,13 @@ const MetricRow: React.FC<MetricRowProps> = ({
           {data}
         </TableCell>
       ))}
+      {shouldAddYTD && (
+        <TableCell 
+          className={`text-center ${baseCellClass} min-w-[80px] ${isHeaderRow ? 'bg-gray-600' : isUserInputRow ? 'bg-yellow-50' : 'bg-yellow-25'}`}
+        >
+          {ytdData || "-"}
+        </TableCell>
+      )}
       {forecastData.map((data, index) => {
         const year = forecastYears[index];
         const isEditableCell = isEditable && year;

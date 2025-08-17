@@ -6,6 +6,7 @@ import RevPARSection from "../RevPARSection";
 import RoomsRevenueSection from "../RoomsRevenueSection";
 import SectionHeader from "../SectionHeader";
 import { CalculationHelpers } from "../RevenueTableHelpers";
+import { usePipelineData } from "../../../hooks/usePipelineData";
 
 interface RevenueMetricsSectionProps {
   historicalYears: number[];
@@ -58,11 +59,15 @@ const RevenueMetricsSection: React.FC<RevenueMetricsSectionProps> = ({
   formatPercent,
   helpers
 }) => {
+  const { shouldAddYTDColumn } = usePipelineData();
+  const { shouldAdd: shouldAddYTD } = shouldAddYTDColumn();
+  const totalCols = shouldAddYTD ? 11 : 10;
+  
   return (
     <>
       {/* Section anchor for Occupancy */}
       <tr id="occupancy-section" className="scroll-mt-4">
-        <td colSpan={10} className="h-0 p-0"></td>
+        <td colSpan={totalCols} className="h-0 p-0"></td>
       </tr>
       
       <OccupancySection
@@ -90,7 +95,7 @@ const RevenueMetricsSection: React.FC<RevenueMetricsSectionProps> = ({
       />
 
       <tr id="adr-section" className="scroll-mt-4">
-        <td colSpan={10} className="h-0 p-0"></td>
+        <td colSpan={totalCols} className="h-0 p-0"></td>
       </tr>
       
       <ADRSection
@@ -113,7 +118,7 @@ const RevenueMetricsSection: React.FC<RevenueMetricsSectionProps> = ({
       />
 
       <tr id="revpar-section" className="scroll-mt-4">
-        <td colSpan={10} className="h-0 p-0"></td>
+        <td colSpan={totalCols} className="h-0 p-0"></td>
       </tr>
       
       <RevPARSection
@@ -126,7 +131,7 @@ const RevenueMetricsSection: React.FC<RevenueMetricsSectionProps> = ({
       <SectionHeader title="REVENUE" />
 
       <tr id="rooms-revenue-section" className="scroll-mt-4">
-        <td colSpan={10} className="h-0 p-0"></td>
+        <td colSpan={totalCols} className="h-0 p-0"></td>
       </tr>
       
       <RoomsRevenueSection

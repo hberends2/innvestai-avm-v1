@@ -1,7 +1,10 @@
 import React from "react";
 import { TableHead, TableHeader, TableRow } from "../ui/table";
+import { usePipelineData } from "../../hooks/usePipelineData";
 
 const RevenueTableHeaders = () => {
+  const { shouldAddYTDColumn } = usePipelineData();
+  const { shouldAdd: shouldAddYTD, ytdYear } = shouldAddYTDColumn();
   return (
     <TableHeader className="sticky top-0 z-20 bg-white">
       {/* Period Headers */}
@@ -10,7 +13,12 @@ const RevenueTableHeaders = () => {
         <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm" colSpan={4}>
           Historical
         </TableHead>
-        <TableHead className="text-center bg-green-50 px-1 font-semibold text-sm" colSpan={5}>
+        {shouldAddYTD && (
+          <TableHead className="text-center bg-yellow-50 px-1 font-semibold text-sm" colSpan={1}>
+            YTD
+          </TableHead>
+        )}
+        <TableHead className="text-center bg-green-50 px-1 font-semibold text-sm" colSpan={shouldAddYTD ? 4 : 5}>
           Forecast
         </TableHead>
       </TableRow>
@@ -32,9 +40,14 @@ const RevenueTableHeaders = () => {
         <TableHead className="text-center bg-blue-50 px-1 font-semibold text-sm min-w-[80px]">
           2024
         </TableHead>
+        {shouldAddYTD && (
+          <TableHead className="text-center bg-yellow-50 px-1 font-semibold text-sm min-w-[80px]">
+            {ytdYear} YTD
+          </TableHead>
+        )}
         {/* Forecast Years */}
         <TableHead className="text-center bg-green-50 px-1 font-semibold text-sm min-w-[80px]">
-          2025
+          {shouldAddYTD && ytdYear === 2025 ? "2025 Forecast" : "2025"}
         </TableHead>
         <TableHead className="text-center bg-green-50 px-1 font-semibold text-sm min-w-[80px]">
           2026
