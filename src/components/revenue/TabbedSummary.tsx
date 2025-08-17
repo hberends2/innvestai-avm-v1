@@ -13,7 +13,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   const [isUndistributedExpanded, setIsUndistributedExpanded] = useState(false);
   const [isNonOperatingExpanded, setIsNonOperatingExpanded] = useState(false);
 
-  const { shouldAddYTDColumn } = usePipelineData();
+  const { shouldAddYTDColumn, getClosingDate } = usePipelineData();
   const { shouldAdd: shouldAddYTD, ytdYear } = shouldAddYTDColumn();
 
   const { historicalYears, forecastYears, helpers } = props;
@@ -30,7 +30,7 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
 
   // Create metrics for each tab - removed mainHelpers parameter from createKeyMetrics
   const keyMetrics = createKeyMetrics(props, allYears, shouldAddYTD, ytdYear);
-  const occupancyMetrics = createOccupancyMetrics(props, allYears, shouldAddYTD, ytdYear);
+  const occupancyMetrics = createOccupancyMetrics(props, allYears, shouldAddYTD, ytdYear, getClosingDate());
   const revenueMetrics = createRevenueMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, shouldAddYTD, ytdYear);
   const expenseMetrics = createExpenseMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, isUndistributedExpanded, setIsUndistributedExpanded, isNonOperatingExpanded, setIsNonOperatingExpanded, shouldAddYTD, ytdYear);
   const subcategoryMetrics = createSubcategoryMetrics(props, allYears, shouldAddYTD, ytdYear);
