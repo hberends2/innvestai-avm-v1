@@ -834,7 +834,7 @@ const Valuation: React.FC = () => {
                        />
                     </div>
                      <div className="flex justify-between items-center">
-                       <span className="mr-4">Acquisition Fees</span>
+                       <span className="mr-4">Acquisition Costs</span>
                        <span className="font-medium">$ 360,750</span>
                      </div>
                     <div className="flex justify-between items-center">
