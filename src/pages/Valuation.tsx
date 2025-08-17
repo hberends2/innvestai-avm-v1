@@ -818,28 +818,28 @@ const Valuation: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Acquisition Metrics</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Purchase Price ({parseFloat(capRate).toFixed(1)}% cap)</span>
-                      <span className="font-medium">{formatCurrency(calculatePurchasePriceFromCapRate())}</span>
+                      <span className="mr-4 text-sm">Purchase Price ({parseFloat(capRate).toFixed(1)}% cap)</span>
+                      <span className="font-medium text-sm">{formatCurrency(calculatePurchasePriceFromCapRate())}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Purchase Price-DCF ({parseFloat(discountRate).toFixed(1)}% Discount Rate)</span>
-                      <span className="font-medium">{formatCurrency(calculateDCFPurchasePrice())}</span>
+                      <span className="mr-4 text-sm">Purchase Price-DCF ({parseFloat(discountRate).toFixed(1)}% Discount Rate)</span>
+                      <span className="font-medium text-sm">{formatCurrency(calculateDCFPurchasePrice())}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Purchase Price (manual)</span>
+                      <span className="mr-4 text-sm">Purchase Price (manual)</span>
                        <Input
                          value={formatCurrencyDisplay(purchasePrice)}
                          onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
-                         className="text-blue-600 font-medium text-right w-32"
+                         className="text-blue-600 font-medium text-right w-32 text-sm"
                        />
                     </div>
-                     <div className="flex justify-between items-center">
-                       <span className="mr-4">Acquisition Costs</span>
-                       <span className="font-medium">$ 360,750</span>
-                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">All-In-Basis</span>
-                      <span className="font-medium">$ 66,555,493</span>
+                      <span className="mr-4 text-sm">Acquisition Costs</span>
+                      <span className="font-medium text-sm">$ 360,750</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="mr-4 text-sm">All-In-Basis</span>
+                      <span className="font-medium text-sm">$ 66,555,493</span>
                     </div>
                   </div>
                 </div>
@@ -848,24 +848,24 @@ const Valuation: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Financing Assumptions</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Loan Amount</span>
-                      <span className="font-medium">$ 36,075,000</span>
+                      <span className="mr-4 text-sm">Loan Amount</span>
+                      <span className="font-medium text-sm">$ 36,075,000</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Loan Disbursal Amount</span>
-                      <span className="font-medium">$ 35,714,250</span>
+                      <span className="mr-4 text-sm">Loan Disbursal Amount</span>
+                      <span className="font-medium text-sm">$ 35,714,250</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">I/O Payments (Yearly)</span>
-                      <span className="font-medium">$ 3,968,250</span>
+                      <span className="mr-4 text-sm">I/O Payments (Yearly)</span>
+                      <span className="font-medium text-sm">$ 3,968,250</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Amortization Payments (Yearly)</span>
-                      <span className="font-medium">$ 4,122,608</span>
+                      <span className="mr-4 text-sm">Amortization Payments (Yearly)</span>
+                      <span className="font-medium text-sm">$ 4,122,608</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Loan Balance Repayment</span>
-                      <span className="font-medium">$ 36,075,000</span>
+                      <span className="mr-4 text-sm">Loan Balance Repayment</span>
+                      <span className="font-medium text-sm">$ 36,075,000</span>
                     </div>
                   </div>
                 </div>
@@ -874,14 +874,14 @@ const Valuation: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Equity Contributions</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Total Equity Contributions ({(100 - parseFloat(ltv)).toFixed(0)}%)</span>
-                      <span className="font-medium">
+                      <span className="mr-4 text-sm">Total Equity Contributions ({(100 - parseFloat(ltv)).toFixed(0)}%)</span>
+                      <span className="font-medium text-sm">
                         ${(parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Partner Investors ({valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0).toFixed(1)}%)</span>
-                      <span className="font-medium">
+                      <span className="mr-4 text-sm">Partner Investors ({valuationData.partners.reduce((sum, partner) => sum + parseFloat(partner.percentage || "0"), 0).toFixed(1)}%)</span>
+                      <span className="font-medium text-sm">
                         ${valuationData.partners.reduce((sum, partner) => {
                           const partnerAmount = (parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(partner.percentage || "0") / 100;
                           return sum + partnerAmount;
@@ -889,14 +889,14 @@ const Valuation: React.FC = () => {
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Investor Equity ({parseFloat(valuationData.investorEquityPercentage).toFixed(1)}%)</span>
-                      <span className="font-medium">
+                      <span className="mr-4 text-sm">Investor Equity ({parseFloat(valuationData.investorEquityPercentage).toFixed(1)}%)</span>
+                      <span className="font-medium text-sm">
                         ${((parseFloat(purchasePrice) * (100 - parseFloat(ltv)) / 100) * parseFloat(valuationData.investorEquityPercentage) / 100).toLocaleString('en-US', { maximumFractionDigits: 0 })}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Debt</span>
-                      <span className="font-medium">${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
+                      <span className="mr-4 text-sm">Debt</span>
+                      <span className="font-medium text-sm">${loanAmount.toLocaleString('en-US', { maximumFractionDigits: 0 })}</span>
                     </div>
                   </div>
                 </div>
@@ -905,20 +905,20 @@ const Valuation: React.FC = () => {
                   <h3 className="text-lg font-semibold mb-4">Exit Assumptions</h3>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Sale Price</span>
-                      <span className="font-medium">$ 84,861,621</span>
+                      <span className="mr-4 text-sm">Sale Price</span>
+                      <span className="font-medium text-sm">$ 84,861,621</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Sales Expense Amount</span>
-                      <span className="font-medium">$ 2,545,849</span>
+                      <span className="mr-4 text-sm">Sales Expense Amount</span>
+                      <span className="font-medium text-sm">$ 2,545,849</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Net Sales Proceeds - (Unlevered)</span>
-                      <span className="font-medium">$ 82,315,772</span>
+                      <span className="mr-4 text-sm">Net Sales Proceeds - (Unlevered)</span>
+                      <span className="font-medium text-sm">$ 82,315,772</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4">Net Sales Proceeds - (Levered)</span>
-                      <span className="font-medium">$ 46,240,772</span>
+                      <span className="mr-4 text-sm">Net Sales Proceeds - (Levered)</span>
+                      <span className="font-medium text-sm">$ 46,240,772</span>
                     </div>
                   </div>
                 </div>
