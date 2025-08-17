@@ -826,7 +826,7 @@ const Valuation: React.FC = () => {
                       <span className="font-medium text-sm">{formatCurrency(calculateDCFPurchasePrice())}</span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="mr-4 text-sm">Purchase Price (manual)</span>
+                      <span className="mr-4 text-sm">Purchase Price (manual input)</span>
                        <Input
                          value={formatCurrencyDisplay(purchasePrice)}
                          onChange={(e) => handleCurrencyChange(e.target.value, setPurchasePrice)}
