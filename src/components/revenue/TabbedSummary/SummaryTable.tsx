@@ -12,6 +12,8 @@ interface SummaryTableProps {
   isUndistributedExpanded: boolean;
   subcategoryMetrics: MetricRow[];
   undistributedSubcategoryMetrics: MetricRow[];
+  shouldAddYTD?: boolean;
+  ytdYear?: number | null;
 }
 
 const SummaryTable: React.FC<SummaryTableProps> = ({
@@ -22,7 +24,9 @@ const SummaryTable: React.FC<SummaryTableProps> = ({
   isOtherOperatedExpanded,
   isUndistributedExpanded,
   subcategoryMetrics,
-  undistributedSubcategoryMetrics
+  undistributedSubcategoryMetrics,
+  shouldAddYTD,
+  ytdYear
 }) => {
   // Function to render all rows including subcategories in the correct position
   const renderTableRows = () => {
@@ -127,7 +131,7 @@ const SummaryTable: React.FC<SummaryTableProps> = ({
             </TableHead>
             {historicalYears.map(year => (
               <TableHead key={year} className="text-center bg-blue-50 px-1 font-semibold text-sm min-w-[80px]">
-                {year}
+                {shouldAddYTD && year === ytdYear ? `${year} YTD` : year}
               </TableHead>
             ))}
             {forecastYears.map(year => (

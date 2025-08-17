@@ -19,7 +19,9 @@ export const createExpenseMetrics = (
   isUndistributedExpanded: boolean,
   setIsUndistributedExpanded: (expanded: boolean) => void,
   isNonOperatingExpanded: boolean,
-  setIsNonOperatingExpanded: (expanded: boolean) => void
+  setIsNonOperatingExpanded: (expanded: boolean) => void,
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { 
     historicalYears, 

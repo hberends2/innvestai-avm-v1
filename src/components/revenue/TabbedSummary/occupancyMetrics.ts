@@ -4,7 +4,9 @@ import { createHelpers } from './helpers';
 
 export const createOccupancyMetrics = (
   props: TabbedSummaryProps,
-  allYears: number[]
+  allYears: number[],
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { roomsKeys, historicalYears, getAvailableRooms, formatPercent } = props;
   const helpers = createHelpers(props);

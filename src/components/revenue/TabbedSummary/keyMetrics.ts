@@ -2,7 +2,7 @@
 import React from 'react';
 import { TabbedSummaryProps, MetricRow } from './types';
 
-export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[]): MetricRow[] => {
+export const createKeyMetrics = (props: TabbedSummaryProps, allYears: number[], shouldAddYTD?: boolean, ytdYear?: number | null): MetricRow[] => {
   const { 
     historicalYears, 
     forecastYears, 

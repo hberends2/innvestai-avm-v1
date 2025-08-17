@@ -4,7 +4,9 @@ import { historicalExpenseData } from './expenseData';
 
 export const createUndistributedSubcategoryMetrics = (
   props: TabbedSummaryProps,
-  allYears: number[]
+  allYears: number[],
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { historicalYears, forecastYears, formatCurrency } = props;
 

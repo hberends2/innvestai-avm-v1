@@ -5,6 +5,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import SummaryTable from "./TabbedSummary/SummaryTable";
 import { createOccupancyMetrics, createRevenueMetrics, createExpenseMetrics, createKeyMetrics, createSubcategoryMetrics, createExpenseSubcategoryMetrics, createUndistributedSubcategoryMetrics } from "./TabbedSummary/metrics";
 import { TabbedSummaryProps } from "./TabbedSummary/types";
+import { usePipelineData } from "../../hooks/usePipelineData";
 
 const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   const [activeTab, setActiveTab] = useState("keyMetrics");
@@ -12,20 +13,29 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
   const [isUndistributedExpanded, setIsUndistributedExpanded] = useState(false);
   const [isNonOperatingExpanded, setIsNonOperatingExpanded] = useState(false);
 
+  const { shouldAddYTDColumn } = usePipelineData();
+  const { shouldAdd: shouldAddYTD, ytdYear } = shouldAddYTDColumn();
+
   const { historicalYears, forecastYears, helpers } = props;
-  const allYears = [...historicalYears, ...forecastYears];
+  
+  // Add YTD column to historical years if needed
+  const adjustedHistoricalYears = shouldAddYTD && ytdYear 
+    ? [...historicalYears, ytdYear] 
+    : historicalYears;
+  
+  const allYears = [...adjustedHistoricalYears, ...forecastYears];
 
   console.log('TabbedSummary rendering with activeTab:', activeTab);
   console.log('All years:', allYears);
 
   // Create metrics for each tab - removed mainHelpers parameter from createKeyMetrics
-  const keyMetrics = createKeyMetrics(props, allYears);
-  const occupancyMetrics = createOccupancyMetrics(props, allYears);
-  const revenueMetrics = createRevenueMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded);
-  const expenseMetrics = createExpenseMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, isUndistributedExpanded, setIsUndistributedExpanded, isNonOperatingExpanded, setIsNonOperatingExpanded);
-  const subcategoryMetrics = createSubcategoryMetrics(props, allYears);
-  const expenseSubcategoryMetrics = createExpenseSubcategoryMetrics(props, allYears);
-  const undistributedSubcategoryMetrics = createUndistributedSubcategoryMetrics(props, allYears);
+  const keyMetrics = createKeyMetrics(props, allYears, shouldAddYTD, ytdYear);
+  const occupancyMetrics = createOccupancyMetrics(props, allYears, shouldAddYTD, ytdYear);
+  const revenueMetrics = createRevenueMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, shouldAddYTD, ytdYear);
+  const expenseMetrics = createExpenseMetrics(props, allYears, isOtherOperatedExpanded, setIsOtherOperatedExpanded, isUndistributedExpanded, setIsUndistributedExpanded, isNonOperatingExpanded, setIsNonOperatingExpanded, shouldAddYTD, ytdYear);
+  const subcategoryMetrics = createSubcategoryMetrics(props, allYears, shouldAddYTD, ytdYear);
+  const expenseSubcategoryMetrics = createExpenseSubcategoryMetrics(props, allYears, shouldAddYTD, ytdYear);
+  const undistributedSubcategoryMetrics = createUndistributedSubcategoryMetrics(props, allYears, shouldAddYTD, ytdYear);
 
   console.log('Key metrics count:', keyMetrics.length);
   console.log('Key metrics labels:', keyMetrics.map(m => m.label));
@@ -44,13 +54,15 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
           <div className="bg-white h-full border border-gray-200 rounded">
             <SummaryTable
               metrics={keyMetrics}
-              historicalYears={historicalYears}
+              historicalYears={adjustedHistoricalYears}
               forecastYears={forecastYears}
               activeTab={activeTab}
               isOtherOperatedExpanded={isOtherOperatedExpanded}
               isUndistributedExpanded={isUndistributedExpanded}
               subcategoryMetrics={subcategoryMetrics}
               undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+              shouldAddYTD={shouldAddYTD}
+              ytdYear={ytdYear}
             />
           </div>
         </TabsContent>
@@ -59,13 +71,15 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
           <div className="bg-white h-full border border-gray-200 rounded">
             <SummaryTable
               metrics={occupancyMetrics}
-              historicalYears={historicalYears}
+              historicalYears={adjustedHistoricalYears}
               forecastYears={forecastYears}
               activeTab={activeTab}
               isOtherOperatedExpanded={isOtherOperatedExpanded}
               isUndistributedExpanded={isUndistributedExpanded}
               subcategoryMetrics={subcategoryMetrics}
               undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+              shouldAddYTD={shouldAddYTD}
+              ytdYear={ytdYear}
             />
           </div>
         </TabsContent>
@@ -74,13 +88,15 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
           <ScrollArea className="h-full border border-gray-200 rounded bg-white">
             <SummaryTable
               metrics={revenueMetrics}
-              historicalYears={historicalYears}
+              historicalYears={adjustedHistoricalYears}
               forecastYears={forecastYears}
               activeTab={activeTab}
               isOtherOperatedExpanded={isOtherOperatedExpanded}
               isUndistributedExpanded={isUndistributedExpanded}
               subcategoryMetrics={subcategoryMetrics}
               undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+              shouldAddYTD={shouldAddYTD}
+              ytdYear={ytdYear}
             />
           </ScrollArea>
         </TabsContent>
@@ -89,13 +105,15 @@ const TabbedSummary: React.FC<TabbedSummaryProps> = (props) => {
           <ScrollArea className="h-full border border-gray-200 rounded bg-white">
             <SummaryTable
               metrics={expenseMetrics}
-              historicalYears={historicalYears}
+              historicalYears={adjustedHistoricalYears}
               forecastYears={forecastYears}
               activeTab={activeTab}
               isOtherOperatedExpanded={isOtherOperatedExpanded}
               isUndistributedExpanded={isUndistributedExpanded}
               subcategoryMetrics={expenseSubcategoryMetrics}
               undistributedSubcategoryMetrics={undistributedSubcategoryMetrics}
+              shouldAddYTD={shouldAddYTD}
+              ytdYear={ytdYear}
             />
           </ScrollArea>
         </TabsContent>

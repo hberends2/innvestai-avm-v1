@@ -16,7 +16,9 @@ const calculateForecastExpense = (year: number, expenseType: string) => {
 
 export const createSubcategoryMetrics = (
   props: TabbedSummaryProps,
-  allYears: number[]
+  allYears: number[],
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { historicalYears, formatCurrency } = props;
   const helpers = createHelpers(props);
@@ -60,7 +62,9 @@ export const createSubcategoryMetrics = (
 
 export const createExpenseSubcategoryMetrics = (
   props: TabbedSummaryProps,
-  allYears: number[]
+  allYears: number[],
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { historicalYears, formatCurrency } = props;
 

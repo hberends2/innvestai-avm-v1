@@ -7,7 +7,9 @@ export const createRevenueMetrics = (
   props: TabbedSummaryProps,
   allYears: number[],
   isOtherOperatedExpanded: boolean,
-  setIsOtherOperatedExpanded: (expanded: boolean) => void
+  setIsOtherOperatedExpanded: (expanded: boolean) => void,
+  shouldAddYTD?: boolean,
+  ytdYear?: number | null
 ): MetricRow[] => {
   const { 
     historicalYears, 
