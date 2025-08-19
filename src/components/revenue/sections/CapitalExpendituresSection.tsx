@@ -114,7 +114,7 @@ const CapitalExpendituresSection: React.FC<CapitalExpendituresSectionProps> = ({
 
       {capitalExpenseItems.map((item) => (
         <TableRow key={item.id} className="border-b border-gray-100 hover:bg-gray-50">
-          <TableCell className="font-medium text-left py-2 px-2 sticky left-0 z-10 w-48" colSpan={historicalYears.length - 2}>
+          <TableCell className="font-medium text-left py-2 px-2 sticky left-0 z-10 w-48" colSpan={4}>
             <input
               type="text"
               placeholder="Description"
@@ -137,11 +137,7 @@ const CapitalExpendituresSection: React.FC<CapitalExpendituresSectionProps> = ({
               </SelectContent>
             </Select>
           </TableCell>
-          {/* No YTD input - empty cell for YTD column */}
-          <TableCell className="text-center py-2 px-2 min-w-[80px]">
-            {/* Empty cell for YTD - no input */}
-          </TableCell>
-          {forecastYears.map((year) => (
+          {forecastYears.slice(1).map((year) => (
             <TableCell key={`${item.id}-${year}`} className="text-center py-2 px-2 min-w-[80px]">
               <input
                 type="text"
@@ -157,7 +153,7 @@ const CapitalExpendituresSection: React.FC<CapitalExpendituresSectionProps> = ({
       ))}
 
       <TableRow className="border-b border-gray-100">
-        <TableCell className="py-2 px-2" colSpan={historicalYears.length + 1}>
+        <TableCell className="py-2 px-2" colSpan={6}>
           <button
             onClick={addNewCapitalExpenseItem}
             className="flex items-center text-blue-600 hover:text-blue-800 text-sm"
@@ -166,7 +162,7 @@ const CapitalExpendituresSection: React.FC<CapitalExpendituresSectionProps> = ({
             Add New Item
           </button>
         </TableCell>
-        {forecastYears.map((_, index) => (
+        {forecastYears.slice(1).map((_, index) => (
           <TableCell key={`forecast-empty-${index}`} className="py-2"></TableCell>
         ))}
       </TableRow>
