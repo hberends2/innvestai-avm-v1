@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 export interface PipelineItem {
   id: string;
+  favorite: boolean;
   photo: string;
   name: string;
   city: string;
@@ -35,6 +36,7 @@ export const usePipelineData = () => {
       setPipelineData([
         {
           id: '1',
+          favorite: false,
           photo: '',
           name: 'Hotel Howie',
           city: 'Paris',

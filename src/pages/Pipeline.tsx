@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical, Trash2 } from 'lucide-react';
+import { Plus, Filter, ArrowUpDown, ArrowUp, ArrowDown, GripVertical, Trash2, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -29,6 +29,7 @@ import {
 
 interface PipelineItem {
   id: string;
+  favorite: boolean;
   photo: string;
   name: string;
   city: string;
@@ -67,6 +68,7 @@ const Pipeline: React.FC = () => {
   const { pipelineData, setPipelineData } = usePipelineData();
 
   const [columns, setColumns] = useState<Column[]>([
+    { key: 'favorite', label: 'Favorite', sticky: true, sortable: true },
     { key: 'delete', label: '', sticky: true, sortable: false },
     { key: 'photo', label: 'Photo', sticky: true, sortable: false },
     { key: 'id', label: 'ID', sticky: true, sortable: true },
@@ -96,10 +98,18 @@ const Pipeline: React.FC = () => {
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
   const [showPropertyModal, setShowPropertyModal] = useState(false);
 
-  const handleInputChange = (id: string, field: keyof PipelineItem, value: string) => {
+  const handleInputChange = (id: string, field: keyof PipelineItem, value: string | boolean) => {
     setPipelineData(prevData =>
       prevData.map(item =>
         item.id === id ? { ...item, [field]: value } : item
+      )
+    );
+  };
+
+  const handleFavoriteToggle = (id: string) => {
+    setPipelineData(prevData =>
+      prevData.map(item =>
+        item.id === id ? { ...item, favorite: !item.favorite } : item
       )
     );
   };
@@ -108,6 +118,7 @@ const Pipeline: React.FC = () => {
     const newId = (pipelineData.length + 1).toString();
     const newItem: PipelineItem = {
       id: newId,
+      favorite: false,
       photo: '',
       name: '',
       city: '',
@@ -170,38 +181,47 @@ const Pipeline: React.FC = () => {
       const aVal = a[columnKey as keyof PipelineItem];
       const bVal = b[columnKey as keyof PipelineItem];
 
+      // Handle boolean sorting for favorite column
+      if (columnKey === 'favorite') {
+        const aBool = aVal as boolean;
+        const bBool = bVal as boolean;
+        return newDirection === 'asc' 
+          ? (aBool === bBool ? 0 : aBool ? 1 : -1)
+          : (aBool === bBool ? 0 : aBool ? -1 : 1);
+      }
+
       // Handle numeric sorting for specific columns
       if (columnKey === 'id' || columnKey === 'zip' || columnKey === 'keysRooms') {
-        const aNum = parseInt(aVal) || 0;
-        const bNum = parseInt(bVal) || 0;
+        const aNum = parseInt(aVal as string) || 0;
+        const bNum = parseInt(bVal as string) || 0;
         return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
       }
 
       // Handle percentage sorting
       if (columnKey === 'capRate') {
-        const aNum = parseFloat(aVal.replace('%', '')) || 0;
-        const bNum = parseFloat(bVal.replace('%', '')) || 0;
+        const aNum = parseFloat((aVal as string).replace('%', '')) || 0;
+        const bNum = parseFloat((bVal as string).replace('%', '')) || 0;
         return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
       }
 
       // Handle currency sorting
       if (columnKey === 'purchasePrice') {
-        const aNum = parseInt(aVal.replace(/[,$]/g, '')) || 0;
-        const bNum = parseInt(bVal.replace(/[,$]/g, '')) || 0;
+        const aNum = parseInt((aVal as string).replace(/[,$]/g, '')) || 0;
+        const bNum = parseInt((bVal as string).replace(/[,$]/g, '')) || 0;
         return newDirection === 'asc' ? aNum - bNum : bNum - aNum;
       }
 
       // Handle date sorting
       if (columnKey === 'bidDueDate' || columnKey === 'dueDiligenceDate' || columnKey === 'closingDate' || columnKey === 'createdDate' || columnKey === 'lastModifiedDate') {
-        const aDate = new Date(aVal);
-        const bDate = new Date(bVal);
+        const aDate = new Date(aVal as string);
+        const bDate = new Date(bVal as string);
         return newDirection === 'asc' 
           ? aDate.getTime() - bDate.getTime() 
           : bDate.getTime() - aDate.getTime();
       }
 
       // Default string sorting
-      const result = aVal.localeCompare(bVal);
+      const result = (aVal as string).localeCompare(bVal as string);
       return newDirection === 'asc' ? result : -result;
     });
 
@@ -330,6 +350,21 @@ const Pipeline: React.FC = () => {
   const renderEditableCell = (item: PipelineItem, column: Column) => {
     const fieldKey = column.key as keyof PipelineItem;
     
+    if (column.key === 'favorite') {
+      return (
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => handleFavoriteToggle(item.id)}
+          className="h-8 w-8 p-0 hover:bg-muted"
+        >
+          <Star 
+            className={`h-4 w-4 ${item.favorite ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground'}`}
+          />
+        </Button>
+      );
+    }
+
     if (column.key === 'propertyType') {
       return (
         <Select
@@ -353,7 +388,7 @@ const Pipeline: React.FC = () => {
     if (column.key === 'bidDueDate' || column.key === 'dueDiligenceDate' || column.key === 'closingDate') {
       return (
         <DatePicker
-          value={item[fieldKey]}
+          value={item[fieldKey] as string}
           onChange={(value) => handleInputChange(item.id, fieldKey, value)}
           placeholder="Select date"
         />
@@ -362,7 +397,7 @@ const Pipeline: React.FC = () => {
 
     return (
       <Input
-        value={item[fieldKey]}
+        value={item[fieldKey] as string}
         onChange={(e) => handleInputChange(item.id, fieldKey, e.target.value)}
         className="h-10 w-full"
       />
@@ -414,13 +449,15 @@ const Pipeline: React.FC = () => {
                       h-8 px-2 text-left align-middle font-medium text-muted-foreground border-r border-border last:border-r-0 select-none
                       ${column.sticky ? 'sticky z-30 bg-muted border-l-0 border-r-0' : ''}
                       ${index === 0 ? 'left-0' : ''}
-                      ${index === 1 ? 'left-[40px]' : ''}
-                      ${index === 2 ? 'left-[200px]' : ''}
+                      ${index === 1 ? 'left-[80px]' : ''}
+                      ${index === 2 ? 'left-[120px]' : ''}
                       ${index === 3 ? 'left-[280px]' : ''}
+                      ${index === 4 ? 'left-[360px]' : ''}
                       ${dragOverColumn === index ? 'bg-primary/20 border-primary' : ''}
                       ${draggedColumn === index ? 'opacity-50' : ''}
                       ${!column.sticky ? 'cursor-move hover:bg-muted/70' : 'cursor-default'}
-                      ${column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
+                      ${column.key === 'favorite' ? 'w-[80px] min-w-[80px] max-w-[80px]' :
+                        column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
                         column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
                         column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' : 
                         column.key === 'name' ? 'w-[200px] min-w-[200px]' :
@@ -429,7 +466,7 @@ const Pipeline: React.FC = () => {
                         column.key === 'zip' ? 'w-[100px] min-w-[100px]' : 
                         column.key === 'keysRooms' ? 'w-[120px] min-w-[120px]' : 
                         column.key === 'status' ? 'w-[160px] min-w-[160px]' : 
-                        'w-[140px] min-w-[140px]'} 
+                        'w-[140px] min-w-[140px]'}
                       transition-all duration-150
                     `}
                   >
@@ -466,10 +503,12 @@ const Pipeline: React.FC = () => {
                         p-2 align-middle border-r border-border last:border-r-0
                         ${column.sticky ? 'sticky z-10 bg-background border-l-0 border-r-0' : ''}
                         ${index === 0 ? 'left-0' : ''}
-                        ${index === 1 ? 'left-[40px]' : ''}
-                        ${index === 2 ? 'left-[200px]' : ''}
+                        ${index === 1 ? 'left-[80px]' : ''}
+                        ${index === 2 ? 'left-[120px]' : ''}
                         ${index === 3 ? 'left-[280px]' : ''}
-                        ${column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
+                        ${index === 4 ? 'left-[360px]' : ''}
+                        ${column.key === 'favorite' ? 'w-[80px] min-w-[80px] max-w-[80px]' :
+                          column.key === 'delete' ? 'w-[40px] min-w-[40px] max-w-[40px]' :
                           column.key === 'photo' ? 'w-[160px] min-w-[160px] max-w-[160px]' : 
                           column.key === 'id' ? 'w-[80px] min-w-[80px] max-w-[80px]' :
                           column.key === 'name' ? 'w-[200px] min-w-[200px]' : 
@@ -481,7 +520,9 @@ const Pipeline: React.FC = () => {
                           'w-[140px] min-w-[140px]'}
                        `}
                      >
-                       {column.key === 'delete' ? (
+                       {column.key === 'favorite' ? (
+                         renderEditableCell(item, column)
+                        ) : column.key === 'delete' ? (
                          <Button
                            variant="ghost"
                            size="sm"
