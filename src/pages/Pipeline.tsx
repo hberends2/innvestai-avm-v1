@@ -68,7 +68,7 @@ const Pipeline: React.FC = () => {
   const { pipelineData, setPipelineData } = usePipelineData();
 
   const [columns, setColumns] = useState<Column[]>([
-    { key: 'favorite', label: 'Favorite', sticky: true, sortable: true },
+    { key: 'favorite', label: 'Favorite', sticky: true, sortable: false },
     { key: 'delete', label: '', sticky: true, sortable: false },
     { key: 'photo', label: 'Photo', sticky: true, sortable: false },
     { key: 'id', label: 'ID', sticky: true, sortable: true },
