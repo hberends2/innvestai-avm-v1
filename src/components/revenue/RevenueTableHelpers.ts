@@ -1,17 +1,12 @@
 import { getAvailableRooms, calculateOccupancyFromYoY } from '../../utils/calculationUtils';
+import { CalculationHelpers, HistoricalRevenueData } from '../../types/revenueCalculations';
 
-export interface CalculationHelpers {
-  getHistoricalOccupiedRoomsForYear: (year: number) => number;
-  getForecastOccupiedRoomsForYear: (year: number) => number;
-  getHistoricalADRForYear: (year: number) => number;
-  getForecastADRForYear: (year: number) => number;
-  calculateTotalOtherOperatedRevenue: (year: number, isHistorical: boolean) => number;
-  calculateTotalRevenue: (year: number, isHistorical: boolean) => number;
-}
+// Re-export CalculationHelpers for backward compatibility
+export type { CalculationHelpers } from '../../types/revenueCalculations';
 
 export const createCalculationHelpers = (
   getAvailableRooms: (year: number) => number,
-  historicalData: any,
+  historicalData: HistoricalRevenueData,
   occupancyForecast: Record<number, string>,
   occupancyForecastMethod: string,
   calculateOccupancyFromYoY: (year: number) => number,

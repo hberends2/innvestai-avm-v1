@@ -1,21 +1,11 @@
 
-import { CalculationHelpers } from "./RevenueTableHelpers";
+import { CalculationHelpers, HistoricalRevenueData } from "../../types/revenueCalculations";
 
 export interface RevenueTableProps {
   roomsKeys: number;
   historicalYears: number[];
   forecastYears: number[];
-  historicalData: {
-    roomsRevenue: Record<number, number>;
-    revpar: Record<number, number>;
-    revparYoY: Record<number, number>;
-    occupancy: Record<number, number>;
-    fbRevenue: Record<number, number>;
-    resortFeeRevenue: Record<number, number>;
-    otherOperatedRevenue: Record<number, number>;
-    miscellaneousRevenue: Record<number, number>;
-    allocatedRevenue: Record<number, number>;
-  };
+  historicalData: HistoricalRevenueData;
   adrGrowthType: string;
   setAdrGrowthType: (value: string) => void;
   flatAdrGrowth: string;

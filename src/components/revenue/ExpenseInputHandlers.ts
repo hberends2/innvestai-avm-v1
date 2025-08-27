@@ -1,12 +1,18 @@
 
+import { 
+  PartialHistoricalRevenueData, 
+  HistoricalExpenseData, 
+  ExtendedCalculationHelpers 
+} from '../../types/revenueCalculations';
+
 export class ExpenseInputHandlers {
   constructor(
     private dropdownValue: string,
     private expenseType: string,
-    private historicalData: any,
-    private historicalExpenseData: any,
+    private historicalData: PartialHistoricalRevenueData,
+    private historicalExpenseData: HistoricalExpenseData,
     private formatCurrency: (value: number) => string,
-    private helpers: any
+    private helpers: ExtendedCalculationHelpers
   ) {}
 
   calculateExpense = (year: number, inputValue: string): number => {
@@ -73,7 +79,7 @@ export class ExpenseInputHandlers {
 
   getHistoricalExpenseData = (year: number): string => {
     // Get the total historical expense for this category and year
-    const totalExpense = this.historicalExpenseData?.[this.expenseType]?.[year] || 0;
+    const totalExpense = (this.historicalExpenseData as any)?.[this.expenseType]?.[year] || 0;
     
     if (this.dropdownValue === "POR") {
       const occupiedRooms = this.getHistoricalOccupiedRooms(year);
