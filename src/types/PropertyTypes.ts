@@ -14,4 +14,7 @@ export interface Property {
   chgInRms1: string;
   chgInRms2: string;
   chgInRms3: string;
+  created_at?: string;
+  updated_at?: string;
+  status?: string;
 }

@@ -2,9 +2,10 @@ import React, { createContext, useContext, useReducer, useEffect, ReactNode } fr
 import { getLocalData, setLocalData, STORAGE_KEYS } from '../hooks/database/supabaseClient';
 import { RevenueCalculations } from '../types/revenueCalculations';
 import { HistoricalExpenseData } from '../types/revenueCalculations';
+import { Property } from '../types/PropertyTypes';
 
 interface DataState {
-  properties: any[];
+  properties: Property[];
   occupancyData: Record<string, any>;
   financialSummaries: Record<string, any>;
   valuationData: any;
@@ -90,8 +91,9 @@ interface DataContextType {
   state: DataState;
   dispatch: React.Dispatch<DataAction>;
   actions: {
+    // Legacy actions - consider using modern hooks from src/hooks/modern/ instead
     loadAllData: () => Promise<void>;
-    saveProperty: (property: any) => Promise<void>;
+    saveProperty: (property: Property) => Promise<void>;
     deleteProperty: (propertyId: string) => Promise<void>;
     saveOccupancyData: (propertyId: string, data: any) => Promise<void>;
     saveFinancialSummary: (propertyId: string, year: number, data: any) => Promise<void>;
@@ -132,7 +134,7 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
     }
   };
 
-  const saveProperty = async (property: any) => {
+  const saveProperty = async (property: Property) => {
     try {
       const existingProperties = getLocalData(STORAGE_KEYS.PROPERTIES, []);
       const updatedProperties = property.id 
