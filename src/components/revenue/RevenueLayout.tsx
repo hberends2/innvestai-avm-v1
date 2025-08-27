@@ -7,6 +7,9 @@ import TabbedSummary from "./TabbedSummary";
 import AppSidebar from "../AppSidebar";
 import { formatCurrency, formatPercent } from "../../utils/calculationUtils";
 import { ExpenseCalculationsProvider, useExpenseCalculations } from "./ExpenseCalculationsProvider";
+import { useRevenueTableProps } from "../../hooks/useRevenueTableProps";
+import { useTabbedSummaryProps } from "../../hooks/useTabbedSummaryProps";
+import { useExpenseCalculationProviderProps } from "../../hooks/useExpenseCalculationProviderProps";
 
 interface RevenueLayoutProps {
   activeSection: string | null;
@@ -29,6 +32,34 @@ const RevenueLayout: React.FC<RevenueLayoutProps> = ({
   revenueCalculations,
   helpers
 }) => {
+  // Extract prop management into focused custom hooks
+  const { allRevenueTableProps } = useRevenueTableProps(
+    revenueCalculations,
+    helpers,
+    roomsKeys,
+    historicalYears,
+    forecastYears,
+    historicalData,
+    formatCurrency,
+    formatPercent
+  );
+
+  const tabbedSummaryProps = useTabbedSummaryProps(
+    revenueCalculations,
+    helpers,
+    roomsKeys,
+    historicalYears,
+    forecastYears,
+    historicalData,
+    formatCurrency,
+    formatPercent
+  );
+
+  const expenseProviderProps = useExpenseCalculationProviderProps(
+    revenueCalculations,
+    helpers,
+    historicalYears
+  );
   return (
     <SidebarProvider>
       <div className="flex h-screen bg-gray-50 overflow-hidden w-full">
@@ -41,140 +72,13 @@ const RevenueLayout: React.FC<RevenueLayoutProps> = ({
             <div className="min-w-max">
               <KPICards />
 
-              <ExpenseCalculationsProvider
-                expenseForecastMethod={revenueCalculations.expenseForecastMethod}
-                helpers={helpers}
-                historicalYears={historicalYears}
-                roomsExpenseInput={revenueCalculations.roomsExpenseInput}
-                fbExpenseInput={revenueCalculations.fbExpenseInput}
-                otherOperatedExpenseInput={revenueCalculations.otherOperatedExpenseInput}
-                miscellaneousExpenseInput={revenueCalculations.miscellaneousExpenseInput}
-                allocatedExpenseInput={revenueCalculations.allocatedExpenseInput}
-                propertyOperationsExpenseInput={revenueCalculations.propertyOperationsExpenseInput}
-                administrativeGeneralExpenseInput={revenueCalculations.administrativeGeneralExpenseInput}
-                infoTechServicesExpenseInput={revenueCalculations.infoTechServicesExpenseInput}
-                salesMarketingExpenseInput={revenueCalculations.salesMarketingExpenseInput}
-                utilitiesExpenseInput={revenueCalculations.utilitiesExpenseInput}
-                managementFeesExpenseInput={revenueCalculations.managementFeesExpenseInput}
-                realEstateTaxesExpenseInput={revenueCalculations.realEstateTaxesExpenseInput}
-                insuranceExpenseInput={revenueCalculations.insuranceExpenseInput}
-                otherNonOpExpenseInput={revenueCalculations.otherNonOpExpenseInput}
-              >
+              <ExpenseCalculationsProvider {...expenseProviderProps}>
                 <div className="mb-6">
-                  <TabbedSummaryWithExpenseCalculations
-                    roomsKeys={roomsKeys}
-                    historicalYears={historicalYears}
-                    forecastYears={forecastYears}
-                    historicalData={historicalData}
-                    occupancyForecast={revenueCalculations.occupancyForecast}
-                    occupancyForecastMethod={revenueCalculations.occupancyForecastMethod}
-                    calculateOccupancyFromYoY={helpers.calculateOccupancyFromYoYForYear}
-                    getAvailableRooms={helpers.getAvailableRoomsForYear}
-                    getForecastRoomsRevenue={helpers.getForecastRoomsRevenueForYear}
-                    getHistoricalADR={helpers.getHistoricalADRForYearCalculated}
-                    getForecastADR={helpers.getForecastADRForYear}
-                    getForecastRevpar={helpers.getForecastRevparForYear}
-                    fbPerOccupiedRoom={revenueCalculations.fbPerOccupiedRoom}
-                    resortFeePerOccupiedRoom={revenueCalculations.resortFeePerOccupiedRoom}
-                    otherOperatedPerOccupiedRoom={revenueCalculations.otherOperatedPerOccupiedRoom}
-                    miscellaneousPerOccupiedRoom={revenueCalculations.miscellaneousPerOccupiedRoom}
-                    allocatedPerOccupiedRoom={revenueCalculations.allocatedPerOccupiedRoom}
-                    formatCurrency={formatCurrency}
-                    formatPercent={formatPercent}
-                    helpers={helpers}
-                  />
+                  <TabbedSummaryWithExpenseCalculations {...tabbedSummaryProps} />
                 </div>
               </ExpenseCalculationsProvider>
 
-              <RevenueTable 
-                roomsKeys={roomsKeys} 
-                historicalYears={historicalYears} 
-                forecastYears={forecastYears} 
-                historicalData={historicalData} 
-                adrGrowthType={revenueCalculations.adrGrowthType} 
-                setAdrGrowthType={revenueCalculations.setAdrGrowthType} 
-                flatAdrGrowth={revenueCalculations.flatAdrGrowth} 
-                setFlatAdrGrowth={revenueCalculations.setFlatAdrGrowth} 
-                yearlyAdrGrowth={revenueCalculations.yearlyAdrGrowth} 
-                handleYearlyAdrChange={revenueCalculations.handleYearlyAdrChange} 
-                occupancyForecast={revenueCalculations.occupancyForecast} 
-                handleOccupancyChange={revenueCalculations.handleOccupancyChange} 
-                occupancyForecastMethod={revenueCalculations.occupancyForecastMethod} 
-                setOccupancyForecastMethod={revenueCalculations.setOccupancyForecastMethod} 
-                occupancyYoYGrowth={revenueCalculations.occupancyYoYGrowth} 
-                handleOccupancyYoYChange={revenueCalculations.handleOccupancyYoYChange} 
-                calculateOccupancyFromYoY={helpers.calculateOccupancyFromYoYForYear} 
-                getAvailableRooms={helpers.getAvailableRoomsForYear} 
-                getForecastRevpar={helpers.getForecastRevparForYear} 
-                getForecastRoomsRevenue={helpers.getForecastRoomsRevenueForYear} 
-                fbPerOccupiedRoom={revenueCalculations.fbPerOccupiedRoom} 
-                handleFbPerOccupiedRoomChange={revenueCalculations.handleFbPerOccupiedRoomChange} 
-                handleFbPerOccupiedRoomBlur={revenueCalculations.handleFbPerOccupiedRoomBlur}
-                resortFeePerOccupiedRoom={revenueCalculations.resortFeePerOccupiedRoom}
-                handleResortFeePerOccupiedRoomChange={revenueCalculations.handleResortFeePerOccupiedRoomChange}
-                handleResortFeePerOccupiedRoomBlur={revenueCalculations.handleResortFeePerOccupiedRoomBlur}
-                otherOperatedPerOccupiedRoom={revenueCalculations.otherOperatedPerOccupiedRoom}
-                handleOtherOperatedPerOccupiedRoomChange={revenueCalculations.handleOtherOperatedPerOccupiedRoomChange}
-                handleOtherOperatedPerOccupiedRoomBlur={revenueCalculations.handleOtherOperatedPerOccupiedRoomBlur}
-                miscellaneousPerOccupiedRoom={revenueCalculations.miscellaneousPerOccupiedRoom}
-                handleMiscellaneousPerOccupiedRoomChange={revenueCalculations.handleMiscellaneousPerOccupiedRoomChange}
-                handleMiscellaneousPerOccupiedRoomBlur={revenueCalculations.handleMiscellaneousPerOccupiedRoomBlur}
-                allocatedPerOccupiedRoom={revenueCalculations.allocatedPerOccupiedRoom}
-                handleAllocatedPerOccupiedRoomChange={revenueCalculations.handleAllocatedPerOccupiedRoomChange}
-                handleAllocatedPerOccupiedRoomBlur={revenueCalculations.handleAllocatedPerOccupiedRoomBlur}
-                formatCurrency={formatCurrency} 
-                formatPercent={formatPercent}
-                expenseForecastMethod={revenueCalculations.expenseForecastMethod}
-                setExpenseForecastMethod={revenueCalculations.setExpenseForecastMethod}
-                roomsExpenseInput={revenueCalculations.roomsExpenseInput}
-                handleRoomsExpenseChange={revenueCalculations.handleRoomsExpenseChange}
-                handleRoomsExpenseBlur={revenueCalculations.handleRoomsExpenseBlur}
-                fbExpenseInput={revenueCalculations.fbExpenseInput}
-                handleFbExpenseChange={revenueCalculations.handleFbExpenseChange}
-                handleFbExpenseBlur={revenueCalculations.handleFbExpenseBlur}
-                resortFeeExpenseInput={revenueCalculations.resortFeeExpenseInput}
-                handleResortFeeExpenseChange={revenueCalculations.handleResortFeeExpenseChange}
-                handleResortFeeExpenseBlur={revenueCalculations.handleResortFeeExpenseBlur}
-                otherOperatedExpenseInput={revenueCalculations.otherOperatedExpenseInput}
-                handleOtherOperatedExpenseChange={revenueCalculations.handleOtherOperatedExpenseChange}
-                handleOtherOperatedExpenseBlur={revenueCalculations.handleOtherOperatedExpenseBlur}
-                miscellaneousExpenseInput={revenueCalculations.miscellaneousExpenseInput}
-                handleMiscellaneousExpenseChange={revenueCalculations.handleMiscellaneousExpenseChange}
-                handleMiscellaneousExpenseBlur={revenueCalculations.handleMiscellaneousExpenseBlur}
-                allocatedExpenseInput={revenueCalculations.allocatedExpenseInput}
-                handleAllocatedExpenseChange={revenueCalculations.handleAllocatedExpenseChange}
-                handleAllocatedExpenseBlur={revenueCalculations.handleAllocatedExpenseBlur}
-                propertyOperationsExpenseInput={revenueCalculations.propertyOperationsExpenseInput}
-                handlePropertyOperationsExpenseChange={revenueCalculations.handlePropertyOperationsExpenseChange}
-                handlePropertyOperationsExpenseBlur={revenueCalculations.handlePropertyOperationsExpenseBlur}
-                administrativeGeneralExpenseInput={revenueCalculations.administrativeGeneralExpenseInput}
-                handleAdministrativeGeneralExpenseChange={revenueCalculations.handleAdministrativeGeneralExpenseChange}
-                handleAdministrativeGeneralExpenseBlur={revenueCalculations.handleAdministrativeGeneralExpenseBlur}
-                infoTechServicesExpenseInput={revenueCalculations.infoTechServicesExpenseInput}
-                handleInfoTechServicesExpenseChange={revenueCalculations.handleInfoTechServicesExpenseChange}
-                handleInfoTechServicesExpenseBlur={revenueCalculations.handleInfoTechServicesExpenseBlur}
-                salesMarketingExpenseInput={revenueCalculations.salesMarketingExpenseInput}
-                handleSalesMarketingExpenseChange={revenueCalculations.handleSalesMarketingExpenseChange}
-                handleSalesMarketingExpenseBlur={revenueCalculations.handleSalesMarketingExpenseBlur}
-                utilitiesExpenseInput={revenueCalculations.utilitiesExpenseInput}
-                handleUtilitiesExpenseChange={revenueCalculations.handleUtilitiesExpenseChange}
-                handleUtilitiesExpenseBlur={revenueCalculations.handleUtilitiesExpenseBlur}
-                managementFeesExpenseInput={revenueCalculations.managementFeesExpenseInput}
-                handleManagementFeesExpenseChange={revenueCalculations.handleManagementFeesExpenseChange}
-                handleManagementFeesExpenseBlur={revenueCalculations.handleManagementFeesExpenseBlur}
-                realEstateTaxesExpenseInput={revenueCalculations.realEstateTaxesExpenseInput}
-                handleRealEstateTaxesExpenseChange={revenueCalculations.handleRealEstateTaxesExpenseChange}
-                handleRealEstateTaxesExpenseBlur={revenueCalculations.handleRealEstateTaxesExpenseBlur}
-                insuranceExpenseInput={revenueCalculations.insuranceExpenseInput}
-                handleInsuranceExpenseChange={revenueCalculations.handleInsuranceExpenseChange}
-                handleInsuranceExpenseBlur={revenueCalculations.handleInsuranceExpenseBlur}
-                otherNonOpExpenseInput={revenueCalculations.otherNonOpExpenseInput}
-                handleOtherNonOpExpenseChange={revenueCalculations.handleOtherNonOpExpenseChange}
-                handleOtherNonOpExpenseBlur={revenueCalculations.handleOtherNonOpExpenseBlur}
-                reserveForReplacementInput={revenueCalculations.reserveForReplacementInput}
-                handleReserveForReplacementChange={revenueCalculations.handleReserveForReplacementChange}
-                handleReserveForReplacementBlur={revenueCalculations.handleReserveForReplacementBlur}
-              />
+              <RevenueTable {...allRevenueTableProps} />
             </div>
           </div>
         </div>
